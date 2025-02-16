@@ -9,6 +9,7 @@ import PlaceOrder from "./pages/PlaceOrder"
 import Orders from "./pages/Orders"
 import Login from "./pages/auth/Login"
 import MainLayout from "./layouts/MainLayout"
+import Product from "./pages/Product"
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
           <Route path={ROUTE_NAMES.ORDERS} element={<Orders/>} />
           <Route path={ROUTE_NAMES.PLACEORDER} element={<PlaceOrder/>} />
           <Route path={ROUTE_NAMES.LOGIN} element={<Login/>} />
-          <Route path={`${ROUTE_NAMES.PRODUCT}/:productId`} element={<Collection/>} />
+          <Route path={`${ROUTE_NAMES.PRODUCT}/:productId`} element={<Product/>} />
           </Route>
         </Routes>
       </div>

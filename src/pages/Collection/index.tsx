@@ -1,13 +1,21 @@
-import { useState } from "react"
+import { useState } from "react";
 import { Categories } from "../../typescript/types/categories";
 import { DownOutlined } from "@ant-design/icons";
 import Title from "../../components/Title";
+import { Select } from "antd";
+import { arragementValues } from "../../typescript/types/productArragement";
+import ProductItem from "../../components/ProductItem";
+import image from '../../utilis/Images/hero6.jpg';
 
 const Collection = () => {
   const [ showFilter, setShowFilter ] = useState(false);
 
+  const handleChange = () => {};
+
+// add handle function everything about filters and categories and arragement
+
   return (
-    <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t">
+    <div className="flex flex-col gap-1 sm:gap-10 pt-10 border-t">
       <div className="min-w-60">
         <p className="my-2 text-xl flex items-center cursor-pointer gap-2">FILTERS
           <DownOutlined className={`h-3 sm:hidden ${showFilter ? 'rotate-180' : ''}`} onClick={() => setShowFilter(!showFilter)}/>
@@ -38,9 +46,31 @@ const Collection = () => {
       {/* right side */}
 
       <div className="flex-1">
-        <div className="flex justify-between text-base sm:text-2xl mb-4">
+        <div className="flex justify-between text-base sm:text-2xl mb-4 gap-2 sm:gap-4">
           <Title text1="ALL" text2="COLLECTIONS" />
-          
+          <Select onChange={handleChange} options={arragementValues} placeholder='Select arragement' className="sm:w-1/3"/>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
+        <ProductItem id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
+      <ProductItem id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
+      <ProductItem id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
+      <ProductItem id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
+
+      <ProductItem id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
+      <ProductItem id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
+      <ProductItem id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
+      <ProductItem id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
+
+      <ProductItem id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
+      <ProductItem id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
+      <ProductItem id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
+      <ProductItem id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
+
+      <ProductItem id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
+      <ProductItem id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
+      <ProductItem id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
+
         </div>
       </div>
     </div>
