@@ -3,7 +3,6 @@ export const ROUTE_NAMES = {
     HOME: '/home',
     ABOUT: '/about',
     COLLECTION: '/collection',
-    CONTACT: '/contact',
     LOGIN: '/login',
     CARD: '/card',
     ORDERS: '/orders',

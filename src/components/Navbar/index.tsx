@@ -1,6 +1,6 @@
 import { ROUTE_NAMES } from '../../utilis/constants';
 import logotext from '../../utilis/Images/logotext.png';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { SearchOutlined, UserOutlined, ShoppingOutlined, RightOutlined, MenuOutlined } from "@ant-design/icons";
 import { NavbarItems } from '../../typescript/types/NavbarItems';
 import { DropdownItems } from '../../typescript/types/dropDown';
@@ -8,6 +8,7 @@ import { useState } from 'react';
 
 const Navbar = () => {
   const [ menuOpen, setMenuOpen ] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="flex items-center justify-between py-5 font-medium">
@@ -34,7 +35,7 @@ const Navbar = () => {
                     {
                         DropdownItems.map((value) => {
                             return(
-                                <p className='cursor-pointer hover:text-black'>{value.label}</p>
+                                <p onClick={() => navigate(value.path)} className='cursor-pointer hover:text-black'>{value.label}</p>
                             )
                         })
                     }

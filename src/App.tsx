@@ -1,15 +1,14 @@
-import { Route, Routes } from "react-router-dom"
-import Home from "./pages/Home"
-import { ROUTE_NAMES } from "./utilis/constants"
-import Collection from "./pages/Collection"
-import About from "./pages/About"
-import Contact from "./pages/Contact"
-import Card from "./pages/Card"
-import PlaceOrder from "./pages/PlaceOrder"
-import Orders from "./pages/Orders"
-import Login from "./pages/auth/Login"
-import MainLayout from "./layouts/MainLayout"
-import Product from "./pages/Product"
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import { ROUTE_NAMES } from "./utilis/constants";
+import Collection from "./pages/Collection";
+import About from "./pages/About";
+import Card from "./pages/Card";
+import PlaceOrder from "./pages/PlaceOrder";
+import Orders from "./pages/Orders";
+import Login from "./pages/auth/Login";
+import MainLayout from "./layouts/MainLayout";
+import Product from "./pages/Product";
 
 function App() {
   return (
@@ -20,7 +19,6 @@ function App() {
           <Route path={ROUTE_NAMES.HOME} element={<Home/>} />
           <Route path={ROUTE_NAMES.COLLECTION} element={<Collection/>} />
           <Route path={ROUTE_NAMES.ABOUT} element={<About/>} />
-          <Route path={ROUTE_NAMES.CONTACT} element={<Contact/>} />
           <Route path={ROUTE_NAMES.CARD} element={<Card/>} />
           <Route path={ROUTE_NAMES.ORDERS} element={<Orders/>} />
           <Route path={ROUTE_NAMES.PLACEORDER} element={<PlaceOrder/>} />
