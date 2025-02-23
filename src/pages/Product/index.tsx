@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import image from '../../utilis/Images/hero3.jpg';
 import image1 from '../../utilis/Images/hero2.jpg';
 import image2 from '../../utilis/Images/hero4.jpg';
@@ -9,8 +9,9 @@ import RelatedProducts from "../../components/RelatedProducts";
 
 // image scroll
 const Product = () => {
-  const { productId } = useParams();
-  const [productData, setProductData] = useState(false);
+  // const { productId } = useParams();
+  // const [productData, setProductData] = useState(false);
+
   const [imageurl, setimageurl] = useState(image)
   return (
     <div className="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100">

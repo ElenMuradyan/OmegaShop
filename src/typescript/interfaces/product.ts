@@ -5,5 +5,6 @@ export interface product {
     description: string,
     image?: string,
     category: string,
+    subCategory: string,
     stock: number,
 }
