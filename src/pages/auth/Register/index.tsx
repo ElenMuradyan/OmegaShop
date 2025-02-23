@@ -1,9 +1,9 @@
-import { Form, Input, notification } from 'antd';
+import { Flex, Form, Input, notification } from 'antd';
 import { regexpValidation, ROUTE_NAMES } from '../../../utilis/constants';
 import { register } from '../../../typescript/interfaces/register';
 import Title from '../../../components/Title';
 import { supabase } from '../../../services/supabase/supabase';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
      const [ form ] = Form.useForm();
@@ -78,6 +78,7 @@ const Register = () => {
 
         return(
         <Form layout='vertical' onFinish={ handleRegister } form={ form }>
+            <Title text1='ԳՐԱՆՑՎԵԼ' />
             <Title text1='ԱՆՁՆԱԿԱՆ' text2='ՏՎՅԱԼՆԵՐ' />
                 <Form.Item 
                 label='Անուն'
@@ -163,7 +164,7 @@ const Register = () => {
 
                 <Form.Item
                 label="Փոստային ինդեքս"
-                name="postalIndex"
+                name="postIndex"
                 rules={[
                     { required: true, message: "Գրե՛ք ձեր փոստային ինդեքսը։" },
                     { pattern: /^[0-9]{4,6}$/, message: "Մուտքագրեք վավեր փոստային ինդեքս։" },
@@ -171,7 +172,10 @@ const Register = () => {
                 >
                 <Input type="text" placeholder="Գրե՛ք ձեր փոստային ինդեքսը։" />
                 </Form.Item>
+                <Flex align='center' justify='space-between'>
                 <button className='bg-black text-white px-16 py-3 text-sm' type='submit'>ԳՐԱՆՑՎԵԼ</button>
+                <Link to={ROUTE_NAMES.LOGIN}>ՄՈՒՏՔ ԳՈՐԾԵԼ</Link>
+                </Flex>
         </Form>
         )
 }
