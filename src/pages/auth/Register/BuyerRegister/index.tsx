@@ -1,6 +1,6 @@
-import { Button, Flex, Form, Input, notification, Typography } from 'antd';
+import { Button, Form, Input, notification, Typography } from 'antd';
 import { regexpValidation, ROUTE_NAMES } from '../../../../utilis/constants';
-import { register } from '../../../../typescript/interfaces/register';
+import { buyerRegister } from '../../../../typescript/interfaces/register';
 import Title from '../../../../components/sheard/Title';
 import { supabase } from '../../../../services/supabase/supabase';
 import { Link, useNavigate } from 'react-router-dom';
@@ -11,7 +11,7 @@ const BuyerRegister = () => {
      const [ form ] = Form.useForm();
      const navigate = useNavigate();
 
-     const handleRegister = async (values: register) => {
+     const handleRegister = async (values: buyerRegister) => {
         const { firstName, lastName, email, phone, password, region, city, street, postIndex } = values;
         
         try {
@@ -66,12 +66,12 @@ const BuyerRegister = () => {
     };
     
     return(
-        <div className="flex justify-center items-center min-h-screen bg-gray-50 p-6">
+        <div className="flex flex-col justify-center items-center min-h-screen text-center bg-gray-50 p-6">
         <Form
             layout="vertical"
             onFinish={handleRegister}
             form={form}
-            className="w-full sm:max-w-lg p-8 space-y-6"
+            className='bg-white w-full shadow-lg rounded-lg p-8 mt-6'
         >
             <h2 className="text-2xl font-bold text-center">ԳՐԱՆՑՎԵԼ</h2>
             <hr />
@@ -121,7 +121,7 @@ const BuyerRegister = () => {
             tooltip="Գաղտնաբառը պետք է պարունակի 6-ից 16 նիշ, գոնե 1 թիվ (0-9) և 1 հատուկ նշան (!@#$%^&*), մեծատառ և փոքրատառ տառեր։"
             rules={[
                 { required: true, message: 'Գրե՛ք ձեր գաղտնաբառը։' },
-                { pattern: /^[A-Za-z0-9!@#$%^&*]{6,16}$/, message: 'Գաղտնաբառը շատ պարզ է։' },
+                { pattern: regexpValidation, message: 'Գաղտնաբառը շատ պարզ է։' },
             ]}
             >
             <Input.Password placeholder="Գրե՛ք ձեր գաղտնաբառը։" className="border border-gray-300 rounded-lg py-3 px-4" />

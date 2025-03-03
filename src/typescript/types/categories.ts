@@ -1,3 +1,6 @@
+import { SelectProps } from "antd";
+import { DefaultOptionType } from "antd/es/select";
+
 type Category = {
     label: string,
     undercategories: underCategory[]
@@ -8,85 +11,72 @@ type underCategory = {
 }
 
 export const Categories: Category[] = [
-    {
-      label: "Clothing & Fashion",
-      undercategories: [
-        { label: "Men" },
-        { label: "Women" },
-        { label: "Kids" },
-        { label: "Accessories" },
-      ],
-    },
-    {
-      label: "Beauty & Personal Care",
-      undercategories: [
-        { label: "Skincare" },
-        { label: "Haircare" },
-        { label: "Hygiene" },
-        { label: "Makeup" },
-      ],
-    },
-    {
-      label: "Home & Kitchen",
-      undercategories: [
-        { label: "Cookware" },
-        { label: "Storage" },
-        { label: "Cleaning Supplies" },
-      ],
-    },
-    {
-      label: "Electronics & Gadgets",
-      undercategories: [
-        { label: "Smart Devices" },
-        { label: "Accessories" },
-        { label: "Audio & Headphones" },
-      ],
-    },
-    {
-      label: "Health & Wellness",
-      undercategories: [
-        { label: "Fitness Equipment" },
-        { label: "Supplements" },
-        { label: "Medical Supplies" },
-      ],
-    },
-    {
-      label: "Groceries & Food",
-      undercategories: [
-        { label: "Snacks" },
-        { label: "Beverages" },
-        { label: "Organic Products" },
-      ],
-    },
-    {
-      label: "Furniture & Decor",
-      undercategories: [
-        { label: "Living Room" },
-        { label: "Bedroom" },
-        { label: "Office" },
-      ],
-    },
-    {
-      label: "Toys & Baby Products",
-      undercategories: [
-        { label: "Kids’ Toys" },
-        { label: "Baby Essentials" },
-      ],
-    },
-    {
-      label: "Automotive & Tools",
-      undercategories: [
-        { label: "Car Accessories" },
-        { label: "Home Tools" },
-      ],
-    },
-    {
-      label: "Pet Supplies",
-      undercategories: [
-        { label: "Food" },
-        { label: "Accessories" },
-        { label: "Grooming" },
-      ],
-    },
-  ];
-  
+  {
+    label: "Հագուստ և Նորաձևություն",
+    undercategories: [
+      { label: "Տղամարդկանց հագուստ" },
+      { label: "Կանացի հագուստ" },
+      { label: "Մանկական հագուստ" },
+      { label: "Աքսեսուարներ" },
+    ],
+  },
+  {
+    label: "Նրբագեղություն և Անձնական խնամք",
+    undercategories: [
+      { label: "Մաշկի խնամք" },
+      { label: "Մազերի խնամք" },
+      { label: "Հիգիենա" },
+      { label: "Կոսմետիկա" },
+    ],
+  },
+  {
+    label: "Տուն և Խոհանոց",
+    undercategories: [
+      { label: "Խոհարարական պարագաներ" },
+      { label: "Պահեստավորման համակարգեր" },
+      { label: "Սանրվածքի պարագաներ" },
+    ],
+  },
+  {
+    label: "Էլեկտրոնիկա և Տեխնոլոգիա",
+    undercategories: [
+      { label: "Խելացի սարքեր" },
+      { label: "Աքսեսուարներ" },
+      { label: "Աուդիո սարքեր և ականջակալներ" },
+    ],
+  },
+  {
+    label: "Առողջություն",
+    undercategories: [
+      { label: "Ֆիթնես պարագաներ" },
+      { label: "Բժշկական պարագաներ" },
+    ],
+  },
+  {
+    label: "Կահույք և Դիզայն",
+    undercategories: [
+      { label: "Բնակասենյակի կահույք" },
+      { label: "Ննջարան" },
+      { label: "Աշխատանքային կահույք" },
+    ],
+  },
+  {
+    label: "Խաղալիքներ և Մանկական ապրանքներ",
+    undercategories: [
+      { label: "Մանկական խաղալիքներ" },
+      { label: "Երեխաներին անհրաժեշտ իրեր" },
+    ],
+  },
+  {
+    label: "Ավտոմեքենաներ և Գործիքներ",
+    undercategories: [
+      { label: "Մեքենայի պարագաներ" },
+      { label: "Տնային գործիքներ" },
+    ],
+  },
+];
+
+export let categoryLabels: DefaultOptionType[] = Categories.map((item) =>({
+    label: item.label,
+    value: item.label,
+}));

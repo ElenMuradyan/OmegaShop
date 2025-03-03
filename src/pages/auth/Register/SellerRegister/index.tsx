@@ -1,101 +1,115 @@
-import { Button, Flex, Form, Input, notification, Typography } from 'antd';
-import { ROUTE_NAMES } from '../../../../utilis/constants';
-import { register } from '../../../../typescript/interfaces/register';
+import { Button, Checkbox, Form, Input, notification, Select, Typography } from 'antd';
+import { regexpValidation, ROUTE_NAMES } from '../../../../utilis/constants';
+import { sellerRegister } from '../../../../typescript/interfaces/register';
 import Title from '../../../../components/sheard/Title';
 import { supabase } from '../../../../services/supabase/supabase';
 import { Link, useNavigate } from 'react-router-dom';
+import { categoryLabels } from '../../../../typescript/types/categories';
 
 const { Text } = Typography;
 
+const options = [
+    {
+      value: 'individual',
+      label: 'ԱՆՀԱՏ',
+    },
+    {
+      value: 'business',
+      label: 'ԲԻԶՆԵՍ',
+    },
+];
+  
 const SellerRegister = () => {
      const [ form ] = Form.useForm();
      const navigate = useNavigate();
 
-     const handleRegister = async (values: register) => {
-        const { firstName, lastName, email, phone, password, region, city, street, postIndex } = values;
+     const handleRegister = async (values: sellerRegister) => {
+        // const { firstName, lastName, email, phone, password, region, city, street, postIndex, businessRegion, businessCity, businessStreet, businessPostIndex, businessPhone, shopName, description, type, categories } = values;
+        console.log(values);
         
-        try {
-            const user1 = supabase.auth.getUser();
-            if (!user1) {
-            throw new Error("User is not authenticated.");
-            } else {
-            console.log("User authenticated:", user1);
-            }
-            const { data, error } = await supabase.auth.signUp({
-                email,
-                password,
-                options: {
-                    emailRedirectTo: undefined 
-                }
-            });           
-            if (error) {
-                throw new Error(error.message);
-            }
-            const user = data.user;
-            if (!user) {
-                throw new Error("User registration failed. No user data returned.");
-            }
-            const address = [{ region, city, street, postIndex }];
-            const { error: dbError } = await supabase
-                .from("users")
-                .insert([
-                    {
-                        id: user.id,
-                        firstName,
-                        lastName,
-                        email,
-                        phone,
-                        address
-                    }
-                ]);
-            if (dbError) {
-                throw new Error(dbError.message);
-            }
-            notification.success({
-                message: "Registration Successful",
-                description: "Your account has been created successfully."
-            });
-            navigate(ROUTE_NAMES.LOGIN);
+        // try {
+        //     const user1 = supabase.auth.getUser();
+        //     if (!user1) {
+        //     throw new Error("User is not authenticated.");
+        //     } else {
+        //     console.log("User authenticated:", user1);
+        //     }
+        //     const { data, error } = await supabase.auth.signUp({
+        //         email,
+        //         password,
+        //         options: {
+        //             emailRedirectTo: undefined 
+        //         }
+        //     });           
+        //     if (error) {
+        //         throw new Error(error.message);
+        //     }
+        //     const user = data.user;
+        //     if (!user) {
+        //         throw new Error("User registration failed. No user data returned.");
+        //     }
+        //     const address = [{ region, city, street, postIndex }];
+        //     const { error: dbError } = await supabase
+        //         .from("users")
+        //         .insert([
+        //             {
+        //                 id: user.id,
+        //                 firstName,
+        //                 lastName,
+        //                 email,
+        //                 phone,
+        //                 address
+        //             }
+        //         ]);
+        //     if (dbError) {
+        //         throw new Error(dbError.message);
+        //     }
+        //     notification.success({
+        //         message: "Registration Successful",
+        //         description: "Your account has been created successfully."
+        //     });
+        //     navigate(ROUTE_NAMES.LOGIN);
     
-        } catch (error: any) {
-            notification.error({
-                message: "Registration Failed",
-                description: error.message
-            });
-        }
+        // } catch (error: any) {
+        //     notification.error({
+        //         message: "Registration Failed",
+        //         description: error.message
+        //     });
+        // }
     };
     
     return(
-        <div className="flex justify-center items-center min-h-screen bg-gray-50 p-6">
+        <div className="flex flex-col justify-center items-center min-h-screen text-center bg-gray-50 p-6">
+        <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-red-600">
+        ԵԹԵ ԱՐԴԵՆ ԳՐԱՆՑՎԱԾ ԵՔ ԱՅՍ ԷԼՓՈՍՏՈՎ ՈՐՊԵՍ ԳՆՈՐԴ, ԽՆԴՐՈՒՄ ԵՆՔ ԳՐԱՆՑՎԵԼ ՆՈՐ ԷԼՓՈՍՏՈՎ ՍՏԵՂԾՎԱԾ ՀԱՏՈՒԿ ԲԻԶՆԵՍ ԷՋԻ ՀԱՄԱՐ։
+        </p>
         <Form
             layout="vertical"
             onFinish={handleRegister}
             form={form}
-            className="w-full sm:max-w-lg p-8 space-y-6"
+            className='bg-white w-full shadow-lg rounded-lg p-8 mt-6'
         >
             <h2 className="text-2xl font-bold text-center">ԳՐԱՆՑՎԵԼ</h2>
             <hr />
 
             <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='ԱՆՁՆԱԿԱՆ' text2='ՏՎՅԱԼՆԵՐ' /></h3>
 
-            {/* First Name */}
             <Form.Item
             label={<Text className="font-semibold">Անուն</Text>}
-            name="fullName"
+            name="firstName"
             rules={[{ required: true, message: 'Գրե՛ք ձեր անունը։' }]}
             >
             <Input placeholder="Գրե՛ք ձեր անունը։" className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
-            {/* Last Name */}
             <Form.Item
-            label={<Text className="font-semibold">Բիզնեսի անուն</Text>}
+            label={<Text className="font-semibold">Ազգանուն</Text>}
             name="lastName"
+            rules={[{ required: true, message: 'Գրե՛ք ձեր ազգանունը։' }]}
             >
-            <Input placeholder="Գրե՛ք բիզնեսի անունը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            <Input placeholder="Գրե՛ք ձեր ազգանունը։" className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
-            {/* Email */}
             <Form.Item
             label={<Text className="font-semibold">Էլփոստ</Text>}
             name="email"
@@ -104,7 +118,6 @@ const SellerRegister = () => {
             <Input type="email" placeholder="Գրե՛ք ձեր էլփոստը։" className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
-            {/* Phone */}
             <Form.Item
             label={<Text className="font-semibold">Հեռախոսահամար</Text>}
             name="phone"
@@ -113,14 +126,13 @@ const SellerRegister = () => {
             <Input type="tel" placeholder="Գրե՛ք ձեր հեռախոսահամարը։" className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
-            {/* Password */}
             <Form.Item
             label={<Text className="font-semibold">Գաղտնաբառ</Text>}
             name="password"
             tooltip="Գաղտնաբառը պետք է պարունակի 6-ից 16 նիշ, գոնե 1 թիվ (0-9) և 1 հատուկ նշան (!@#$%^&*), մեծատառ և փոքրատառ տառեր։"
             rules={[
                 { required: true, message: 'Գրե՛ք ձեր գաղտնաբառը։' },
-                { pattern: /^[A-Za-z0-9!@#$%^&*]{6,16}$/, message: 'Գաղտնաբառը շատ պարզ է։' },
+                { pattern: regexpValidation, message: 'Գաղտնաբառը շատ պարզ է։' },
             ]}
             >
             <Input.Password placeholder="Գրե՛ք ձեր գաղտնաբառը։" className="border border-gray-300 rounded-lg py-3 px-4" />
@@ -128,7 +140,6 @@ const SellerRegister = () => {
 
             <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='ՁԵՐ' text2='ՀԱՍՑԵՆ' /></h3>
 
-            {/* Region */}
             <Form.Item
             label={<Text className="font-semibold">Մարզ</Text>}
             name="region"
@@ -137,7 +148,6 @@ const SellerRegister = () => {
             <Input placeholder="Գրե՛ք ձեր մարզը։" className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
-            {/* City */}
             <Form.Item
             label={<Text className="font-semibold">Քաղաք</Text>}
             name="city"
@@ -146,7 +156,6 @@ const SellerRegister = () => {
             <Input placeholder="Գրե՛ք ձեր քաղաքը։" className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
-            {/* Street */}
             <Form.Item
             label={<Text className="font-semibold">Փողոց</Text>}
             name="street"
@@ -155,7 +164,6 @@ const SellerRegister = () => {
             <Input placeholder="Գրե՛ք ձեր փողոցը։" className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
-            {/* Postal Code */}
             <Form.Item
             label={<Text className="font-semibold">Փոստային ինդեքս</Text>}
             name="postIndex"
@@ -167,8 +175,113 @@ const SellerRegister = () => {
             <Input placeholder="Գրե՛ք ձեր փոստային ինդեքսը։" className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
-            {/* Action Buttons */}
-            <div className="flex justify-between items-center space-x-4">
+            <h2 className="text-2xl font-bold text-center">ԲԻԶՆԵՍ ԻՆՖՈՐՄԱՑԻԱ</h2>
+
+            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='ՁԵՐ ԲԻԶՆԵՍԻ' text2='ՀԱՍՑԵՆ' /></h3>
+
+            <Form.Item
+            label={<Text className="font-semibold">Մարզ</Text>}
+            name="businessRegion"
+            rules={[{ required: true, message: 'Գրե՛ք մարզը։' }]}
+            >
+            <Input placeholder="Գրե՛ք մարզը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            </Form.Item>
+
+            <Form.Item
+            label={<Text className="font-semibold">Քաղաք</Text>}
+            name="businessCity"
+            rules={[{ required: true, message: 'Գրե՛ք քաղաքը։' }]}
+            >
+            <Input placeholder="Գրե՛ք քաղաքը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            </Form.Item>
+
+            <Form.Item
+            label={<Text className="font-semibold">Փողոց</Text>}
+            name="businessStreet"
+            rules={[{ required: true, message: 'Գրե՛ք փողոցը։' }]}
+            >
+            <Input placeholder="Գրե՛ք փողոցը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            </Form.Item>
+
+            <Form.Item
+            label={<Text className="font-semibold">Փոստային ինդեքս</Text>}
+            name="businessPostIndex"
+            rules={[
+                { required: true, message: 'Գրե՛ք փոստային ինդեքսը։' },
+                { pattern: /^[0-9]{4,6}$/, message: 'Մուտքագրեք վավեր փոստային ինդեքս։' },
+            ]}
+            >
+            <Input placeholder="Գրե՛ք փոստային ինդեքսը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            </Form.Item>
+
+            <Form.Item
+            label={<Text className="font-semibold">Աշխատանքային հեռախոսահամար</Text>}
+            name="businessPhone"
+            rules={[{ required: true, message: 'Գրե՛ք հեռախոսահամարը։' }]}
+            >
+            <Input type="tel" placeholder="Գրե՛ք հեռախոսահամարը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            </Form.Item>
+
+            {/* Government ID / Business License Upload (File Upload) */}
+            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='ՁԵՐ ԲԻԶՆԵՍԻ' text2='ՆԿԱՐԱԳՐՈՒԹՅՈՒՆԸ' /></h3>
+
+
+            <Form.Item
+            label={<Text className="font-semibold">Խանութի անուն</Text>}
+            name="shopName"
+            rules={[{ required: true, message: 'Գրե՛ք ձեր խանութի անունը։' }]}
+            >
+            <Input placeholder="Գրե՛ք ձեր խանութի անունը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            </Form.Item>
+
+            <Form.Item
+            label={<Text className="font-semibold">Խանութի նկարագրություն</Text>}
+            name="description"
+            rules={[{ required: true, message: 'Գրե՛ք ձեր խանութի նկարագրությունը։' }]}
+            >
+            <Input placeholder="Գրե՛ք ձեր խանութի նկարագրությունը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            </Form.Item>
+
+            <Form.Item
+            label={<Text className="font-semibold">Վաճառում եք որպես անհատ թե բիզնես։</Text>}
+            name="type"
+            rules={[{ required: true, message: 'Նշե՛ք տարբերակը։' }]}
+            >
+            <Select options={options} />
+            </Form.Item>
+
+            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='ՁԵՐ ԱՊՐԱՆՔԻ' text2='ՄԱՍԻՆ' /></h3>
+
+            <Form.Item
+            label={<Text className="font-semibold">Ինչ տեսակի ապրանք եք վաճառելու։</Text>}
+            name="categories"
+            rules={[{ required: true, message: 'Նշե՛ք մեկ կամ մի քանի տարբերակներ' }]}
+            >
+                <Select
+                mode="multiple"
+                size={'middle'}
+                options={categoryLabels}
+                showSearch={false}  
+                />
+            </Form.Item>
+            
+            <Form.Item
+            name="termsAndConditions"
+            valuePropName="checked"
+            rules={[{ required: true, message: 'Պարտադիր է կարդալ և համաձայնություն հայտնել' }]}>
+            <Checkbox>Պայմաններ և համաձայնություն</Checkbox>
+            </Form.Item>
+
+            <Form.Item
+            name="sellerPolicies"
+            valuePropName="checked"
+            rules={[{ required: true, message: 'Համաձայն եմ վաճառողի քաղաքականության հետ' }]}>
+            <Checkbox>Համաձայն եմ վաճառողի քաղաքականության հետ</Checkbox>
+            </Form.Item>
+
+            {/* do this using links and write it */}
+
+            <div className="flex flex-col sm:flex-row justify-between sm:justify-between items-center space-x-4 sm:space-x-0 sm:space-y-4">
             <Button
                 type="primary"
                 htmlType="submit"
