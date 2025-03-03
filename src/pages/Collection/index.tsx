@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Categories } from "../../typescript/types/categories";
 import { DownOutlined } from "@ant-design/icons";
-import Title from "../../components/Title";
+import Title from "../../components/sheard/Title";
 import { Select } from "antd";
 import { arragementValues } from "../../typescript/types/productArragement";
-import ProductItem from "../../components/ProductItem";
+import ProductItem from "../../components/sheard/ProductItem";
 import image from '../../utilis/Images/hero6.jpg';
 
 const Collection = () => {

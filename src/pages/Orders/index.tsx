@@ -1,5 +1,6 @@
-import Title from "../../components/Title";
+import Title from "../../components/sheard/Title";
 import image from '../../utilis/Images/hero4.jpg';
+
 const Orders = () => {
   return (
     <div className="border-t pt-16">
@@ -31,6 +32,6 @@ const Orders = () => {
       </div>
     </div>
   )
-}
+};
 
-export default Orders
+export default Orders;

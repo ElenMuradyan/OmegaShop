@@ -1,5 +1,6 @@
-import Title from "../../components/Title"
+import Title from "../../components/sheard/Title";
 import image from '../../utilis/Images/hero6.jpg';
+
 const About = () => {
   return (
     <div>

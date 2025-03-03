@@ -1,6 +1,7 @@
 import ProductItem from "../ProductItem"
 import Title from "../Title"
-import image from '../../utilis/Images/hero2.jpg'
+import image from '../../../utilis/Images/hero2.jpg'
+
 const BestSeller = () => {
   return (
     <div className="my-10">

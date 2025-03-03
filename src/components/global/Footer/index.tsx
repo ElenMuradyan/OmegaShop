@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import logo from '../../utilis/Images/logo.png';
-import { ROUTE_NAMES } from '../../utilis/constants';
+import logo from '../../../utilis/Images/logo.png';
+import { ROUTE_NAMES } from '../../../utilis/constants';
 
 const Footer = () => {
   return (
@@ -16,8 +16,8 @@ const Footer = () => {
           <ul className='flex flex-col gap-1 text-gray-600'>
             <Link to={ROUTE_NAMES.HOME}><li>Home</li></Link>
             <Link to={ROUTE_NAMES.ABOUT}><li>About us</li></Link>
-            <Link to={ROUTE_NAMES.HOME}><li>Delivery</li></Link>
-            <Link to={ROUTE_NAMES.HOME}><li>Privacy policy</li></Link>
+            <Link to={ROUTE_NAMES.HELP}><li>Help</li></Link>
+            <Link to={ROUTE_NAMES.SHARE}><li>Share</li></Link>
           </ul>
         </div>
 

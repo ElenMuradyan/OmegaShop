@@ -1,7 +1,7 @@
-import { related } from "../../typescript/interfaces/related";
+import { related } from "../../../typescript/interfaces/related";
 import ProductItem from "../ProductItem";
 import Title from "../Title";
-import image from '../../utilis/Images/hero6.jpg';
+import image from '../../../utilis/Images/hero6.jpg';
 
 const RelatedProducts = ({category, subcategory}: related) => {
 console.log(category, subcategory);

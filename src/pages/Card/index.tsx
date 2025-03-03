@@ -1,7 +1,7 @@
 import { DeleteOutlined } from "@ant-design/icons";
-import Title from "../../components/Title"
+import Title from "../../components/sheard/Title"
 import image from '../../utilis/Images/hero4.jpg';
-import CardTotal from "../../components/CardTotal";
+import CardTotal from "../../components/sheard/CardTotal";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_NAMES } from "../../utilis/constants";
 

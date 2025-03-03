@@ -1,15 +1,18 @@
-import { ROUTE_NAMES } from '../../utilis/constants';
-import logotext from '../../utilis/Images/logotext.png';
+import { ROUTE_NAMES } from '../../../utilis/constants';
+import logotext from '../../../utilis/Images/logotext.png';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { SearchOutlined, UserOutlined, ShoppingOutlined, RightOutlined, MenuOutlined } from "@ant-design/icons";
-import { NavbarItems } from '../../typescript/types/NavbarItems';
-import { DropdownItems } from '../../typescript/types/dropDown';
+import { NavbarItems } from '../../../typescript/types/NavbarItems';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../state-management/redux/store';
+import ProfileDropDown from '../../sheard/DropDown';
 
 const Navbar = () => {
+  const { isAuth } = useSelector((store: RootState) => store.userData.authUserInfo);
   const [ menuOpen, setMenuOpen ] = useState(false);
   const navigate = useNavigate();
-
+  
   return (
     <div className="flex items-center justify-between py-5 font-medium">
         <img src={logotext} className='w-40' alt=''></img>
@@ -29,18 +32,9 @@ const Navbar = () => {
         <div className='flex items-center gap-6'>
             <SearchOutlined className='cursor-pointer'/>
             <div className='group relstie'>
-            <UserOutlined onClick={() => navigate(ROUTE_NAMES.LOGIN)} className='cursor-pointer'/>
-            <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-4'>
-                <div className='flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded'>
-                    {
-                        DropdownItems.map((value) => {
-                            return(
-                                <p onClick={() => navigate(value.path)} className='cursor-pointer hover:text-black'>{value.label}</p>
-                            )
-                        })
-                    }
-                </div>
-            </div>
+                {
+                    isAuth ? <ProfileDropDown /> : <UserOutlined onClick={() => navigate(ROUTE_NAMES.LOGIN)}/>
+                }
             </div>
             <Link to={ROUTE_NAMES.CARD} className='relative'>
             <ShoppingOutlined />

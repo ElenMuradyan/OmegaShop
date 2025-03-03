@@ -1,8 +1,8 @@
-import BestSeller from "../../components/BestSeller";
-import Hero from "../../components/Hero";
-import LatestCollection from "../../components/LatestCollection";
-import OurPolicy from "../../components/OurPolicy";
-import SearchBar from "../../components/Search";
+import BestSeller from "../../components/sheard/BestSeller";
+import Hero from "../../components/sheard/Hero";
+import LatestCollection from "../../components/sheard/LatestCollection";
+import OurPolicy from "../../components/sheard/OurPolicy";
+import SearchBar from "../../components/sheard/Search";
 
 const Home = () => {  
   return (
@@ -14,6 +14,6 @@ const Home = () => {
       <OurPolicy />
     </div>
   )
-}
+};
 
-export default Home
+export default Home;

@@ -1,6 +1,6 @@
 import ProductItem from "../ProductItem";
 import Title from "../Title";
-import image from '../../utilis/Images/hero5.jpg';
+import image from '../../../utilis/Images/hero5.jpg';
 
 const LatestCollection = () => {
   return (

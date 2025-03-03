@@ -1,182 +1,47 @@
-import { Flex, Form, Input, notification } from 'antd';
-import { regexpValidation, ROUTE_NAMES } from '../../../utilis/constants';
-import { register } from '../../../typescript/interfaces/register';
-import Title from '../../../components/Title';
-import { supabase } from '../../../services/supabase/supabase';
-import { Link, useNavigate } from 'react-router-dom';
+import { Breadcrumb } from "antd";
+import { ROUTE_NAMES } from "../../../utilis/constants";
+import { Link, useLocation } from "react-router-dom";
+import BuyerRegister from "./BuyerRegister";
+import SellerRegister from "./SellerRegister";
+import { ShopOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 
 const Register = () => {
-     const [ form ] = Form.useForm();
-     const navigate = useNavigate();
+const { pathname } = useLocation();
 
-     const handleRegister = async (values: register) => {
-        const { firstName, lastName, email, phone, password, region, city, street, postIndex } = values;
-        
-        try {
 
-            const user1 = supabase.auth.getUser();
+  return (
+    <div>
+<div className="flex justify-center items-center py-4">
+      <Breadcrumb className="px-6 py-3 bg-white shadow-md rounded-lg border border-gray-200">
+        <Breadcrumb.Item>
+          <Link
+            to={ROUTE_NAMES.BUYERREGISTER}
+            className='text-gray-700 font-semibold transition duration-300'
+            style={{
+                color: pathname === ROUTE_NAMES.BUYERREGISTER ? "black" : "gray"
+            }}
+          >
+            <ShoppingCartOutlined className="mr-2 text-blue-600" /> Buyer Register
+          </Link>
+        </Breadcrumb.Item>
 
-            if (!user1) {
-            throw new Error("User is not authenticated.");
-            } else {
-            console.log("User authenticated:", user1);
-            }
+        <Breadcrumb.Item>
+          <Link
+            to={ROUTE_NAMES.SELLERREGISTER}
+            className='text-gray-700 font-semibold transition duration-300'
+            style={{
+                color: pathname === ROUTE_NAMES.SELLERREGISTER ? "black" : "gray"
+            }}
+          >
+            <ShopOutlined className="mr-2 text-purple-600" /> Seller Register
+          </Link>
+        </Breadcrumb.Item>
+      </Breadcrumb>
+    </div>
 
-            const { data, error } = await supabase.auth.signUp({
-                email,
-                password,
-                options: {
-                    emailRedirectTo: undefined 
-                }
-            });
-                        
-            if (error) {
-                throw new Error(error.message);
-            }
-    
-            const user = data.user;
-    
-            if (!user) {
-                throw new Error("User registration failed. No user data returned.");
-            }
-    
-            const address = { region, city, street, postIndex };
-    
-            const { error: dbError } = await supabase
-                .from("users")
-                .insert([
-                    {
-                        id: user.id,
-                        firstName,
-                        lastName,
-                        email,
-                        phone,
-                        address
-                    }
-                ]);
-    
-            if (dbError) {
-                throw new Error(dbError.message);
-            }
-    
-            notification.success({
-                message: "Registration Successful",
-                description: "Your account has been created successfully."
-            });
-    
-            // Navigate to login
-            navigate(ROUTE_NAMES.LOGIN);
-    
-        } catch (error: any) {
-            notification.error({
-                message: "Registration Failed",
-                description: error.message
-            });
-        }
-    };
-    
-
-        return(
-        <Form layout='vertical' onFinish={ handleRegister } form={ form }>
-            <Title text1='ԳՐԱՆՑՎԵԼ' />
-            <Title text1='ԱՆՁՆԱԿԱՆ' text2='ՏՎՅԱԼՆԵՐ' />
-                <Form.Item 
-                label='Անուն'
-                name='firstName'
-                rules={[{
-                        required:true,
-                        message:'Գրե՛ք ձեր անունը։'
-                }]}
-                >
-                <Input type='text' placeholder='Գրե՛ք ձեր անունը։' />
-                </Form.Item>
-                <Form.Item 
-                label='Ազգանուն'
-                name='lastName'
-                rules={[{
-                        required:true,
-                        message:'Գրե՛ք ձեր ազգանունը։'
-                }]}
-                >
-                <Input type='text' placeholder='Գրե՛ք ձեր ազգանունը։' />
-                </Form.Item>
-                <Form.Item 
-                label='Էլփոստ'
-                name='email'
-                rules={[{
-                        required:true,
-                        message:'Գրե՛ք ձեր էլփոստը։'
-                }]}
-                >
-                <Input type='email' placeholder='Գրե՛ք ձեր էլփոստը։' />
-                </Form.Item>
-                <Form.Item 
-                label='Հեռախոսահամար'
-                name='phone'
-                rules={[{
-                        required:true,
-                        message:'Գրե՛ք ձեր հեռախոսահամարը։'
-                }]}
-                >
-                <Input type='tel' placeholder='Գրե՛ք ձեր հեռախոսահամարը։' />
-                </Form.Item>
-                <Form.Item 
-                label='Գաղտնաբառ'
-                name='password'
-                tooltip='Գաղտնաբառը պետք է պարունակի 6-ից 16 նիշ, գոնե 1 թիվ (0-9) և 1 հատուկ նշան (!@#$%^&*), մեծատառ և փոքրատառ տառեր։'
-                rules={[{
-                        required:true,
-                        message:'Գրե՛ք ձեր գաղտնաբառը։'
-                },
-                {
-                pattern:regexpValidation,
-                message:'Գաղտնաբառը շատ պարզ է։'
-                }]}
-                >
-                <Input.Password placeholder='Գրե՛ք ձեր գաղտնաբառը:'/>
-                </Form.Item>
-
-                <Title text1='ՁԵՐ' text2='ՀԱՍՑԵՆ' />
-
-                <Form.Item
-                label="Մարզ"
-                name="region"
-                rules={[{ required: true, message: "Գրե՛ք ձեր մարզը։" }]}
-                >
-                <Input type="text" placeholder="Գրե՛ք ձեր մարզը։" />
-                </Form.Item>
-
-                <Form.Item
-                label="Քաղաք"
-                name="city"
-                rules={[{ required: true, message: "Գրե՛ք ձեր քաղաքը։" }]}
-                >
-                <Input type="text" placeholder="Գրե՛ք ձեր քաղաքը։" />
-                </Form.Item>
-
-                <Form.Item
-                label="Փողոց"
-                name="street"
-                rules={[{ required: true, message: "Գրե՛ք ձեր փողոցը։" }]}
-                >
-                <Input type="text" placeholder="Գրե՛ք ձեր փողոցը։" />
-                </Form.Item>
-
-                <Form.Item
-                label="Փոստային ինդեքս"
-                name="postIndex"
-                rules={[
-                    { required: true, message: "Գրե՛ք ձեր փոստային ինդեքսը։" },
-                    { pattern: /^[0-9]{4,6}$/, message: "Մուտքագրեք վավեր փոստային ինդեքս։" },
-                ]}
-                >
-                <Input type="text" placeholder="Գրե՛ք ձեր փոստային ինդեքսը։" />
-                </Form.Item>
-                <Flex align='center' justify='space-between'>
-                <button className='bg-black text-white px-16 py-3 text-sm' type='submit'>ԳՐԱՆՑՎԵԼ</button>
-                <Link to={ROUTE_NAMES.LOGIN}>ՄՈՒՏՔ ԳՈՐԾԵԼ</Link>
-                </Flex>
-        </Form>
-        )
+        {pathname === ROUTE_NAMES.BUYERREGISTER ? <BuyerRegister /> : <SellerRegister />}
+    </div>
+  )
 }
+
 export default Register;

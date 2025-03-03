@@ -5,7 +5,7 @@ import image1 from '../../utilis/Images/hero2.jpg';
 import image2 from '../../utilis/Images/hero4.jpg';
 import image3 from '../../utilis/Images/hero.jpg';
 import { StarOutlined } from "@ant-design/icons";
-import RelatedProducts from "../../components/RelatedProducts";
+import RelatedProducts from "../../components/sheard/RelatedProducts";
 
 // image scroll
 const Product = () => {

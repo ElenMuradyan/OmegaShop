@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom"
-import { product } from "../../typescript/interfaces/product"
-import { ROUTE_NAMES } from "../../utilis/constants"
+import { Link } from "react-router-dom";
+import { product } from "../../../typescript/interfaces/product";
+import { ROUTE_NAMES } from "../../../utilis/constants";
 
 const ProductItem = ({id, image, name, price, description, category, stock}: product) => {
   return (
@@ -28,6 +28,6 @@ const ProductItem = ({id, image, name, price, description, category, stock}: pro
     <p className="mt-2 text-xs text-gray-600 line-clamp-2">{description}</p>
   </Link>
   )
-}
+};
 
-export default ProductItem
+export default ProductItem;

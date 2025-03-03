@@ -1,4 +1,4 @@
-import { title } from "../../typescript/interfaces/title";
+import { title } from "../../../typescript/interfaces/title";
 
 const Title = ({text1, text2}: title) => {
   return (

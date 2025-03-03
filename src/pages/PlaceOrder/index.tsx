@@ -1,6 +1,6 @@
 import { Form, Input } from "antd"
-import Title from "../../components/Title"
-import CardTotal from "../../components/CardTotal";
+import Title from "../../components/sheard/Title"
+import CardTotal from "../../components/sheard/CardTotal";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_NAMES } from "../../utilis/constants";
 
