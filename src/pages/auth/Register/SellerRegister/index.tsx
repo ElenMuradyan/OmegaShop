@@ -5,77 +5,90 @@ import Title from '../../../../components/sheard/Title';
 import { supabase } from '../../../../services/supabase/supabase';
 import { Link, useNavigate } from 'react-router-dom';
 import { categoryLabels } from '../../../../typescript/types/categories';
+import { options } from '../../../../utilis/sellerTypeOptions';
 
 const { Text } = Typography;
-
-const options = [
-    {
-      value: 'individual',
-      label: 'ԱՆՀԱՏ',
-    },
-    {
-      value: 'business',
-      label: 'ԲԻԶՆԵՍ',
-    },
-];
   
 const SellerRegister = () => {
      const [ form ] = Form.useForm();
      const navigate = useNavigate();
 
      const handleRegister = async (values: sellerRegister) => {
-        // const { firstName, lastName, email, phone, password, region, city, street, postIndex, businessRegion, businessCity, businessStreet, businessPostIndex, businessPhone, shopName, description, type, categories } = values;
-        console.log(values);
+        const { firstName, lastName, email, phone, password, region, city, street, postIndex, businessRegion, businessCity, businessStreet, businessPostIndex, businessPhone, shopName, description, type, categories } = values;
         
-        // try {
-        //     const user1 = supabase.auth.getUser();
-        //     if (!user1) {
-        //     throw new Error("User is not authenticated.");
-        //     } else {
-        //     console.log("User authenticated:", user1);
-        //     }
-        //     const { data, error } = await supabase.auth.signUp({
-        //         email,
-        //         password,
-        //         options: {
-        //             emailRedirectTo: undefined 
-        //         }
-        //     });           
-        //     if (error) {
-        //         throw new Error(error.message);
-        //     }
-        //     const user = data.user;
-        //     if (!user) {
-        //         throw new Error("User registration failed. No user data returned.");
-        //     }
-        //     const address = [{ region, city, street, postIndex }];
-        //     const { error: dbError } = await supabase
-        //         .from("users")
-        //         .insert([
-        //             {
-        //                 id: user.id,
-        //                 firstName,
-        //                 lastName,
-        //                 email,
-        //                 phone,
-        //                 address
-        //             }
-        //         ]);
-        //     if (dbError) {
-        //         throw new Error(dbError.message);
-        //     }
-        //     notification.success({
-        //         message: "Registration Successful",
-        //         description: "Your account has been created successfully."
-        //     });
-        //     navigate(ROUTE_NAMES.LOGIN);
+        try {
+            const user1 = supabase.auth.getUser();
+            if (!user1) {
+            throw new Error("User is not authenticated.");
+            } else {
+            console.log("User authenticated:", user1);
+            }
+            const { data, error } = await supabase.auth.signUp({
+                email,
+                password,
+                options: {
+                    emailRedirectTo: undefined,
+                    data: {  
+                        userRole: "seller",  
+                    }    
+                }
+            });           
+            if (error) {
+                throw new Error(error.message);
+            }
+            const user = data.user;
+            if (!user) {
+                throw new Error("User registration failed. No user data returned.");
+            }
+            const address = { region, city, street, postIndex };
+            const { error: dbError } = await supabase
+                .from("users")
+                .insert([
+                    {
+                        id: user.id,
+                        role: 'seller',
+                        firstName,
+                        lastName,
+                        email,
+                        phone,
+                        address
+                    }
+                ]);
+
+                const businessAddress = { businessRegion, businessCity, businessStreet, businessPostIndex, businessPhone };
+
+                const { error: sellerError } = await supabase
+                .from("sellers")
+                .insert([
+                    {
+                        id: user.id,
+                        email,
+                        businessAddress,
+                        shopName,
+                        description,
+                        type, 
+                        categories
+                    }
+                ]);
+
+            if (dbError || sellerError) {
+                const error = dbError ?? sellerError;
+                if(error){
+                    throw new Error(error.message);
+                }
+            }
+            notification.success({
+                message: "Registration Successful",
+                description: "Your account has been created successfully."
+            });
+            navigate(ROUTE_NAMES.LOGIN);
     
-        // } catch (error: any) {
-        //     notification.error({
-        //         message: "Registration Failed",
-        //         description: error.message
-        //     });
-        // }
+        } catch (error: any) {
+            notification.error({
+                message: "Registration Failed",
+                description: error.message
+            });
+        }
     };
     
     return(

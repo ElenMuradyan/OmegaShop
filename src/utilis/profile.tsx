@@ -6,13 +6,14 @@ import {
     UserOutlined, 
     QuestionCircleOutlined, 
     ShareAltOutlined, 
-    SettingOutlined, 
     ShopOutlined, 
     TeamOutlined, 
     HeartOutlined 
 } from "@ant-design/icons";
 import { profileOption } from "../typescript/types/profileOption";
 import { ROUTE_NAMES } from "./constants";
+import { useSelector } from "react-redux";
+import { RootState } from "../state-management/redux/store";
 
 
 const KEYS = {
@@ -38,27 +39,6 @@ export const profileOptions: Record<string, profileOption> = {
             },
         },
     },
-    [KEYS.PERSONAL]: {
-        label: KEYS.PERSONAL,
-        icon: <TeamOutlined />,
-        options: {
-            ADDRESS: {
-                label: 'ՀԱՍՑԵ',
-                icon: <EnvironmentOutlined />,
-                link: ROUTE_NAMES.ADDRESS,
-            },
-            CARDS: {
-                label: 'ԻՄ ՔԱՐՏԵՐԸ',
-                icon: <CreditCardOutlined />,
-                link: ROUTE_NAMES.CARDS,
-            },
-            INFO: {
-                label: 'ԻՄ ՏՎՅԱԼՆԵՐԸ',
-                icon: <UserOutlined />,
-                link: ROUTE_NAMES.EDITDATA,
-            },
-        },
-    },
     [KEYS.PROGRAM]: {
         label: KEYS.PROGRAM,
         icon: <HeartOutlined />,
@@ -73,11 +53,17 @@ export const profileOptions: Record<string, profileOption> = {
                 icon: <ShareAltOutlined />,
                 link: ROUTE_NAMES.SHARE,
             },
-            // SETTINGS: {
-            //     label: 'ԿԱՅԱՆՔՆԵՐ',
-            //     icon: <SettingOutlined />,
-            //     link: ROUTE_NAMES.SETTINGS,
-            // },
+        },
+    },
+    [KEYS.PERSONAL]: {
+        label: KEYS.PERSONAL,
+        icon: <TeamOutlined />,
+        options: {
+            CARDS: {
+                label: 'ԻՄ ՔԱՐՏԵՐԸ',
+                icon: <CreditCardOutlined />,
+                link: ROUTE_NAMES.CARDS,
+            },
         },
     },
 };

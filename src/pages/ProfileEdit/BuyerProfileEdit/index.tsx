@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import { Form, Input, Button, notification, Flex, Card, Typography, Space, Spin } from "antd";
-import Title from "../../components/sheard/Title";
+import { Form, Input, Button, notification, Typography, Space, Spin, Avatar } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../state-management/redux/store";
-import { supabase } from "../../services/supabase/supabase";
-import { register } from "../../typescript/interfaces/register";
-import { fetchUserData } from "../../state-management/redux/slices/userDataSlice";
+import { AppDispatch, RootState } from "../../../state-management/redux/store";
+import { supabase } from "../../../services/supabase/supabase";
+import { fetchUserData } from "../../../state-management/redux/slices/userDataSlice";
 import { Link } from "react-router-dom";
-import { ROUTE_NAMES } from "../../utilis/constants";
-import { EnvironmentOutlined, UserOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons";
+import { ROUTE_NAMES } from "../../../utilis/constants";
+import { EnvironmentOutlined, UserOutlined, MailOutlined, PhoneOutlined, LockOutlined } from "@ant-design/icons";
+import { buyerRegister } from "../../../typescript/interfaces/register";
+import Title from "antd/es/typography/Title";
 
 const { Text } = Typography;
 
-const ProfileEdit = () => {
+const BuyerProfileEdit = () => {
     const [form] = Form.useForm();
     const [buttonLoading, setButtonLoading] = useState<boolean>(false);
     const { userData } = useSelector((store: RootState) => store.userData.authUserInfo);
@@ -22,7 +22,7 @@ const ProfileEdit = () => {
         form.setFieldsValue({ ...userData });
     }, [userData]); 
 
-    const handleEditUserProfile = async (values: register) => {
+    const handleEditUserProfile = async (values: buyerRegister) => {
         setButtonLoading(true);
         console.log(values);
         const { firstName, lastName, email, phone } = values;
@@ -51,8 +51,7 @@ const ProfileEdit = () => {
     };
 
       return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-50 p-6">
-          <Form
+            <Form
             layout="vertical"
             form={form}
             onFinish={handleEditUserProfile}
@@ -128,7 +127,7 @@ const ProfileEdit = () => {
               </Button>
     
               <Link
-                to={ROUTE_NAMES.ADDRESS}
+                to={`${ROUTE_NAMES.EDITDATA}/${userData?.role}editaddress`}
                 className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-500 hover:text-black hover:shadow-md transition-all duration-200"
               >
                 <EnvironmentOutlined className="text-lg" />
@@ -136,8 +135,7 @@ const ProfileEdit = () => {
               </Link>
             </div>
           </Form>
-        </div>
       );
     };
     
-export default ProfileEdit;
+export default BuyerProfileEdit;

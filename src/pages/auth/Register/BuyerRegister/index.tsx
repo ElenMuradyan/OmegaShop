@@ -25,7 +25,10 @@ const BuyerRegister = () => {
                 email,
                 password,
                 options: {
-                    emailRedirectTo: undefined 
+                    emailRedirectTo: undefined,
+                    data: {  
+                        userRole: "buyer",  
+                    }    
                 }
             });           
             if (error) {
@@ -35,12 +38,13 @@ const BuyerRegister = () => {
             if (!user) {
                 throw new Error("User registration failed. No user data returned.");
             }
-            const address = [{ region, city, street, postIndex }];
+            const address = { region, city, street, postIndex };
             const { error: dbError } = await supabase
                 .from("users")
                 .insert([
                     {
                         id: user.id,
+                        role: 'buyer',
                         firstName,
                         lastName,
                         email,

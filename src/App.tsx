@@ -17,13 +17,17 @@ import { changeLoading, fetchUserData } from "./state-management/redux/slices/us
 import CabinetLayout from "./layouts/Cabinet";
 import { supabase } from "./services/supabase/supabase";
 import LoadingWrapper from "./components/sheard/Loading";
-import Profile from "./pages/Profile";
-import ProfileEdit from "./pages/ProfileEdit";
-import Addresses from "./pages/Addresses";
+import Profile from "./pages/Settings";
 import Help from "./pages/Help";
 import SocialMediaPage from "./pages/Links";
 import Links from "./pages/Links";
 import ScrollToTop from "./components/sheard/ScrollToTop";
+import EditDataLayout from "./layouts/EditDataLayout";
+import BuyerProfileEdit from "./pages/ProfileEdit/BuyerProfileEdit";
+import SellerProfileEdit from "./pages/ProfileEdit/SellerProfileEdit";
+import { fetchShopInfo } from "./state-management/redux/slices/shopInfoSlice";
+import BuyerAddressEdit from "./pages/ProfileEdit/BuyerAddressEdit";
+import SellerAddressEdit from "./pages/ProfileEdit/SellerAddressEdit";
 
 function App() {
   const { isAuth } = useSelector((store: RootState) => store.userData.authUserInfo);
@@ -33,7 +37,11 @@ function App() {
     const restoreSession = async () => {
       const { data } = await supabase.auth.getSession();
       if(data.session?.user?.email){
-        dispatch(fetchUserData(data.session.user.email));
+        await dispatch(fetchUserData(data.session.user.email));
+
+        if(data.session.user.user_metadata.userRole === 'seller'){          
+          dispatch(fetchShopInfo(data.session.user.email))
+        }
       }
       dispatch(changeLoading(false));
     }
@@ -60,12 +68,19 @@ function App() {
 
           <Route path={ROUTE_NAMES.CABINET} element={isAuth ? <CabinetLayout /> : <Navigate to={ROUTE_NAMES.LOGIN} />}>
             <Route index element={<SocialMediaPage/>} />
+            {/* Edit */}
+            <Route path={ROUTE_NAMES.EDITDATA} element={<EditDataLayout />}>
+            <Route path={ROUTE_NAMES.BUYEREDITDATA} element={<BuyerProfileEdit />} />
+            <Route path={ROUTE_NAMES.SELLEREDITDATA} element={<SellerProfileEdit />} />
+
+            <Route path={ROUTE_NAMES.BUYEREDITSDDRESS} element={<BuyerAddressEdit />} />
+            <Route path={ROUTE_NAMES.SELLEREDITADDRESS} element={<SellerAddressEdit />} />
+            </Route>
+
             <Route path={ROUTE_NAMES.CARD} element={<Card/>} />
             <Route path={ROUTE_NAMES.ORDERS} element={<Orders/>} />
             <Route path={ROUTE_NAMES.PLACEORDER} element={<PlaceOrder/>} />
             <Route path={ROUTE_NAMES.PROFILE} element={<Profile/>} />
-            <Route path={ROUTE_NAMES.EDITDATA} element={<ProfileEdit/>} />
-            <Route path={ROUTE_NAMES.ADDRESS} element={<Addresses />} />
             <Route path={`${ROUTE_NAMES.PRODUCT}/:productId`} element={<Product/>} />
           </Route>
           </Route>

@@ -1,8 +1,8 @@
 import { Dropdown, MenuProps, notification, theme } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../state-management/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../state-management/redux/store";
 import { supabase } from "../../../services/supabase/supabase";
 import { setIsAuth } from "../../../state-management/redux/slices/userDataSlice";
 import { ROUTE_NAMES } from "../../../utilis/constants";
@@ -10,7 +10,9 @@ import { ROUTE_NAMES } from "../../../utilis/constants";
 const { useToken } = theme;
 
 const ProfileDropDown = () => {
-  const { token } = useToken();
+  const { userData } = useSelector((store: RootState) => store.userData.authUserInfo);
+  const { shopInfo } = useSelector((store: RootState) => store.shopInfo);
+const { token } = useToken();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -38,7 +40,7 @@ const items: MenuProps["items"] = [
     {
         label: 'My Profile',
         key: '0',
-        onClick: () => navigate(ROUTE_NAMES.EDITDATA)
+        onClick: () => navigate(`${ROUTE_NAMES.EDITDATA}/${userData?.role}editdata`)
     }, 
     {
         label: 'Settings',
