@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import { Form, Input, Button, notification, Typography, Space, Spin, Avatar } from "antd";
+import { Form, Input, Button, notification, Typography, Space, Spin } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state-management/redux/store";
 import { supabase } from "../../../services/supabase/supabase";
 import { fetchUserData } from "../../../state-management/redux/slices/userDataSlice";
 import { Link } from "react-router-dom";
 import { ROUTE_NAMES } from "../../../utilis/constants";
-import { EnvironmentOutlined, UserOutlined, MailOutlined, PhoneOutlined, LockOutlined } from "@ant-design/icons";
+import { EnvironmentOutlined, UserOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons";
 import { buyerRegister } from "../../../typescript/interfaces/register";
-import Title from "antd/es/typography/Title";
 
 const { Text } = Typography;
 

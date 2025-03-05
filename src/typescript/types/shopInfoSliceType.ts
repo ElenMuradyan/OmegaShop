@@ -1,11 +1,16 @@
 export type shopInfoSliceType = {
     loading: boolean,
-    shopInfo: shopInfoType | null
+    myShopInfo: shopInfoType | null;
+}
+
+export type sellerProfileSliceType = {
+    loading: boolean,
+    shopInfo: shopInfoType | null;
 }
 
 export type shopInfoType = {
     businessAddress: businessAddress,
-    businessPhone: string,
+    email: string,
     shopName: string,
     description: string,
     type: string,

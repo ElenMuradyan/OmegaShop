@@ -4,15 +4,16 @@ import { shopInfoSliceType, shopInfoType } from "../../../typescript/types/shopI
 
 const initialState: shopInfoSliceType = {
     loading: true,
-    shopInfo: null,
+    myShopInfo: null
 };
 
 export const fetchShopInfo = createAsyncThunk(
-    "users/fetchShopInfo",
+    "sellers/fetchShopInfo",
     async(email :string, { rejectWithValue }) => {
         try{
             const { data, error } = await supabase.from('sellers').select('*').eq("email", email).single();
             if(error) throw error;
+            
             return data as shopInfoType;
         }catch(error: any){
             return rejectWithValue(error.message);
@@ -32,15 +33,15 @@ const shopInfoSlice = createSlice({
         builder
         .addCase(fetchShopInfo.pending, (state) => {
             state.loading = true;
-            state.shopInfo = null;
+            state.myShopInfo = null;
         })
         .addCase(fetchShopInfo.fulfilled, (state, action) => {
             state.loading = false;
-            state.shopInfo = action.payload;
+            state.myShopInfo = action.payload;
         })
         .addCase(fetchShopInfo.rejected, (state) => {
             state.loading = false;
-            state.shopInfo = null;
+            state.myShopInfo = null;
         })
     }
 });

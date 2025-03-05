@@ -17,9 +17,8 @@ import { changeLoading, fetchUserData } from "./state-management/redux/slices/us
 import CabinetLayout from "./layouts/Cabinet";
 import { supabase } from "./services/supabase/supabase";
 import LoadingWrapper from "./components/sheard/Loading";
-import Profile from "./pages/Settings";
+import Settings from "./pages/Settings";
 import Help from "./pages/Help";
-import SocialMediaPage from "./pages/Links";
 import Links from "./pages/Links";
 import ScrollToTop from "./components/sheard/ScrollToTop";
 import EditDataLayout from "./layouts/EditDataLayout";
@@ -28,6 +27,8 @@ import SellerProfileEdit from "./pages/ProfileEdit/SellerProfileEdit";
 import { fetchShopInfo } from "./state-management/redux/slices/shopInfoSlice";
 import BuyerAddressEdit from "./pages/ProfileEdit/BuyerAddressEdit";
 import SellerAddressEdit from "./pages/ProfileEdit/SellerAddressEdit";
+import Profile from "./pages/Profile";
+import Sellers from "./pages/Sellers";
 
 function App() {
   const { isAuth } = useSelector((store: RootState) => store.userData.authUserInfo);
@@ -64,10 +65,10 @@ function App() {
           <Route path={ROUTE_NAMES.ABOUT} element={<About/>} />
           <Route path={ROUTE_NAMES.SHARE} element={<Links/>} />
           <Route path={ROUTE_NAMES.HELP} element={<Help />} />
+          <Route path={ROUTE_NAMES.SELLERS} element={<Sellers />} />
           {/* Cabinet */}
 
           <Route path={ROUTE_NAMES.CABINET} element={isAuth ? <CabinetLayout /> : <Navigate to={ROUTE_NAMES.LOGIN} />}>
-            <Route index element={<SocialMediaPage/>} />
             {/* Edit */}
             <Route path={ROUTE_NAMES.EDITDATA} element={<EditDataLayout />}>
             <Route path={ROUTE_NAMES.BUYEREDITDATA} element={<BuyerProfileEdit />} />
@@ -80,8 +81,9 @@ function App() {
             <Route path={ROUTE_NAMES.CARD} element={<Card/>} />
             <Route path={ROUTE_NAMES.ORDERS} element={<Orders/>} />
             <Route path={ROUTE_NAMES.PLACEORDER} element={<PlaceOrder/>} />
-            <Route path={ROUTE_NAMES.PROFILE} element={<Profile/>} />
+            <Route path={ROUTE_NAMES.SETTINGS} element={<Settings />} />
             <Route path={`${ROUTE_NAMES.PRODUCT}/:productId`} element={<Product/>} />
+            <Route path={`${ROUTE_NAMES.PROFILE}/:userId`} element={<Profile />} />
           </Route>
           </Route>
         </Routes>

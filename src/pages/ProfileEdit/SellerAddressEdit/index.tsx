@@ -1,7 +1,7 @@
 import { Button, Form, Input, notification, Typography, Spin, Space } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state-management/redux/store";
-import { address, sellerAddresses } from "../../../typescript/types/userDataState";
+import { sellerAddresses } from "../../../typescript/types/userDataState";
 import { useEffect, useState } from "react";
 import { supabase } from "../../../services/supabase/supabase";
 import { fetchUserData } from "../../../state-management/redux/slices/userDataSlice";
@@ -16,7 +16,7 @@ const SellerAddressEdit = () => {
     const dispatch = useDispatch<AppDispatch>();
     const [buttonLoading, setButtonLoading] = useState(false);
     const { userData } = useSelector((state: RootState) => state.userData.authUserInfo);
-    const { shopInfo } = useSelector((store: RootState) => store.shopInfo);
+    const { myShopInfo } = useSelector((store: RootState) => store.shopInfo);
 
     const handleEditUserAddress = async (values: sellerAddresses) => {
         setButtonLoading(true);
@@ -62,15 +62,15 @@ const SellerAddressEdit = () => {
     };
 
     useEffect(() => {  
-        console.log(shopInfo?.businessAddress);
+        console.log(myShopInfo?.businessAddress);
         
-        if (userData?.address || shopInfo?.businessAddress) {
+        if (userData?.address || myShopInfo?.businessAddress) {
             form.setFieldsValue({
                 ...userData?.address ?? {},  
-                ...shopInfo?.businessAddress ?? {} 
+                ...myShopInfo?.businessAddress ?? {} 
             });
         }
-    }, [userData, shopInfo]);
+    }, [userData, myShopInfo]);
     
     return (
           <Form

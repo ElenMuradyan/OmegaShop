@@ -11,15 +11,14 @@ const { useToken } = theme;
 
 const ProfileDropDown = () => {
   const { userData } = useSelector((store: RootState) => store.userData.authUserInfo);
-  const { shopInfo } = useSelector((store: RootState) => store.shopInfo);
-const { token } = useToken();
+  const { token } = useToken();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSignOut = async () => {
     try{
         const { error } = await supabase.auth.signOut();
-        
+
         if (error) {
             throw error;
         };
@@ -40,12 +39,12 @@ const items: MenuProps["items"] = [
     {
         label: 'My Profile',
         key: '0',
-        onClick: () => navigate(`${ROUTE_NAMES.EDITDATA}/${userData?.role}editdata`)
+        onClick: () => navigate(`${ROUTE_NAMES.PROFILE}/${userData?.id}`)
     }, 
     {
         label: 'Settings',
         key: '1',
-        onClick: () => navigate(ROUTE_NAMES.PROFILE)
+        onClick: () => navigate(ROUTE_NAMES.SETTINGS)
     },
     {
         label: 'Logout',

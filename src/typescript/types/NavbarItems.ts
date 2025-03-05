@@ -9,4 +9,5 @@ export const NavbarItems: NavbarItem[] = [
     { label: "HOME", path: ROUTE_NAMES.HOME },
     { label: "COLLECTION", path: ROUTE_NAMES.COLLECTION },
     { label: "ABOUT", path: ROUTE_NAMES.ABOUT },
+    { label: "OUR SELLERS", path: ROUTE_NAMES.SELLERS },
 ]

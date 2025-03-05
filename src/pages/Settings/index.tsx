@@ -1,5 +1,5 @@
-import { EditOutlined, UserOutlined, LockOutlined, EnvironmentOutlined } from "@ant-design/icons";
-import { Avatar, Typography, Divider, Button } from "antd";
+import { UserOutlined, EnvironmentOutlined, SettingOutlined } from "@ant-design/icons";
+import { Typography, Divider, Button } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state-management/redux/store";
 import { Link } from "react-router-dom";
@@ -13,7 +13,7 @@ const Settings = () => {
 
     return (
         <div className="p-6 bg-white shadow-lg rounded-lg max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold text-center">ԿԱՐԳԱՎՈՐՈՒՄՆԵՐ</h2>
+            <h2 className="text-2xl font-bold text-center"><SettingOutlined />ԿԱՐԳԱՎՈՐՈՒՄՆԵՐ</h2>
             <Divider className="my-6" />
             {
                     Object.entries(profileOptions).map(([key, section]) => {                        

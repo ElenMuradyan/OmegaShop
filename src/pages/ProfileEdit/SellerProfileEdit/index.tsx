@@ -19,12 +19,12 @@ const SellerProfileEdit = () => {
     const [form] = Form.useForm();
     const [buttonLoading, setButtonLoading] = useState<boolean>(false);
     const { userData } = useSelector((store: RootState) => store.userData.authUserInfo);
-    const { shopInfo } = useSelector((store: RootState) => store.shopInfo);
+    const { myShopInfo } = useSelector((store: RootState) => store.shopInfo);
     const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
-        form.setFieldsValue({ ...userData, ...shopInfo });
-    }, [userData, shopInfo]); 
+        form.setFieldsValue({ ...userData, ...myShopInfo });
+    }, [userData, myShopInfo]); 
 
     const handleEditUserProfile = async (values: sellerRegister) => {
         setButtonLoading(true);

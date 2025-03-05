@@ -1,6 +1,5 @@
 import { Button, Form, Input, notification, Typography } from 'antd';
 import { ROUTE_NAMES } from '../../../utilis/constants';
-import Title from '../../../components/sheard/Title';
 import { supabase } from '../../../services/supabase/supabase';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../../../typescript/interfaces/login';
