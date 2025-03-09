@@ -29,6 +29,8 @@ import BuyerAddressEdit from "./pages/ProfileEdit/BuyerAddressEdit";
 import SellerAddressEdit from "./pages/ProfileEdit/SellerAddressEdit";
 import Profile from "./pages/Profile";
 import Sellers from "./pages/Sellers";
+import AddProduct from "./pages/AddProductPage";
+import { fetchMyProducts } from "./state-management/redux/slices/myProductsSlice";
 
 function App() {
   const { isAuth } = useSelector((store: RootState) => store.userData.authUserInfo);
@@ -41,7 +43,8 @@ function App() {
         await dispatch(fetchUserData(data.session.user.email));
 
         if(data.session.user.user_metadata.userRole === 'seller'){          
-          dispatch(fetchShopInfo(data.session.user.email))
+          dispatch(fetchShopInfo(data.session.user.email));
+          dispatch(fetchMyProducts(data.session.user.email));
         }
       }
       dispatch(changeLoading(false));
@@ -78,6 +81,7 @@ function App() {
             <Route path={ROUTE_NAMES.SELLEREDITADDRESS} element={<SellerAddressEdit />} />
             </Route>
 
+            <Route path={ROUTE_NAMES.ADDPRODUCT} element={<AddProduct />} />
             <Route path={ROUTE_NAMES.CARD} element={<Card/>} />
             <Route path={ROUTE_NAMES.ORDERS} element={<Orders/>} />
             <Route path={ROUTE_NAMES.PLACEORDER} element={<PlaceOrder/>} />

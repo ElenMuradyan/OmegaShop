@@ -14,7 +14,7 @@ const ProfileDropDown = () => {
   const { token } = useToken();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-
+  
   const handleSignOut = async () => {
     try{
         const { error } = await supabase.auth.signOut();
@@ -35,45 +35,69 @@ const ProfileDropDown = () => {
     };
 };
 
-const items: MenuProps["items"] = [
+  const buyerItems: MenuProps["items"] = [
+      {
+          label: 'My Profile',
+          key: '0',
+          onClick: () => navigate(`${ROUTE_NAMES.PROFILE}/${userData?.id}`)
+      }, 
+      {
+          label: 'Settings',
+          key: '1',
+          onClick: () => navigate(ROUTE_NAMES.SETTINGS)
+      },
+      {
+          label: 'Logout',
+          key: '2',
+          onClick: () => handleSignOut()
+      }
+  ];
+
+  const sellerItems: MenuProps["items"] = [
     {
-        label: 'My Profile',
-        key: '0',
-        onClick: () => navigate(`${ROUTE_NAMES.PROFILE}/${userData?.id}`)
-    }, 
-    {
-        label: 'Settings',
-        key: '1',
-        onClick: () => navigate(ROUTE_NAMES.SETTINGS)
+      label: "My Profile",
+      key: "0",
+      onClick: () => navigate(`${ROUTE_NAMES.PROFILE}/${userData?.id}`),
     },
     {
-        label: 'Logout',
-        key: '2',
-        onClick: () => handleSignOut()
-    }
-]
+      label: "My Products",
+      key: "1",
+      onClick: () => navigate(ROUTE_NAMES.MYPRODUCTS),
+    },
+    {
+      label: "Settings",
+      key: "2",
+      onClick: () => navigate(ROUTE_NAMES.SETTINGS),
+    },
+    {
+      label: "Logout",
+      key: "3",
+      onClick: () => handleSignOut(),
+    },
+  ]
+
   return (
-    <Dropdown menu={{items,
-      style: {
-        fontSize: "1.25rem",
-        minWidth: "200px",
-      },
-    }}
-    trigger={["click"]}
-    dropdownRender={(menu) => {
-      return(
-          <div style={{
-              borderRadius: token.borderRadiusLG,
-              backgroundColor: token.colorBgElevated,
-              boxShadow: token.boxShadowSecondary,
-            }}>
-              {menu}
-          </div>
-      )
-    }}>
-      <UserOutlined />
-    </Dropdown>
-  )
+      <Dropdown menu={{items: userData?.role === 'seller' ? sellerItems : buyerItems,
+        style: {
+          fontSize: "1.25rem",
+          minWidth: "200px",
+        },
+      }}
+      trigger={["click"]}
+      dropdownRender={(menu) => {
+        return(
+            <div style={{
+                borderRadius: token.borderRadiusLG,
+                backgroundColor: token.colorBgElevated,
+                boxShadow: token.boxShadowSecondary,
+              }}>
+                {menu}
+            </div>
+        )
+      }}>
+        <UserOutlined />
+      </Dropdown>
+    )
 };
 
 export default ProfileDropDown;

@@ -1,8 +1,8 @@
 import { Button, Form, Input, notification, Typography } from 'antd';
-import { regexpValidation, ROUTE_NAMES } from '../../../../../utilis/constants';
-import { buyerRegister } from '../../../../../typescript/interfaces/register';
-import Title from '../../../../../components/sheard/Title';
-import { supabase } from '../../../../../services/supabase/supabase';
+import { regexpValidation, ROUTE_NAMES } from '../../../../../../utilis/constants';
+import { buyerRegister } from '../../../../../../typescript/interfaces/register';
+import Title from '../../../../../../components/sheard/Title';
+import { supabase } from '../../../../../../services/supabase/supabase';
 import { Link, useNavigate } from 'react-router-dom';
 
 const { Text } = Typography;

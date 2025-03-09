@@ -75,7 +75,7 @@ export const Categories: Category[] = [
   },
 ];
 
-export let categoryLabels: DefaultOptionType[] = Categories.map((item) =>({
+export const categoryLabels: DefaultOptionType[] = Categories.map((item) =>({
     label: item.label,
     value: item.label,
 }));

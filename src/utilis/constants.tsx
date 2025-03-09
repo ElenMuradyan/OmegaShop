@@ -24,6 +24,8 @@ export const ROUTE_NAMES = {
     SHARE: '/share',
     SETTINGS: '/cabinet/settings',
     SELLERS: '/sellers',
+    MYPRODUCTS: '/cabinet/myproducts',
+    ADDPRODUCT: '/cabinet/addproduct',
 };
 
 export const regexpValidation = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;

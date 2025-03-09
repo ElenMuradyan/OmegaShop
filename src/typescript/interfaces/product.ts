@@ -3,8 +3,9 @@ export interface product {
     name: string,
     price: number,
     description: string,
-    image?: string,
+    images: string[],
     category: string,
     subCategory: string,
     stock: number,
+    usedType: string
 }

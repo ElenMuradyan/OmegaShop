@@ -67,7 +67,8 @@ const SellerRegister = () => {
                         shopName,
                         description,
                         type, 
-                        categories
+                        categories,
+                        products: [],
                     }
                 ]);
 

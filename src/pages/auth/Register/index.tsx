@@ -3,7 +3,7 @@ import { ROUTE_NAMES } from "../../../utilis/constants";
 import { Link, useLocation } from "react-router-dom";
 import SellerRegister from "./SellerRegister";
 import { ShopOutlined, ShoppingCartOutlined } from "@ant-design/icons";
-import BuyerRegister from "./BuyerRegister/BuyerRegister";
+import BuyerRegister from "./BuyerRegister/BuyerRegister/BuyerRegister";
 
 const Register = () => {
 const { pathname } = useLocation();
