@@ -5,16 +5,17 @@ import { useState } from "react";
 import { DefaultOptionType } from "antd/es/select";
 import ImageUpload from "../../components/sheard/ImageUpload";
 import { supabase } from "../../services/supabase/supabase";
+import FormList from "../../components/sheard/FormList";
 
 const AddProduct = () => {
     const [ form ] = Form.useForm();
     const [ price, setPrice ] = useState<number>(0);
     const [ subCategories, setSubCategories ] = useState<DefaultOptionType[]>([]);
     const [ imageUrls, setImageUrls ] = useState<string[]>([]);
-   
+
     const addProduct = async (values: product) => {
-        const { name, description, price, category, subCategory, usedType, stock } = values;
-    
+        const { name, description, price, category, subCategory, usedType, stock, options } = values;
+        
         try {
             const { data } = await supabase.auth.getSession();
             if (data.session?.user?.email) {
@@ -34,6 +35,7 @@ const AddProduct = () => {
                             usedType,
                             stock: Number(stock),
                             autor,
+                            options,
                         }
                     ])
                     .select("id");
@@ -137,7 +139,8 @@ const AddProduct = () => {
             <Form.Item name="stock" label="Պահեստում առկա քանակ" rules={[{ required: true, message: "Խնդրում ենք մուտքագրել քանակը" }]}>          
               <Input type="number" min={0} className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
             </Form.Item>
-    
+
+            <FormList form={form}/>
             <Form.Item>
               <Button type="primary" htmlType="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg">
                 Ավելացնել ապրանք

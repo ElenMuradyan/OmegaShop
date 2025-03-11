@@ -31,6 +31,7 @@ import Profile from "./pages/Profile";
 import Sellers from "./pages/Sellers";
 import AddProduct from "./pages/AddProductPage";
 import { fetchMyProducts } from "./state-management/redux/slices/myProductsSlice";
+import MyProducts from "./pages/MyProducts";
 
 function App() {
   const { isAuth } = useSelector((store: RootState) => store.userData.authUserInfo);
@@ -82,6 +83,7 @@ function App() {
             </Route>
 
             <Route path={ROUTE_NAMES.ADDPRODUCT} element={<AddProduct />} />
+            <Route path={ROUTE_NAMES.MYPRODUCTS} element={<MyProducts />} />
             <Route path={ROUTE_NAMES.CARD} element={<Card/>} />
             <Route path={ROUTE_NAMES.ORDERS} element={<Orders/>} />
             <Route path={ROUTE_NAMES.PLACEORDER} element={<PlaceOrder/>} />

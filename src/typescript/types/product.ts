@@ -1,3 +1,5 @@
+import { optionType } from "../interfaces/product"
+
 export type product = {
     id: string, 
     images: string[], 
@@ -5,8 +7,14 @@ export type product = {
     price: number,
     description: string,
     category: string, 
-    underCategoy: string,
+    subCategoy: string,
     stock: number,
     usedType: string,
-    autor: string
+    autor: string,
+    options: optionType,
+}
+
+export type productInitialValue = {
+    loading: boolean,
+    productInfo: product | null
 }

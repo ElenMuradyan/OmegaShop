@@ -2,7 +2,9 @@ import { Link } from "react-router-dom";
 import { product } from "../../../typescript/interfaces/product";
 import { ROUTE_NAMES } from "../../../utilis/constants";
 
-const ProductItem = ({id, image, name, price, description, category, stock}: product) => {
+const ProductItem = ({id, images, name, price, description, category, stock, usedType}: product) => {
+  console.log(images);
+  
   return (
     <Link
     to={`${ROUTE_NAMES.PRODUCT}/${id}`}
@@ -10,7 +12,7 @@ const ProductItem = ({id, image, name, price, description, category, stock}: pro
     >
     <div className="overflow-hidden rounded-lg">
       <img
-        src={image}
+        src={images[0]}
         className="w-full h-40 object-cover hover:scale-105 transition-transform duration-300 ease-in-out"
         alt={name}
       />
@@ -21,6 +23,7 @@ const ProductItem = ({id, image, name, price, description, category, stock}: pro
     <div className="flex justify-between items-center mt-1">
       <p className="text-sm font-medium text-gray-700">${price}</p>
       <p className="text-xs text-gray-600">Stock: {stock}</p>
+      <p className="text-xs text-gray-600">UsedType: {usedType}</p>
     </div>
   
     <p className="mt-1 text-xs text-gray-500">Category: {category}</p>

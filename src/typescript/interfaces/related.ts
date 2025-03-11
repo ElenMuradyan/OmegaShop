@@ -1,4 +1,4 @@
 export interface related {
-    category: string,
-    subcategory: string,
+    category: string | undefined,
+    subcategory: string | undefined,
 }

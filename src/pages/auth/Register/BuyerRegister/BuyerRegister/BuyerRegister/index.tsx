@@ -49,7 +49,8 @@ const BuyerRegister = () => {
                         lastName,
                         email,
                         phone,
-                        address
+                        address,
+                        card: []
                     }
                 ]);
             if (dbError) {

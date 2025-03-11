@@ -7,5 +7,11 @@ export interface product {
     category: string,
     subCategory: string,
     stock: number,
-    usedType: string
+    usedType: string,
+    options: optionType,
+}
+
+export type optionType = {
+    optionName: string,
+    optionValue: string,
 }

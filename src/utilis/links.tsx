@@ -1,8 +1,8 @@
 import { FacebookOutlined, InstagramOutlined } from "@ant-design/icons"
+import { JSX } from "react";
 import { FaTelegramPlane } from "react-icons/fa"
-import { link } from "../typescript/types/link";
 
-export const links: link[] = [
+export const links: LinkItem[] = [
     {
         title: 'Instagram',
         icon: <InstagramOutlined className="mr-2 text-[#E4405F]"/>,
@@ -28,3 +28,12 @@ export const links: link[] = [
         buttonIcon: <FaTelegramPlane />
     }
 ];
+
+type LinkItem = {
+    title: string;
+    icon: JSX.Element;
+    label: string;
+    buttonLabel: string;
+    link: string;
+    buttonIcon: JSX.Element;
+}

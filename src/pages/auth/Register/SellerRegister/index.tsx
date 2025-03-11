@@ -51,7 +51,8 @@ const SellerRegister = () => {
                         lastName,
                         email,
                         phone,
-                        address
+                        address,
+                        card: [],
                     }
                 ]);
 

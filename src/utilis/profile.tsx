@@ -1,9 +1,7 @@
 import { 
     ShoppingOutlined, 
     ShoppingCartOutlined, 
-    EnvironmentOutlined, 
     CreditCardOutlined, 
-    UserOutlined, 
     QuestionCircleOutlined, 
     ShareAltOutlined, 
     ShopOutlined, 
@@ -12,9 +10,6 @@ import {
 } from "@ant-design/icons";
 import { profileOption } from "../typescript/types/profileOption";
 import { ROUTE_NAMES } from "./constants";
-import { useSelector } from "react-redux";
-import { RootState } from "../state-management/redux/store";
-
 
 const KEYS = {
     PURCHASES: 'ԳՆՈՒՄՆԵՐ',
