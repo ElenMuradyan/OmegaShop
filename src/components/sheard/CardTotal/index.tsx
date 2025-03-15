@@ -1,6 +1,20 @@
+import { useSelector } from "react-redux";
 import Title from "../Title"
+import { RootState } from "../../../state-management/redux/store";
+import { useEffect, useState } from "react";
 
 const CardTotal = () => {
+  const { userData } = useSelector((state: RootState) => state.userData.authUserInfo);
+  const [ subtotal, setSubtotal ] = useState<number>(0);
+
+  useEffect(() => {
+    if(userData){
+      const sum = userData.cart.filter(item => item.ordering)
+      .reduce((acc, item) => acc + item.stock * item.price, 0);
+      setSubtotal(sum);
+    }
+  },[userData?.cart]);
+
   return (
     <div className="w-full">
       <div className="text-2xl">
@@ -10,7 +24,7 @@ const CardTotal = () => {
       <div className="flex flex-col gap-2 mt-2 text-sm">
         <div className="flex justify-between">
             <p>Subtotal</p>
-            <p>6000 AMD</p>
+            <p>{subtotal} AMD</p>
         </div>
         <hr />
         <div className="flex justify-between">
@@ -20,7 +34,7 @@ const CardTotal = () => {
         <hr />
         <div className="flex justify-between">
             <p>Total</p>
-            <p>6500 AMD</p>
+            <p>{subtotal+500} AMD</p>
         </div>
       </div>
     </div>

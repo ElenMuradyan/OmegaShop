@@ -10,10 +10,10 @@ const CartProductList = () => {
     <div className="gap-y-6">
       {
         userData?.cart.map((item, key) => {
-            const { productId, stock, image, price, name, options, maxValue } = item;
+            const { productId, stock, image, price, name, options, maxValue, ordering } = item;
             
             return(
-                <CartProductItem productId={productId} image={image} name={name} price={price} stock={stock} index={key} key={key} options={options} maxValue={maxValue}/>
+                <CartProductItem productId={productId} image={image} name={name} price={price} stock={stock} index={key} key={key} options={options} maxValue={maxValue} ordering={ordering}/>
             )
         })
       }

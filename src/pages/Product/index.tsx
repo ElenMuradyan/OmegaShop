@@ -55,6 +55,7 @@ const Product = () => {
         price: productInfo.price,
         image: productInfo.images[0],
         name: productInfo.name,
+        ordering: false,
         maxValue: productInfo.stock,
       });
 

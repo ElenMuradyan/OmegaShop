@@ -24,5 +24,6 @@ export interface cartProduct {
     stock: number,
     maxValue: number,
     index: number,
+    ordering: boolean,
     options: optionType[],
 }

@@ -39,6 +39,11 @@ const userDataSlice = createSlice({
             if(state.authUserInfo.userData){
                 state.authUserInfo.userData.cart = action.payload as cartProduct[];
             }
+        },
+        setOrdering: (state, action) => {
+            if(state.authUserInfo.userData){
+                state.authUserInfo.userData.cart[action.payload.index].ordering = action.payload.ordering;
+            }
         }
     },
     extraReducers:(builder) => {
@@ -59,5 +64,5 @@ const userDataSlice = createSlice({
     }
 });
 
-export const { changeLoading, setIsAuth, setCart } = userDataSlice.actions;
+export const { changeLoading, setIsAuth, setCart, setOrdering } = userDataSlice.actions;
 export default userDataSlice.reducer;

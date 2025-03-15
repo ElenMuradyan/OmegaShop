@@ -47,5 +47,6 @@ export type cartProductType = {
     stock: number,
     maxValue: number,
     index: number,
+    ordering: boolean,
     options: optionType[],
 }
