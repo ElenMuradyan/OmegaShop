@@ -8,6 +8,14 @@ export const optionNamesOptions = [
     { label: "Քաշ (Weight)", value: "weight" },
 ];
 
+export const names: Record<string, string> = {
+    size: 'չափսը',
+    color: 'գույնը',
+    material: 'նյութը',
+    power: 'հզորությունը',
+    weight: 'քաշը',
+}
+
 export const suboptions:Record<string, SelectProps['options']> = {
     size: [
         { label: "X-Small", value: "X-Small" },

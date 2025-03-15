@@ -1,18 +1,53 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Categories } from "../../typescript/types/categories";
 import { DownOutlined } from "@ant-design/icons";
 import Title from "../../components/sheard/Title";
 import { Select } from "antd";
 import { arragementValues } from "../../typescript/types/productArragement";
-import ProductItem from "../../components/sheard/ProductItem";
-import image from '../../utilis/Images/hero6.jpg';
+import { useSelector } from "react-redux";
+import { RootState } from "../../state-management/redux/store";
+import ProductList from "../../components/sheard/ProductList";
+import { product } from "../../typescript/types/product";
 
 const Collection = () => {
   const [ showFilter, setShowFilter ] = useState(false);
+  const { products } = useSelector((state: RootState) => state.products);
+  
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedSubCategories, setSelectedSubcategories] = useState<string[]>([]);
 
-  const handleChange = () => {};
+  const [sortOrder, setSortOrder] = useState<string | null>(null);
+  const [ filteredProducts, setFilteredProducts ] = useState<product[]>([]);
 
-// add handle function everything about filters and categories and arragement
+  const handleCategoryChange = (category: string) => {
+    selectedCategory === category ? setSelectedCategory('') : setSelectedCategory(category);
+  };
+
+  
+  const handleSubcategoryChange = (category: string) => {
+    setSelectedSubcategories((prev) =>
+      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
+    );
+  };
+
+  const handleSortChange = (value: string) => {
+    setSortOrder(value);
+  };
+
+  useEffect(() => {
+    const filteredProducts = products.filter((item) => {
+      const categoryMatch = selectedCategory ? item.category === selectedCategory : true;
+      const subcategoryMatch = selectedSubCategories.length ? selectedSubCategories.includes(item.subCategory) : true;
+      return categoryMatch && subcategoryMatch;
+    }).sort((a, b) => {
+      if (sortOrder === arragementValues[0].value) return 0;
+      if (sortOrder === arragementValues[1].value) return a.price - b.price;
+      if (sortOrder === arragementValues[2].value) return b.price - a.price;
+      return 0;
+    });
+
+    setFilteredProducts(filteredProducts);
+  }, [sortOrder, selectedCategory, selectedSubCategories, products]);
 
   return (
     <div className="flex flex-col gap-1 sm:gap-10 pt-10 border-t">
@@ -23,22 +58,39 @@ const Collection = () => {
         <div className={`border border-gray-300 pl-5 py-3 mt-6 ${showFilter ? 'block' : 'hidden'} sm:block`}>
           <p className="mb-3 text-sm font-medium">CATEGORIES</p>
           <div className="grid lg:grid-cols-7 sm:grid-cols-3 gap-2 text-sm font-light text-gray-700">
-            {Categories.map((category, index) => (
-              <div key={index} className="flex flex-col gap-2">
-                <label className="flex items-center gap-2">
-                  <input type="checkbox" className="w-3" value={category.label} />
-                  {category.label}
-                </label>
-
-                {category.undercategories &&
-                  category.undercategories.map((item, subIndex) => (
-                    <label key={subIndex} className="flex items-center gap-2 pl-4">
-                      <input type="checkbox" className="w-2 h-2 border border-gray-400 rounded-full appearance-none checked:bg-gray-500 checked:border-transparent transition-all cursor-pointer" value={item.label} />
-                      <p className="text-gray-500">{item.label}</p>
-                    </label>
-                  ))}
-              </div>
-            ))}
+            {Categories.map((category, index) => {
+              const isSelectedCategory = selectedCategory === category.label;
+              return(
+                <>
+                {selectedCategory === ''  || isSelectedCategory ? (
+                <div key={index} className="flex flex-col gap-2">
+                  <label className="flex items-center gap-2">
+                    <input 
+                    type="checkbox" 
+                    className="w-3" 
+                    value={category.label} 
+                    onChange={() => handleCategoryChange(category.label)}
+                    />
+                    {category.label}
+                  </label>
+  
+                  {
+                    (selectedCategory === category.label) && category.undercategories.map((item, subIndex) => (
+                      <label key={subIndex} className="flex items-center gap-2 pl-4">
+                        <input 
+                         type="checkbox"
+                         className="w-2 h-2 border border-gray-400 rounded-full appearance-none checked:bg-gray-500 checked:border-transparent transition-all cursor-pointer" 
+                         value={item.label} 
+                         onChange={() => handleSubcategoryChange(item.label)}
+                         />
+                        <p className="text-gray-500">{item.label}</p>
+                      </label>
+                    ))}
+                </div>
+              ) : null}
+                </>
+               )
+            })}
           </div>
           </div>
       </div>
@@ -48,21 +100,9 @@ const Collection = () => {
       <div className="flex-1">
         <div className="flex justify-between text-base sm:text-2xl mb-4 gap-2 sm:gap-4">
           <Title text1="ALL" text2="COLLECTIONS" />
-          <Select onChange={handleChange} options={arragementValues} placeholder='Select arragement' className="sm:w-1/3"/>
+          <Select onChange={handleSortChange} options={arragementValues} placeholder='Select arragement' className="sm:w-1/3"/>
         </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
-        <ProductItem subCategory="hi" id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
-      <ProductItem subCategory="hi" id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
-      <ProductItem subCategory="hi" id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
-      <ProductItem subCategory="hi"id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
-
-      <ProductItem subCategory="hi"id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
-      <ProductItem subCategory="hi"id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
-      <ProductItem subCategory="hi"id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
-      <ProductItem subCategory="hi"id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
-
-        </div>
+          <ProductList products={filteredProducts} />
       </div>
     </div>
   )

@@ -1,18 +1,16 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../../state-management/redux/store"
-import { Card, Avatar, Typography, Button, Divider, Space, Row, Col } from "antd";
-import { EditOutlined, EnvironmentOutlined, LogoutOutlined, MailOutlined, PhoneOutlined, ShopOutlined, ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
+import { Avatar } from "antd";
+import { EnvironmentOutlined, MailOutlined, PhoneOutlined, ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import { fetchSellerProfileInfo } from "../../state-management/redux/slices/sellerProfileSlice";
-import ProductItem from "../../components/sheard/ProductItem";
-import image from "../../utilis/Images/hero5.jpg";
-// const { Title, Text } = Typography;
+import ProductList from "../../components/sheard/ProductList";
 
 const Profile = () => {
     const { userId } = useParams();
     const dispatch = useDispatch<AppDispatch>();
-    const { shopInfo } = useSelector((store:RootState) => store.sellerProfile);
+    const { shopInfo, products } = useSelector((store:RootState) => store.sellerProfile);
 
     useEffect(()=>{
         userId && dispatch(fetchSellerProfileInfo(userId));
@@ -57,9 +55,7 @@ const Profile = () => {
     <h3 className="text-lg font-semibold flex items-center gap-2">
         <ShoppingCartOutlined size={20} /> ՄԵՐ ԱՊՐԱՆՔՆԵՐԸ
     </h3>
-
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
-    </div>
+    <ProductList products={products} />
 </div>
 )
 }

@@ -2,9 +2,7 @@ import { Link } from "react-router-dom";
 import { product } from "../../../typescript/interfaces/product";
 import { ROUTE_NAMES } from "../../../utilis/constants";
 
-const ProductItem = ({id, images, name, price, description, category, stock, usedType}: product) => {
-  console.log(images);
-  
+const ProductItem = ({id, images, name, price, description, category, stock, usedType}: product) => {    
   return (
     <Link
     to={`${ROUTE_NAMES.PRODUCT}/${id}`}

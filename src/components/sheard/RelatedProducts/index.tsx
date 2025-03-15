@@ -1,10 +1,23 @@
+import { useEffect, useState } from "react";
 import { related } from "../../../typescript/interfaces/related";
-import ProductItem from "../ProductItem";
+import ProductList from "../ProductList";
 import Title from "../Title";
-import image from '../../../utilis/Images/hero6.jpg';
+import { useSelector } from "react-redux";
+import { RootState } from "../../../state-management/redux/store";
+import { product } from "../../../typescript/types/product";
 
 const RelatedProducts = ({category, subcategory}: related) => {
-console.log(category, subcategory);
+  const { products } = useSelector((store: RootState) => store.products);
+  const [ relatedProducts, setRelatedProducts ] = useState<product[]>(products);
+
+  useEffect(() => {
+    if (products.length > 0) {
+      const filteredProducts = products.filter(
+        (item) => item.category === category || item.subCategory === subcategory
+      );
+      setRelatedProducts(filteredProducts);
+    }
+  }, [products, category, subcategory]);
 
   return (
     <div className="my-24">
@@ -12,8 +25,7 @@ console.log(category, subcategory);
         <Title text1="RELATED" text2="PRODUCTS" />
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
-      </div>
+        <ProductList products={relatedProducts}/>
     </div>
   )
 }

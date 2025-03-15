@@ -5,6 +5,7 @@ import sellersSlice from './slices/sellers';
 import sellerProfileInfoSlice from './slices/sellerProfileSlice';
 import myProductsSlice from './slices/myProductsSlice';
 import productSlice from './slices/productSlice';
+import productsSlice from './slices/products';
 
 export const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
         sellerProfile: sellerProfileInfoSlice,
         myProducts: myProductsSlice,
         productInfo: productSlice,
+        products: productsSlice,
     },
 });
 

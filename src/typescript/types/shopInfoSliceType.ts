@@ -1,3 +1,5 @@
+import { product } from "./product";
+
 export type shopInfoSliceType = {
     loading: boolean,
     myShopInfo: shopInfoType | null;
@@ -6,6 +8,7 @@ export type shopInfoSliceType = {
 export type sellerProfileSliceType = {
     loading: boolean,
     shopInfo: shopInfoType | null;
+    products: product[],
 }
 
 export type shopInfoType = {
@@ -15,6 +18,7 @@ export type shopInfoType = {
     description: string,
     type: string,
     categories: string[],
+    myproducts: product[],
 }
 
 export type businessAddress = {

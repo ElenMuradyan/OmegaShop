@@ -32,6 +32,7 @@ import Sellers from "./pages/Sellers";
 import AddProduct from "./pages/AddProductPage";
 import { fetchMyProducts } from "./state-management/redux/slices/myProductsSlice";
 import MyProducts from "./pages/MyProducts";
+import { fetchProducts } from "./state-management/redux/slices/products";
 
 function App() {
   const { isAuth } = useSelector((store: RootState) => store.userData.authUserInfo);
@@ -42,6 +43,7 @@ function App() {
       const { data } = await supabase.auth.getSession();
       if(data.session?.user?.email){
         await dispatch(fetchUserData(data.session.user.email));
+        await dispatch(fetchProducts());
 
         if(data.session.user.user_metadata.userRole === 'seller'){          
           dispatch(fetchShopInfo(data.session.user.email));
@@ -73,6 +75,7 @@ function App() {
           {/* Cabinet */}
 
           <Route path={ROUTE_NAMES.CABINET} element={isAuth ? <CabinetLayout /> : <Navigate to={ROUTE_NAMES.LOGIN} />}>
+          <Route index element={<Home/>} />
             {/* Edit */}
             <Route path={ROUTE_NAMES.EDITDATA} element={<EditDataLayout />}>
             <Route path={ROUTE_NAMES.BUYEREDITDATA} element={<BuyerProfileEdit />} />

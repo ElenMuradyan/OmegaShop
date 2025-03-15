@@ -8,10 +8,10 @@ export interface product {
     subCategory: string,
     stock: number,
     usedType: string,
-    options: optionType,
+    options: optionType[],
 }
 
 export type optionType = {
     optionName: string,
-    optionValue: string,
+    optionValue: string[],
 }

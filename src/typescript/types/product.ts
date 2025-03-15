@@ -7,11 +7,11 @@ export type product = {
     price: number,
     description: string,
     category: string, 
-    subCategoy: string,
+    subCategory: string,
     stock: number,
     usedType: string,
     autor: string,
-    options: optionType,
+    options: optionType[],
 }
 
 export type productInitialValue = {

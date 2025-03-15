@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { supabase } from "../../../services/supabase/supabase";
 import { product, productInitialValue } from "../../../typescript/types/product";
-import { suboptions } from "../../../utilis/optionNamesOptions";
 
 const initialState: productInitialValue = {
     loading: true,

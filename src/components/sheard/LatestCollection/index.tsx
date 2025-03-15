@@ -1,8 +1,13 @@
 import ProductItem from "../ProductItem";
 import Title from "../Title";
 import image from '../../../utilis/Images/hero5.jpg';
+import { useSelector } from "react-redux";
+import { RootState } from "../../../state-management/redux/store";
+import ProductList from "../ProductList";
 
 const LatestCollection = () => {
+  const { products } = useSelector((store: RootState) => store.products);
+
   return (
     <div className="my-10">
       <div className="text-center py-8 text-3xl">
@@ -11,17 +16,7 @@ const LatestCollection = () => {
         {/* Hi everyone this page is for you to show the best apranqner. */}
         </p>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
-      <ProductItem subCategory="hi" id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
-      <ProductItem subCategory="hi"id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
-      <ProductItem subCategory="hi"id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
-      <ProductItem subCategory="hi"id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
-
-      <ProductItem subCategory="hi"id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
-      <ProductItem subCategory="hi" id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
-      <ProductItem subCategory="hi"id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
-      <ProductItem subCategory="hi"id='43' image={image} name='Soap' price={4500} description='Softens hands' category='House Holdment' stock={5}></ProductItem>
-      </div>
+      <ProductList products={products}/>
     </div>
   )
 }
