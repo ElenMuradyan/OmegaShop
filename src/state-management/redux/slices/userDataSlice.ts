@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { supabase } from "../../../services/supabase/supabase";
 import { userData, userDataSliceType } from "../../../typescript/types/userDataState";
+import { cartProduct } from "../../../typescript/interfaces/product";
 
 const initialState: userDataSliceType = {
     loading: true,
@@ -33,6 +34,11 @@ const userDataSlice = createSlice({
         },
         setIsAuth: (state, action) => {
             state.authUserInfo.isAuth = action.payload
+        },
+        setCart: (state, action) => {
+            if(state.authUserInfo.userData){
+                state.authUserInfo.userData.cart = action.payload as cartProduct[];
+            }
         }
     },
     extraReducers:(builder) => {
@@ -53,5 +59,5 @@ const userDataSlice = createSlice({
     }
 });
 
-export const { changeLoading, setIsAuth } = userDataSlice.actions;
+export const { changeLoading, setIsAuth, setCart } = userDataSlice.actions;
 export default userDataSlice.reducer;

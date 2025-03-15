@@ -16,6 +16,14 @@ export const names: Record<string, string> = {
     weight: 'քաշը',
 }
 
+export const cartNames: Record<string, string> = {
+    size: 'Չափսը',
+    color: 'Գույնը',
+    material: 'Նյութը',
+    power: 'Հզորությունը',
+    weight: 'Քաշը',
+}
+
 export const suboptions:Record<string, SelectProps['options']> = {
     size: [
         { label: "X-Small", value: "X-Small" },

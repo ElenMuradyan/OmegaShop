@@ -1,3 +1,5 @@
+import { optionType } from "../interfaces/product"
+
 export type userDataSliceType = {
     loading: boolean,
     error: null | string,
@@ -15,6 +17,7 @@ export type userData = {
     phone: string,
     role: string,
     address: address,
+    cart: cartProductType[],
 }
 
 export type address = {
@@ -34,4 +37,15 @@ export type sellerAddresses = {
     businessStreet: string,
     businessPostIndex: number,
     businessPhone: string,
+}
+
+export type cartProductType = {
+    productId: string,
+    name: string,
+    price: number,
+    image: string,
+    stock: number,
+    maxValue: number,
+    index: number,
+    options: optionType[],
 }

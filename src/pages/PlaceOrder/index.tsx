@@ -3,12 +3,20 @@ import Title from "../../components/sheard/Title"
 import CardTotal from "../../components/sheard/CardTotal";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_NAMES } from "../../utilis/constants";
+import { useSelector } from "react-redux";
+import { RootState } from "../../state-management/redux/store";
+import { useEffect } from "react";
 
 const PlaceOrder = () => {
+  const { userData } = useSelector((state: RootState) => state.userData.authUserInfo);
   const [ form ] = Form.useForm();
   const navigate = useNavigate();
 
-  const handleDeliver = () => {};
+  const handleDeliver = () => {}; 
+
+  useEffect(() => {
+    form.setFieldsValue(userData?.address);
+  },[]);
 
   return (
     <div className="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t">
@@ -39,7 +47,7 @@ const PlaceOrder = () => {
             </Form.Item>
             <Form.Item
             label='Փողոց'
-            name='steet'
+            name='street'
             rules={[{
               required:true,
               message:'Գրեք առաքման փողոցը։'
@@ -49,7 +57,7 @@ const PlaceOrder = () => {
             </Form.Item>
             <Form.Item
             label='Փոստի համար'
-            name='zipcode'
+            name='postIndex'
             rules={[{
               required:true,
               message:'Գրեք փոստի համարը։'

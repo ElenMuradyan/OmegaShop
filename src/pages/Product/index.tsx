@@ -52,6 +52,10 @@ const Product = () => {
         productId,
         stock: orderedProductInfo.stock,
         options: orderedProductInfo.options,
+        price: productInfo.price,
+        image: productInfo.images[0],
+        name: productInfo.name,
+        maxValue: productInfo.stock,
       });
 
       const { error: updateError } = await supabase

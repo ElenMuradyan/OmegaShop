@@ -15,3 +15,14 @@ export type optionType = {
     optionName: string,
     optionValue: string[],
 }
+
+export interface cartProduct {
+    productId: string,
+    name: string,
+    price: number,
+    image: string,
+    stock: number,
+    maxValue: number,
+    index: number,
+    options: optionType[],
+}

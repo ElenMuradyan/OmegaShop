@@ -1,6 +1,4 @@
-import ProductItem from "../ProductItem";
 import Title from "../Title";
-import image from '../../../utilis/Images/hero5.jpg';
 import { useSelector } from "react-redux";
 import { RootState } from "../../../state-management/redux/store";
 import ProductList from "../ProductList";
