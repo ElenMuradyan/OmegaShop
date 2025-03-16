@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import RelatedProducts from "../../components/sheard/RelatedProducts";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state-management/redux/store";
@@ -8,8 +8,10 @@ import { names } from "../../utilis/optionNamesOptions";
 import { orderedProductInfo, selectedOptions } from "../../typescript/types/oderedProductInfo";
 import { Input } from "antd";
 import { supabase } from "../../services/supabase/supabase";
+import { LoadingOutlined } from "@ant-design/icons";
+import { setCart } from "../../state-management/redux/slices/userDataSlice";
+import { ROUTE_NAMES } from "../../utilis/constants";
 
-// image scroll
 const Product = () => {
   const { productId } = useParams();
   const { productInfo } = useSelector((state: RootState) => state.productInfo);
@@ -17,10 +19,10 @@ const Product = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [imageurl, setimageurl] = useState(productInfo?.images[0]);
   const [ choosenOptions, setChoosenOptions ] = useState<selectedOptions>({});
-
+  const [ buttonLoading, setButtonLoading ] = useState<boolean>(false);
   const [ orderedProductInfo, setOrederedProductInfo ] = useState<orderedProductInfo>({stock: 0, options: choosenOptions});
-
   const [ errrorMessage, setErrorMessage ] = useState<string>('');
+  const navigate = useNavigate();
 
   const handleAddToCard = async () => {
     const allOptionsSelected = productInfo?.options.every(
@@ -38,6 +40,7 @@ const Product = () => {
     }
 
     try{
+      setButtonLoading(true);
       const { data: user, error: fetchError } = await supabase
       .from("users")
       .select("cart")
@@ -49,6 +52,7 @@ const Product = () => {
       let updatedCart = user.cart || [];
 
       updatedCart.push({
+        autorEmail: productInfo.autor,
         productId,
         stock: orderedProductInfo.stock,
         options: orderedProductInfo.options,
@@ -65,8 +69,13 @@ const Product = () => {
       .eq("id", userData?.id);
 
       if (updateError) throw updateError;
+
+      dispatch(setCart(updatedCart));
+      navigate(ROUTE_NAMES.CARD);
     }catch(error: any){
       console.error("Error adding to cart:", error.message);
+    }finally{
+      setButtonLoading(false);
     }
   };
 
@@ -90,9 +99,7 @@ const Product = () => {
   return (
     <div className="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100">
       <div className="flex gap-12 sm:gap-12 flex-col sm:flex-row">
-        {/* image */}
         <div className="flex-1 flex flex-col-reverse gap-3 sm:flex-row h-[450px]">
-  {/* Scrollable Thumbnails Section */}
         <div className="flex sm:flex-col overflow-x-auto sm:overflow-y-auto justify-between sm:justify-normal sm:w-[18.7%] w-full 
                         bg-gray-100 p-2 rounded-md shadow-md h-full max-h-[450px]">
           {
@@ -153,7 +160,7 @@ const Product = () => {
         }))}}/>
 
         <hr className="m-8 sm:w-4/5"/>
-          <button onClick={handleAddToCard} className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700">ADD TO CARD</button>
+          <button onClick={handleAddToCard} className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700">{buttonLoading ? <><LoadingOutlined/> ...LOADING</> : 'ADD TO CARD'}</button>
           {errrorMessage && <p className="text-red-500">{errrorMessage}</p>}
           <hr className="mt-8 sm:w-4/5"/>
           <div className="text-sm text-gray-500 mt-5 flex flex-col gap-1">

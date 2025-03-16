@@ -41,6 +41,7 @@ export type sellerAddresses = {
 
 export type cartProductType = {
     productId: string,
+    autorEmail: string,
     name: string,
     price: number,
     image: string,

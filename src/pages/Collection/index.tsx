@@ -21,6 +21,7 @@ const Collection = () => {
 
   const handleCategoryChange = (category: string) => {
     selectedCategory === category ? setSelectedCategory('') : setSelectedCategory(category);
+    setSelectedSubcategories([]);
   };
 
   

@@ -5,18 +5,119 @@ import { useNavigate } from "react-router-dom";
 import { ROUTE_NAMES } from "../../utilis/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state-management/redux/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { address, cartProductType } from "../../typescript/types/userDataState";
+import { supabase } from "../../services/supabase/supabase";
+import { cartProduct } from "../../typescript/interfaces/product";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const PlaceOrder = () => {
   const { userData } = useSelector((state: RootState) => state.userData.authUserInfo);
+  const [ loading, setLoading ] = useState<boolean>(false);
   const [ form ] = Form.useForm();
   const navigate = useNavigate();
 
-  const handleDeliver = () => {}; 
+  const handleDeliver = async (values: address) => {
+    try{
+      setLoading(true);
+      const { data: user, error } = await supabase.
+      from('users')
+      .select('*')
+      .eq("id", userData?.id)
+      .single();
+
+      if (error) throw error;
+  
+      const products = user.cart ? user.cart.filter((item: cartProductType) => item.ordering) : [];
+
+      const deliveryInformation = {
+        address: values,
+        products,
+        totalPrice: products.reduce((acc: number, item: cartProductType) => acc + item.price * item.stock, 0),
+        status: "pending",
+        orderDate: new Date(),
+      };
+      const updatedOrders = [...(user.orders || []), deliveryInformation];
+
+      const { error: orderError } = await supabase
+      .from("users")
+      .update({ orders: updatedOrders })
+      .eq("id", userData?.id);
+
+      if (orderError) throw orderError;
+
+      const updatedCart = user.cart ? user.cart.filter((item: cartProductType) => !item.ordering) : [];
+
+      const { error: updateError } = await supabase
+      .from("users")
+      .update({ cart: updatedCart })
+      .eq("id", userData?.id);
+
+      if (updateError) throw updateError;
+
+      handleOrder(products, values);
+      navigate(ROUTE_NAMES.ORDERS);
+    }catch(error: any){
+      console.error("Order submission failed:", error.message);
+    }finally{
+      setLoading(false);
+    }
+  }; 
+
+  const handleOrder = async (products: cartProduct[], address: address) => {
+    try{
+      const order: Record<string, cartProduct[]> = {}
+      products.forEach((item) => {
+        if(order[item.autorEmail]){
+          order[item.autorEmail].push(item);
+        }else{
+          order[item.autorEmail] = [item];
+        }
+      })
+  
+      await Promise.all(
+        Object.entries(order).map(async([sellerEmail, sellerProducts]) => {
+          const totalPrice = sellerProducts.reduce(
+            (acc, item) => acc + item.price * item.stock,
+            0
+          );
+
+          const orderDetails = {
+            address,
+            products: sellerProducts,
+            totalPrice,
+            status: 'pending',
+            consumer: userData?.email,
+            orderDate: new Date(),
+          };
+
+          const { data: seller, error: fetchError } = await supabase
+          .from("sellers")
+          .select("newOrders")
+          .eq("email", sellerEmail)
+          .single();
+
+        if (fetchError) throw fetchError;
+
+        const updatedOrders = [...(seller.newOrders || []), orderDetails];
+
+        const { error: updateError } = await supabase
+          .from("sellers")
+          .update({ newOrders: updatedOrders })
+          .eq("email", sellerEmail);
+
+        if (updateError) throw updateError;
+        })
+      )
+      console.log("Orders placed successfully!");
+    }catch(error: any){
+      console.error("Order processing failed:", error.message);
+    }
+  }
 
   useEffect(() => {
     form.setFieldsValue(userData?.address);
-  },[]);
+  }, []);
 
   return (
     <div className="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t">
@@ -65,6 +166,10 @@ const PlaceOrder = () => {
             >
               <Input placeholder="Փոստի համար" type="text"/>
             </Form.Item>
+
+            <div className="w-full text-end mt-8">
+            <button type="submit" className="bg-black text-white px-16 py-3 text-sm">{loading ? <LoadingOutlined /> : 'ORDER'}</button>
+          </div>
           </Form>
 
 
@@ -81,9 +186,6 @@ const PlaceOrder = () => {
             </div>
           </div>
 
-          <div className="w-full text-end mt-8">
-            <button className="bg-black text-white px-16 py-3 text-sm" onClick={() => navigate(ROUTE_NAMES.ORDERS)}>ORDER</button>
-          </div>
         </div>
       </div>
     </div>

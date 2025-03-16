@@ -21,6 +21,7 @@ export const fetchMyProducts = createAsyncThunk(
             });
 
             const products = await Promise.all(productPromises);
+console.log(products);
 
             return products as product[];
         }catch(error: any){

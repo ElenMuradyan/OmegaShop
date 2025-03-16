@@ -17,6 +17,7 @@ export type optionType = {
 }
 
 export interface cartProduct {
+    autorEmail: string,
     productId: string,
     name: string,
     price: number,
