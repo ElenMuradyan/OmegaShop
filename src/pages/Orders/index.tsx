@@ -1,37 +1,25 @@
+import { useSelector } from "react-redux";
 import Title from "../../components/sheard/Title";
-import image from '../../utilis/Images/hero4.jpg';
+import { RootState } from "../../state-management/redux/store";
+import OrderComponent from "../../components/sheard/OrdersComponent";
 
-const Orders = () => {
-  return (
-    <div className="border-t pt-16">
-      <div className="text-2xl">
+const Orders  = () => {
+  const { userData } = useSelector((state: RootState) => state.userData.authUserInfo);
+
+  return (      
+    <div className="border-t pt-16 px-4 md:px-8">
+      <div className="text-2xl mb-6">
         <Title text1="MY" text2="ORDERS" />
       </div>
-
-      <div>
-        <div className="py-4 border-t border-b text-gray-700 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div className="flex items-start gap-6 text-sm">
-            <img src={image} alt="" className="w-16 sm:w-20"/>
-            <div>
-              <p className="sm:text-base font-medium">Soap</p>
-              <div className="flex items-center gap-3 mt-2 text-base text-gray-700">
-                <p className="text-lg">400 AMD</p>
-                <p>Quantity: 1</p>
-                <p>Size: S</p>
-              </div>
-              <p className="mt-2">Date: <span className="text-gray-400">25, Jul, 2025</span></p>
-            </div>
-            <div className="md:w-1/2 flex justify-between">
-          <div className="flex items-center gap-2">
-            <p className="min-w-2 h-2 rounded-full bg-green-500"></p>
-            <p className="text-sm md:text-base">Ready for Delivery</p>
-          </div>
-          </div>
-          </div>
-        </div>
-      </div>
+  
+      {userData?.orders && userData?.orders.length > 0 ? (
+        userData.orders.map((order, index) => (
+          <OrderComponent order={order} key={index}/>
+        ))
+      ) : (
+        <p className="text-gray-600 text-center mt-6">No orders found.</p>
+      )}
     </div>
-  )
-};
-
+  );
+}
 export default Orders;

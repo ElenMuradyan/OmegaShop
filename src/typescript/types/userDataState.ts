@@ -18,6 +18,16 @@ export type userData = {
     role: string,
     address: address,
     cart: cartProductType[],
+    orders: order[],
+}
+
+export type order = {
+    address: address,
+    products: cartProductType[],
+    totalPrice: number,
+    status: string,
+    sellerEmail: string,
+    orderDate: string,
 }
 
 export type address = {

@@ -17,7 +17,7 @@ const PlaceOrder = () => {
   const [ form ] = Form.useForm();
   const navigate = useNavigate();
 
-  const handleDeliver = async (values: address) => {
+  const handleOrder = async (values: address) => {
     try{
       setLoading(true);
       const { data: user, error } = await supabase.
@@ -28,44 +28,8 @@ const PlaceOrder = () => {
 
       if (error) throw error;
   
-      const products = user.cart ? user.cart.filter((item: cartProductType) => item.ordering) : [];
+      const products:cartProductType[] = user.cart ? user.cart.filter((item: cartProductType) => item.ordering) : [];
 
-      const deliveryInformation = {
-        address: values,
-        products,
-        totalPrice: products.reduce((acc: number, item: cartProductType) => acc + item.price * item.stock, 0),
-        status: "pending",
-        orderDate: new Date(),
-      };
-      const updatedOrders = [...(user.orders || []), deliveryInformation];
-
-      const { error: orderError } = await supabase
-      .from("users")
-      .update({ orders: updatedOrders })
-      .eq("id", userData?.id);
-
-      if (orderError) throw orderError;
-
-      const updatedCart = user.cart ? user.cart.filter((item: cartProductType) => !item.ordering) : [];
-
-      const { error: updateError } = await supabase
-      .from("users")
-      .update({ cart: updatedCart })
-      .eq("id", userData?.id);
-
-      if (updateError) throw updateError;
-
-      handleOrder(products, values);
-      navigate(ROUTE_NAMES.ORDERS);
-    }catch(error: any){
-      console.error("Order submission failed:", error.message);
-    }finally{
-      setLoading(false);
-    }
-  }; 
-
-  const handleOrder = async (products: cartProduct[], address: address) => {
-    try{
       const order: Record<string, cartProduct[]> = {}
       products.forEach((item) => {
         if(order[item.autorEmail]){
@@ -82,8 +46,8 @@ const PlaceOrder = () => {
             0
           );
 
-          const orderDetails = {
-            address,
+          const orderDetailsForSeller = {
+            address: values,
             products: sellerProducts,
             totalPrice,
             status: 'pending',
@@ -99,19 +63,48 @@ const PlaceOrder = () => {
 
         if (fetchError) throw fetchError;
 
-        const updatedOrders = [...(seller.newOrders || []), orderDetails];
+        const updatedOrdersForSeller = [...(seller.newOrders || []), orderDetailsForSeller];
 
         const { error: updateError } = await supabase
           .from("sellers")
-          .update({ newOrders: updatedOrders })
+          .update({ newOrders: updatedOrdersForSeller })
           .eq("email", sellerEmail);
 
         if (updateError) throw updateError;
-        })
+
+        const orderDetailsForBuyer = {
+          address: values,
+          products: sellerProducts,
+          totalPrice,
+          status: "pending",
+          sellerEmail,
+          orderDate: new Date(),
+        }
+
+        const updatedOrdersForBuyer = [...(user.orders || []), orderDetailsForBuyer];
+        const { error: orderError } = await supabase
+        .from("users")
+        .update({ orders: updatedOrdersForBuyer })
+        .eq("id", userData?.id);
+
+        if (orderError) throw updateError;
+
+        const updatedCart = user.cart ? user.cart.filter((item: cartProductType) => !item.ordering) : [];
+
+        const { error: cartUpdateError } = await supabase
+        .from("users")
+        .update({ cart: updatedCart })
+        .eq("id", userData?.id);
+  
+        if (cartUpdateError) throw updateError;
+        }) 
       )
+      navigate(ROUTE_NAMES.ORDERS);
       console.log("Orders placed successfully!");
     }catch(error: any){
       console.error("Order processing failed:", error.message);
+    }finally{
+      setLoading(false);
     }
   }
 
@@ -125,7 +118,7 @@ const PlaceOrder = () => {
         <div className="text-xl sm:text-2xl my-3">
           <Title text1="DELIVERY" text2="INFORMATION"/>
         </div>
-          <Form layout="vertical" form={form} onFinish={handleDeliver}>
+          <Form layout="vertical" form={form} onFinish={handleOrder}>
             <Form.Item
             label='Մարզ'
             name='region'
