@@ -1,7 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { supabase } from "../../../services/supabase/supabase";
 import { shopInfoSliceType, shopInfoType } from "../../../typescript/types/shopInfoSliceType";
 import { order } from "../../../typescript/types/userDataState";
+import { FIRESTORE_PATH_NAMES } from "../../../utilis/constants/firebaseConstants";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../../services/firebase/firebase";
+import { product } from "../../../typescript/types/product";
 
 const initialState: shopInfoSliceType = {
     loading: true,
@@ -11,7 +14,8 @@ const initialState: shopInfoSliceType = {
         processingOrders: [],
         sentOrders: [],
         doneOrders: [],
-    }
+    },
+    myproducts: [],
 };
 
 export const fetchOrders = createAsyncThunk(
@@ -30,14 +34,12 @@ export const fetchOrders = createAsyncThunk(
                 if (key === 'sentOrders') acc.sentOrders = data;
                 if (key === 'doneOrders') acc.doneOrders = data;
                 if (key === 'processingOrders') acc.processingOrders = data;
-                if (key === 'failedOrders') acc.failedOrders = data;
                 return acc;
             }, {
                 newOrders: [] as order[], 
                 sentOrders: [] as order[],
                 doneOrders: [] as order[],
                 processingOrders: [] as order[],
-                failedOrders: [] as order[],
             });            
 
             return fetchedOrders;
@@ -51,11 +53,42 @@ export const fetchSellerOrderProducts = createAsyncThunk(
     "orders/fetchSellerOrderProducts",
     async (orderIds: string[], { rejectWithValue }) => {
         try{
-            const { data, error } = await supabase.from('orders').select('*').in("id", orderIds);
+            const orderPrmises = orderIds.map(orderId => {
+                const orderRef = doc(db, FIRESTORE_PATH_NAMES.ORDERS, orderId);
+                return getDoc(orderRef);
+            });
 
-            if (error) throw error;
+            const orderDocs = await Promise.all(orderPrmises);
 
-            return data as order[];
+            const orders = orderDocs.map(orderDoc => {
+                if(orderDoc.exists()) {
+                    return { id: orderDoc.id, ...orderDoc.data() };
+                }else{
+                    return null;
+                }
+            }).filter(order => order !== null);
+
+            return orders;
+        }catch(error: any){
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const fetchMyProducts = createAsyncThunk(
+    'products/fetchmyproducts',
+    async(productIds: string[], { rejectWithValue }) => {
+        try{
+            const productsRef = collection(db, FIRESTORE_PATH_NAMES.PRODUCTS);
+            const productsQuery = query(productsRef, where("id", "in", productIds));
+
+            const productsSnap = await getDocs(productsQuery);
+            const products = productsSnap.docs.map(item => ({
+                id: item.id,
+                ...item.data()
+            }))
+
+            return products as product[];
         }catch(error: any){
             return rejectWithValue(error.message);
         }
@@ -66,19 +99,25 @@ export const fetchShopInfo = createAsyncThunk(
     "sellers/fetchShopInfo",
     async(email :string, { rejectWithValue, dispatch }) => {
         try{
-            const { data, error } = await supabase.from('sellers').select('*').eq("email", email).single();
-            if(error) throw error;
-            
+            const sellerRef = doc(db, FIRESTORE_PATH_NAMES.SELLERS, email);
+            const sellerDoc = await getDoc(sellerRef);
+
+            if (!sellerDoc.exists()) {
+                throw new Error("Seller not found");
+            }
+ 
+            const sellerData = sellerDoc.data();
             const orders = {
-                newOrders: data.newOrders,
-                sentOrders: data.sentOrders,
-                doneOrders: data.doneOrders,
-                failedOrders: data.failedOrders,
-                processingOrders: data.processingOrders
+                newOrders: sellerData.newOrders,
+                sentOrders: sellerData.sentOrders,
+                doneOrders: sellerData.doneOrders,
+                failedOrders: sellerData.failedOrders,
+                processingOrders: sellerData.processingOrders
             }
             dispatch(fetchOrders(orders));
+            dispatch(fetchMyProducts(sellerData.myproducts));
 
-            return data as shopInfoType;
+            return { id: sellerDoc.id, ...sellerData } as shopInfoType;
         }catch(error: any){
             return rejectWithValue(error.message);
         }
@@ -101,6 +140,13 @@ const shopInfoSlice = createSlice({
         .addCase(fetchShopInfo.pending, (state) => {
             state.loading = true;
             state.myShopInfo = null;
+            state.myproducts = [];
+            state.orders =  {
+                newOrders: [],
+                processingOrders: [],
+                sentOrders: [],
+                doneOrders: [],
+            };
         })
         .addCase(fetchShopInfo.fulfilled, (state, action) => {
             state.loading = false;
@@ -120,6 +166,12 @@ const shopInfoSlice = createSlice({
                 sentOrders: [],
                 doneOrders: [],
             };
+        })
+        .addCase(fetchMyProducts.fulfilled, (state, action) => {
+            state.myproducts = action.payload;
+        })
+        .addCase(fetchMyProducts.fulfilled, (state) => {
+            state.myproducts = [];
         })
     }
 });

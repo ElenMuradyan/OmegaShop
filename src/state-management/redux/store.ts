@@ -3,7 +3,6 @@ import userDataSlice from './slices/userDataSlice';
 import shopInfoSlice from './slices/shopInfoSlice';
 import sellersSlice from './slices/sellers';
 import sellerProfileInfoSlice from './slices/sellerProfileSlice';
-import myProductsSlice from './slices/myProductsSlice';
 import productSlice from './slices/productSlice';
 import productsSlice from './slices/products';
 
@@ -13,7 +12,6 @@ export const store = configureStore({
         shopInfo: shopInfoSlice,
         sellers: sellersSlice,
         sellerProfile: sellerProfileInfoSlice,
-        myProducts: myProductsSlice,
         productInfo: productSlice,
         products: productsSlice,
     },

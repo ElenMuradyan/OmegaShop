@@ -6,7 +6,7 @@ import { ROUTE_NAMES } from '../../utilis/constants/constants';
 import { Link } from 'react-router-dom';
 
 const MyProducts = () => {
-    const { myProducts } = useSelector((store: RootState) => store.myProducts)
+    const { myproducts } = useSelector((store: RootState) => store.shopInfo)
   return (
     <div className="bg-white p-6 shadow-md rounded-lg">
       <Link
@@ -18,7 +18,7 @@ const MyProducts = () => {
       </Link>
 
       <div className="mt-6">
-        <ProductList products={myProducts} />
+        <ProductList products={myproducts} />
       </div>
     </div>
   )

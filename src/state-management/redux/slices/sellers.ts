@@ -1,6 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { supabase } from "../../../services/supabase/supabase";
 import { seller, sellersSliceType } from "../../../typescript/types/sellersSliceType";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../../services/firebase/firebase";
+import { FIRESTORE_PATH_NAMES } from "../../../utilis/constants/firebaseConstants";
 
 const initialState: sellersSliceType = {
     loading: true,
@@ -11,10 +14,15 @@ export const fetchSellers = createAsyncThunk(
     "sellers/fetchSellers",
     async( _, { rejectWithValue }) => {
         try{
-            const { data, error } = await supabase.from('sellers').select('*');
+            const sellerRef = collection(db, FIRESTORE_PATH_NAMES.SELLERS);
+            const sellersSnap = await getDocs(sellerRef);
 
-            if(error) throw error;
-            return data as seller[];
+            const sellers = sellersSnap.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+              }));
+              
+              return sellers as seller[];
         }catch(error: any){
             return rejectWithValue(error.message);
         }
@@ -37,7 +45,7 @@ const sellersSlice = createSlice({
         })
         .addCase(fetchSellers.fulfilled, (state, action) => {
             state.loading = false;
-            state.sellers = action.payload;
+            state.sellers = action.payload ;
         })
         .addCase(fetchSellers.rejected, (state) => {
             state.loading = false;

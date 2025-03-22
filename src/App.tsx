@@ -30,7 +30,6 @@ import SellerAddressEdit from "./pages/ProfileEdit/SellerAddressEdit";
 import Profile from "./pages/Profile";
 import Sellers from "./pages/Sellers";
 import AddProduct from "./pages/AddProductPage";
-import { fetchMyProducts } from "./state-management/redux/slices/myProductsSlice";
 import MyProducts from "./pages/MyProducts";
 import { fetchProducts } from "./state-management/redux/slices/products";
 import CustomersOrdersLayout from "./layouts/CustomersOrdersLayout";
@@ -38,6 +37,7 @@ import SellersOrders from "./pages/SellersOrders";
 import BuyerContract from "./pages/Contracts/BuyerContract";
 import SellerContract from "./pages/Contracts/SellerContract";
 import TermsAndConditions from "./pages/Contracts/TermsAndConditions";
+import { auth } from "./services/firebase/firebase";
 
 function App() {
   const { isAuth } = useSelector((store: RootState) => store.userData.authUserInfo);
@@ -45,16 +45,17 @@ function App() {
 
   useEffect(()=>{
     const restoreSession = async () => {
-      const { data } = await supabase.auth.getSession();
-       console.log(data.session?.user);
-       
-      if(data.session?.user?.email){
-        await dispatch(fetchUserData(data.session.user.email));
+      const user = auth.currentUser;
+
+      if(user && user.email){
+        await dispatch(fetchUserData());
         await dispatch(fetchProducts());
 
-        if(data.session.user.user_metadata.userRole === 'seller'){          
-          dispatch(fetchShopInfo(data.session.user.email));
-          dispatch(fetchMyProducts(data.session.user.email));
+        const userRole = user.displayName;
+        console.log(userRole);
+        
+        if(userRole === 'seller'){          
+          dispatch(fetchShopInfo(user.email));
         }
       }
       dispatch(changeLoading(false));

@@ -4,7 +4,8 @@ import { order } from "./userDataState";
 export type shopInfoSliceType = {
     loading: boolean,
     myShopInfo: shopInfoType | null;
-    orders: orders
+    orders: orders,
+    myproducts: product[]
 }
 
 export type orders = {
@@ -23,6 +24,7 @@ export type sellerProfileSliceType = {
 }
 
 export type shopInfoType = {
+    id: string,
     businessAddress: businessAddress,
     email: string,
     shopName: string,

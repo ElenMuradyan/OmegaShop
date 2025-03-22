@@ -14,7 +14,7 @@ import { orderStatuses } from "../../utilis/constants/orderStatuses";
 import { setUserOrders } from "../../state-management/redux/slices/userDataSlice";
 
 const PlaceOrder = () => {
-  const { userData } = useSelector((state: RootState) => state.userData.authUserInfo);
+  const { userData, cart } = useSelector((state: RootState) => state.userData.authUserInfo);
   const { myShopInfo } = useSelector((state: RootState) => state.shopInfo);
   const [ loading, setLoading ] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
@@ -24,7 +24,7 @@ const PlaceOrder = () => {
   const handleOrder = async (values: address) => {
     try{
       setLoading(true);
-      const products:cartProductType[] = userData?.cart ? userData.cart.filter((item: cartProductType) => item.ordering) : [];
+      const products:cartProductType[] = cart ? cart.filter((item: cartProductType) => item.ordering) : [];
 
       const order = products.reduce<Record<string, cartProduct[]>>((acc, item) => {
         acc[item.autorEmail] = acc[item.autorEmail] ? [...acc[item.autorEmail], item] : [item];
@@ -77,7 +77,7 @@ const PlaceOrder = () => {
 
         const updatedOrdersForBuyer = [...(userData?.orders || []), order.id];
 
-        const updatedCart = userData?.cart ? userData?.cart.filter((item: cartProductType) => !item.ordering) : [];
+        const updatedCart = cart ? cart.filter((item: cartProductType) => !item.ordering) : [];
 
         const { error: buyerUpdateError } = await supabase
         .from("users")

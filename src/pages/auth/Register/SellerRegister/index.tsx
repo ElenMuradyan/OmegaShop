@@ -6,103 +6,68 @@ import { supabase } from '../../../../services/supabase/supabase';
 import { Link, useNavigate } from 'react-router-dom';
 import { categoryLabels } from '../../../../typescript/types/categories';
 import { options } from '../../../../utilis/constants/sellerTypeOptions';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { auth, db } from '../../../../services/firebase/firebase';
+import { FIRESTORE_PATH_NAMES } from '../../../../utilis/constants/firebaseConstants';
+import { doc, setDoc } from 'firebase/firestore';
 
 const { Text } = Typography;
   
 const SellerRegister = () => {
      const [ form ] = Form.useForm();
      const navigate = useNavigate();
+     const [ loading, setLoading ] = useState<boolean>( false );
 
-     const handleRegister = async (values: sellerRegister) => {
+     const handleSellerRegister = async (values: sellerRegister) => {
         const { firstName, lastName, email, phone, password, region, city, street, postIndex, businessRegion, businessCity, businessStreet, businessPostIndex, businessPhone, shopName, description, type, categories } = values;
         const termsAndConditionsSelected = form.getFieldValue('termsAndConditions');
-        const sellerPoliciesSelected = form.getFieldValue('sellerPolicies');
-
-        if (!termsAndConditionsSelected || !sellerPoliciesSelected) {
+        const buyerPoliciesSelected = form.getFieldValue('sellerPolicies');
+        
+        if (!termsAndConditionsSelected || !buyerPoliciesSelected) {
             notification.error({
               message: 'Պարտադիր համաձայնություն',
               description: 'Խնդրում ենք ընդունել պայմաններն ու համաձայնությունները:',
             });
-          } else {      
-            try {
-                const user1 = supabase.auth.getUser();
-                if (!user1) {
-                    throw new Error("Օգտագործողը չի հաստատվել։");
-                } else {
-                    console.log("Օգտագործողը հաստատվել է:", user1);
-                }
-                const { data, error } = await supabase.auth.signUp({
-                    email,
-                    password,
-                    options: {
-                        emailRedirectTo: undefined,
-                        data: {
-                            userRole: "seller",
-                        }
-                    }
-                });
-                if (error) {
-                    throw new Error(error.message);
-                }
-                const user = data.user;
-                if (!user) {
-                    throw new Error("Օգտագործողի գրանցումը ձախողվեց։ Չկան օգտատիրոջ տվյալներ։");
-                }
-                const address = { region, city, street, postIndex };
-                const { error: dbError } = await supabase
-                    .from("users")
-                    .insert([
-                        {
-                            id: user.id,
-                            role: 'seller',
-                            firstName,
-                            lastName,
-                            email,
-                            phone,
-                            address,
-                        }
-                    ]);
-                
-                const businessAddress = { businessRegion, businessCity, businessStreet, businessPostIndex, businessPhone };
-                
-                const { error: sellerError } = await supabase
-                    .from("sellers")
-                    .insert([
-                        {
-                            id: user.id,
-                            email,
-                            businessAddress,    
-                            shopName,
-                            description,
-                            type,
-                            categories,
-                        }
-                    ]);
-                
-                if (dbError || sellerError) {
-                    const error = dbError ?? sellerError;
-                    if(error){
-                        throw new Error(error.message);
-                    }
-                }
-                localStorage.removeItem('SellerFormValues');
-                localStorage.removeItem('navigateAddress');
-            
-                notification.success({
-                    message: "Գրանցումը հաջողությամբ իրականացվել է",
-                    description: "Ձեր հաշիվը հաջողությամբ ստեղծվել է։"
-                });
-                navigate(ROUTE_NAMES.LOGIN);
-                
-                } catch (error: any) {
-                    notification.error({
-                        message: "Գրանցումը ձախողվեց",
-                        description: error.message
-                    });
-                }
-          }
-    };
+        } else {   
+        try{
+            setLoading(true);
+            const response = await createUserWithEmailAndPassword( auth, email, password );
+            const { uid } = response.user;
+            const createDoc = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, uid);
+            const address = { region, city, street, postIndex };
+
+            await setDoc(createDoc, {
+                uid, firstName, lastName, email, phone, address, role: 'seller', cart: [], orders: [],
+            });
+
+            const createSellerDoc = doc(db, FIRESTORE_PATH_NAMES.SELLERS, uid);
+            const businessAddress = { businessRegion, businessCity, businessStreet, businessPostIndex, businessPhone };
+
+            await setDoc(createSellerDoc, { uid, email, businessAddress, shopName, description, type, categories, myproducts: [], newOrders: [], sentOrders: [], doneOrders: [], processingOrders: [], returnedProducts: [] });
+            notification.success({
+                message: "Գրանցումը հաջողությամբ իրականացվել է",
+                description: "Ձեր հաշիվը հաջողությամբ ստեղծվել է։"
+            });
+
+            localStorage.removeItem('SellerFormValues');
+            localStorage.removeItem('navigateAddress');
+
+            await updateProfile(response.user, {
+                displayName: 'seller'
+            })
+
+            form.resetFields();
+            navigate(ROUTE_NAMES.LOGIN);
+        } catch (error: any) {
+            notification.error({
+                message: "Գրանցումը ձախողվեց",
+                description: error.message
+            });
+        }finally{
+            setLoading(false);
+        }
+    }};
 
     const handleNavigate = () => {
         const values = form.getFieldsValue();
@@ -125,7 +90,7 @@ const SellerRegister = () => {
         </p>
         <Form
             layout="vertical"
-            onFinish={handleRegister}
+            onFinish={handleSellerRegister}
             form={form}
             className='bg-white w-full shadow-lg rounded-lg p-8 mt-6'
         >
@@ -327,6 +292,7 @@ const SellerRegister = () => {
                 htmlType="submit"
                 size="large"
                 className="w-full sm:w-auto px-16 py-3 rounded-lg text-white bg-black hover:bg-gray-800"
+                loading={loading}
             >
                 ԳՐԱՆՑՎԵԼ
             </Button>

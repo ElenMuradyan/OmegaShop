@@ -2,6 +2,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { supabase } from "../../../services/supabase/supabase";
 import { productsSliceType } from "../../../typescript/types/myProductsSlice";
 import { product } from "../../../typescript/types/product";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../../services/firebase/firebase";
+import { FIRESTORE_PATH_NAMES } from "../../../utilis/constants/firebaseConstants";
 
 const initialState: productsSliceType = {
     loading: true,
@@ -12,10 +15,15 @@ export const fetchProducts = createAsyncThunk(
     "products/fetchProducts",
     async( _, { rejectWithValue }) => {
         try{
-            const { data, error } = await supabase.from('products').select('*');
+            const productsRef = collection(db, FIRESTORE_PATH_NAMES.PRODUCTS);
+            const productsSnap = await getDocs(productsRef);
 
-            if(error) throw error;
-            return data as product[];
+            const products = productsSnap.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+
+            return products as product[];
         }catch(error: any){
             return rejectWithValue(error.message);
         }

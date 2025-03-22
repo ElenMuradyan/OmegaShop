@@ -8,6 +8,8 @@ export interface buyerRegister {
     city: string;
     street: string;
     postIndex: string;
+    termsAndConditionsSelected: boolean;
+    buyerPoliciesSelected: boolean;
 }
 
 
@@ -30,4 +32,6 @@ export interface sellerRegister {
     description: string;
     type: string;
     categories: string[];
+    termsAndConditionsSelected: boolean;
+    sellerPoliciesSelected: boolean;
 }

@@ -6,6 +6,7 @@ export type userDataSliceType = {
     authUserInfo: {
         isAuth: boolean,
         userData: userData | null,
+        cart: cartProductType[],
         userOrders: order[]
     },
 }
@@ -18,7 +19,6 @@ export type userData = {
     phone: string,
     role: string,
     address: address,
-    cart: cartProductType[],
     orders: string[],
 }
 
@@ -53,6 +53,7 @@ export type sellerAddresses = {
 }
 
 export type cartProductType = {
+    id: string,
     productId: string,
     autorEmail: string,
     name: string,

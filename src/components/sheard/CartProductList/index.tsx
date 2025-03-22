@@ -3,12 +3,12 @@ import { RootState } from "../../../state-management/redux/store";
 import CartProductItem from "../CartProductItem";
 
 const CartProductList = () => {
-  const { userData } = useSelector((state: RootState) => state.userData.authUserInfo);
+  const { cart } = useSelector((state: RootState) => state.userData.authUserInfo);
     
   return (
     <div className="gap-y-6">
       {
-        userData?.cart.map((item, key) => {
+        cart.map((item, key) => {
             const { productId, autorEmail, stock, image, price, name, options, maxValue, ordering } = item;
             
             return(

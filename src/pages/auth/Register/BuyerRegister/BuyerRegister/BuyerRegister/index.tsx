@@ -2,85 +2,65 @@ import { Button, Checkbox, Form, Input, notification, Typography } from 'antd';
 import { regexpValidation, ROUTE_NAMES } from '../../../../../../utilis/constants/constants';
 import { buyerRegister } from '../../../../../../typescript/interfaces/register';
 import Title from '../../../../../../components/sheard/TitleComponent';
-import { supabase } from '../../../../../../services/supabase/supabase';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { auth, db } from '../../../../../../services/firebase/firebase';
+import { FIRESTORE_PATH_NAMES } from '../../../../../../utilis/constants/firebaseConstants';
+import { doc, setDoc } from 'firebase/firestore';
 
 const { Text } = Typography;
 
 const BuyerRegister = () => {
      const [ form ] = Form.useForm();
      const navigate = useNavigate();
+     const [ loading, setLoading ] = useState<boolean>( false );
 
-     const handleRegister = async (values: buyerRegister) => {
+     const handllBuyerRegister = async (values: buyerRegister) => {
         const { firstName, lastName, email, phone, password, region, city, street, postIndex } = values;
         const termsAndConditionsSelected = form.getFieldValue('termsAndConditions');
         const buyerPoliciesSelected = form.getFieldValue('buyerPolicies');
+        
         if (!termsAndConditionsSelected || !buyerPoliciesSelected) {
             notification.error({
               message: 'Պարտադիր համաձայնություն',
               description: 'Խնդրում ենք ընդունել պայմաններն ու համաձայնությունները:',
             });
-        } else {      
-            try {
-                const user1 = supabase.auth.getUser();
-                if (!user1) {
-                throw new Error("User is not authenticated.");
-                } else {
-                console.log("User authenticated:", user1);
-                }
-                const { data, error } = await supabase.auth.signUp({
-                    email,
-                    password,
-                    options: {
-                        emailRedirectTo: undefined,
-                        data: {  
-                            userRole: "buyer",  
-                        }    
-                    }
-                });           
-                if (error) {
-                    throw new Error(error.message);
-                }
-                const user = data.user;
-                if (!user) {
-                    throw new Error("Օգտատիրոջ գրանցումը ձախողվեց։ Օգտատիրոջ տվյալները չեն վերադարձվել։");
-                }
-                const address = { region, city, street, postIndex };
-                const { error: dbError } = await supabase
-                    .from("users")
-                    .insert([
-                        {
-                            id: user.id,
-                            role: 'buyer',
-                            firstName,
-                            lastName,
-                            email,
-                            phone,
-                            address,
-                        }
-                    ]);
-                if (dbError) {
-                    throw new Error(dbError.message);
-                }
-                localStorage.removeItem('BuyerFormValues');
-                localStorage.removeItem('navigateAddress');
+        } else {   
+        try{
+            setLoading(true);
+            const response = await createUserWithEmailAndPassword( auth, email, password );
+            const { uid } = response.user;
+            const createDoc = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, uid);
+            const address = { region, city, street, postIndex };
 
-                notification.success({
-                    message: "Գրանցումը հաջողությամբ իրականացվել է",
-                    description: "Ձեր հաշիվը հաջողությամբ ստեղծվել է։"
-                });
-                navigate(ROUTE_NAMES.LOGIN);
-                
-                } catch (error: any) {
-                    notification.error({
-                        message: "Գրանցումը ձախողվեց",
-                        description: error.message
-                    });
-                }  
-        }              
-    };
-    
+            await setDoc(createDoc, {
+                uid, firstName, lastName, email, phone, address, role: 'buyer', cart: [], orders: [],
+            });
+
+            localStorage.removeItem('BuyerFormValues');
+            localStorage.removeItem('navigateAddress');
+            notification.success({
+                message: "Գրանցումը հաջողությամբ իրականացվել է",
+                description: "Ձեր հաշիվը հաջողությամբ ստեղծվել է։"
+            });
+
+            await updateProfile(response.user, {
+                displayName: 'buyer'
+            })
+
+            form.resetFields();
+            navigate(ROUTE_NAMES.LOGIN);
+        } catch (error: any) {
+            notification.error({
+                message: "Գրանցումը ձախողվեց",
+                description: error.message
+            });
+        }finally{
+            setLoading(false);
+        }
+    }};
+
     const handleNavigate = () => {
         const values = form.getFieldsValue();
         localStorage.setItem('BuyerFormValues', JSON.stringify(values));
@@ -98,7 +78,7 @@ const BuyerRegister = () => {
         <div className="flex flex-col justify-center items-center min-h-screen text-center bg-gray-50 p-6">
         <Form
             layout="vertical"
-            onFinish={handleRegister}
+            onFinish={handllBuyerRegister}
             form={form}
             className='bg-white w-full shadow-lg rounded-lg p-8 mt-6'
         >
@@ -219,6 +199,7 @@ const BuyerRegister = () => {
                 htmlType="submit"
                 size="large"
                 className="w-full sm:w-auto px-16 py-3 rounded-lg text-white bg-black hover:bg-gray-800"
+                loading={loading}
             >
                 ԳՐԱՆՑՎԵԼ
             </Button>

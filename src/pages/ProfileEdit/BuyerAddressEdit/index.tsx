@@ -30,7 +30,7 @@ const BuyerAddressEdit = () => {
                     throw new Error(error.message);
                 }
 
-                dispatch(fetchUserData(email));
+                dispatch(fetchUserData());
                 notification.success({
                     message: "Հասցեն հաջողությամբ թարմացվել է։",
                     description: "Դուք հաջողությամբ փոփոխել եք ձեր հասցեն։",

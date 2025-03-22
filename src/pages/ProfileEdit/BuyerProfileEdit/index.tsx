@@ -36,7 +36,7 @@ const BuyerProfileEdit = () => {
                 throw new Error(error.message);
             }
 
-            dispatch(fetchUserData(email));
+            dispatch(fetchUserData());
             notification.success({
                 message: "Տվյալները հաջողությամբ թարմացվեցին։",
             });

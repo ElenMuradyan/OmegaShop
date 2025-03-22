@@ -10,13 +10,13 @@ import { useState } from "react";
 
 const Card = () => {
   const navigate = useNavigate();
-  const { userData } = useSelector((state: RootState) => state.userData.authUserInfo);
+  const { userData, cart } = useSelector((state: RootState) => state.userData.authUserInfo);
   const [ errorMessage, setErrorMessage ] = useState<string>('');
 
   const handleOrder = async () => {
     try{
       if(userData){
-        const filteredCart = userData.cart.filter(item => item.ordering);
+        const filteredCart = cart.filter(item => item.ordering);
 
         const stocks = filteredCart.reduce((acc, item) => {
           acc[item.productId] ? acc[item.productId] += item.stock : acc[item.productId] = item.stock;

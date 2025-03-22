@@ -6,51 +6,33 @@ import { login } from '../../../typescript/interfaces/login';
 import { useDispatch } from 'react-redux';
 import { fetchUserData } from '../../../state-management/redux/slices/userDataSlice';
 import { AppDispatch } from '../../../state-management/redux/store';
+import { useState } from 'react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../../services/firebase/firebase';
 
 const { Text } = Typography;
 
 const Login = () => {
     const [ form ] = Form.useForm();
     const navigate = useNavigate();
+    const [ loading, setLoading ] = useState<boolean>( false );
     const dispatch = useDispatch<AppDispatch>();
 
     const handleLogin = async (values: login) => {
-        const { email, password } = values;
-
-        try {
-            if (!email || !password) {
-                throw new Error("Email և գաղտնաբառը պարտադիր են։");
-            }
-            console.log('Մուտք գործելու փորձ՝ էլփոստով:', email, 'և գաղտնաբառով:', password);
-
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email, password,
-            });
-
-            if (error) {
-                throw new Error(error.message);
-            };
-
-            if (data?.user) {
-                console.log('Օգտատեր մուտք գործեց:', data.user);
-                navigate(ROUTE_NAMES.HOME);
-                dispatch(fetchUserData(email));
-            }
-
-            if (!data.user.email_confirmed_at) {
-              notification.warning({
-                  message: 'Օգտատերը վերիֆիկացված չէ։',
-                  description: 'Ձեր էլփոստը դեռևս հաստատված չի: Խնդրում ենք ստուգել ձեր էլփոստի նամակները և վերիֆիկացնել հասցեն:',
-              });
-              return; 
-          }
-
-        } catch (error: any) {
-            notification.error({
-                message: 'Մուտք Գործելը Չհաջողվեց',
-                description: error.message,
-            });
-        }
+      setLoading( true );
+      try{
+      const { email, password } = values;
+      await signInWithEmailAndPassword( auth, email, password );
+      form.resetFields();
+      dispatch(fetchUserData());
+      navigate(ROUTE_NAMES.HOME);
+      }catch( error ){
+              notification.error({
+                      message:'Invalid Login Credentials', 
+              })
+      }finally{
+              setLoading( false );
+      };
     };
 
     return (

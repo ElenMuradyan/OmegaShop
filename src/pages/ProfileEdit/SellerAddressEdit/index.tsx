@@ -45,7 +45,7 @@ const SellerAddressEdit = () => {
                     throw new Error(shopError.message);
                 };
 
-                dispatch(fetchUserData(email));
+                dispatch(fetchUserData());
                 dispatch(fetchShopInfo(email));
                 notification.success({
                     message: "Հասցեն հաջողությամբ թարմացվել է։",

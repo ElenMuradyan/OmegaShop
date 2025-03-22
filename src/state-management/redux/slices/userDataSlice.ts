@@ -1,7 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { supabase } from "../../../services/supabase/supabase";
-import { order, userData, userDataSliceType } from "../../../typescript/types/userDataState";
+import { cartProductType, order, userData, userDataSliceType } from "../../../typescript/types/userDataState";
 import { cartProduct } from "../../../typescript/interfaces/product";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "../../../services/firebase/firebase";
+import { FIRESTORE_PATH_NAMES } from "../../../utilis/constants/firebaseConstants";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 
 const initialState: userDataSliceType = {
     loading: true,
@@ -9,39 +12,78 @@ const initialState: userDataSliceType = {
     authUserInfo: {
         isAuth: false,
         userData: null,
+        cart: [],
         userOrders: [],
     },
 };
 
+
 export const fetchUserData = createAsyncThunk(
     "users/fetchUserData",
-    async(email : string, { rejectWithValue, dispatch }) => {
-        try{
-            const { data, error } = await supabase.from('users').select('*').eq("email", email).single();
-            if(error) throw error;
-
-            dispatch(fetchUserOrderProducts(data.orders));
-            return data as userData;
-        }catch(error: any){
-            return rejectWithValue(error.message);
-        }
+    async (_, { dispatch }) => {
+        return new Promise<userData | null>((resolve, reject) => {
+            onAuthStateChanged(auth, (user) => {
+                if(user) {
+                    const userRef = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, user.uid);
+                    getDoc(userRef)
+                    .then((userData) => {
+                        if(userData.exists()){
+                            const data = userData.data();
+                            dispatch(fetchUserCart(data.id));
+                            dispatch(fetchUserOrderProducts(data.orders))
+                            resolve(data as userData)
+                        }else{
+                            resolve(null);
+                        }
+                    })
+                }else{
+                    reject('Ինչ որ բան սխալ գնաց։');
+                }
+          });
+        });
     }
-);
+  );
+    
 
 export const fetchUserOrderProducts = createAsyncThunk(
     "orders/fetchUserOrderProducts",
     async (orderIds: string[], { rejectWithValue }) => {
         try{
-            const { data, error } = await supabase.from('orders').select('*').in("id", orderIds);
+            const orders: order[] = [];
+            for(const orderId of orderIds){
+                const orderRef = doc(db, FIRESTORE_PATH_NAMES.ORDERS, orderId);
+                const orderSnap = await getDoc(orderRef);
 
-            if (error) throw error;
-
-            return data as order[];
+                if(orderSnap.exists()){
+                    orders.push({ id: orderSnap.id, ...orderSnap.data() } as order);
+                }
+            }
+            
+            return orders;
         }catch(error: any){
             return rejectWithValue(error.message);
         }
     }
 );
+
+export const fetchUserCart = createAsyncThunk(
+    "user/fetchUserCartProducts",
+    async (userId: string, { rejectWithValue }) => {
+        try{
+            const cartRef = collection(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, userId, FIRESTORE_PATH_NAMES.CART);
+            const cartSnap = await getDocs(cartRef);
+
+            const cartProducts = cartSnap.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+
+            return cartProducts;
+        }catch(error: any){
+            return rejectWithValue(error.message);
+        }
+    }
+)
 
 const userDataSlice = createSlice({
     name: 'userData',
@@ -55,12 +97,12 @@ const userDataSlice = createSlice({
         },
         setCart: (state, action) => {
             if(state.authUserInfo.userData){
-                state.authUserInfo.userData.cart = action.payload as cartProduct[];
+                state.authUserInfo.cart = action.payload as cartProductType[];
             }
         },
         setOrdering: (state, action) => {
             if(state.authUserInfo.userData){
-                state.authUserInfo.userData.cart[action.payload.index].ordering = action.payload.ordering;
+                state.authUserInfo.cart[action.payload.index].ordering = action.payload.ordering;
             }
         },
         setUserOrders: (state, action) => {
@@ -88,6 +130,12 @@ const userDataSlice = createSlice({
         })
         .addCase(fetchUserOrderProducts.rejected, (state) => {
             state.authUserInfo.userOrders = [];
+        })
+        .addCase(fetchUserCart.fulfilled, (state, action) => {
+            state.authUserInfo.cart = action.payload as cartProductType[];
+        })
+        .addCase(fetchUserCart.rejected, (state) => {
+            state.authUserInfo.cart = []
         })
     }
 });

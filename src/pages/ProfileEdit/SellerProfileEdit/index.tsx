@@ -50,7 +50,7 @@ const SellerProfileEdit = () => {
                 throw new Error(businessError.message);
             };
 
-            dispatch(fetchUserData(email));
+            dispatch(fetchUserData());
             dispatch(fetchShopInfo(email));
 
             notification.success({
