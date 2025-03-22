@@ -1,11 +1,12 @@
 import { Button, Checkbox, Form, Input, notification, Select, Typography } from 'antd';
-import { regexpValidation, ROUTE_NAMES } from '../../../../utilis/constants';
+import { regexpValidation, ROUTE_NAMES } from '../../../../utilis/constants/constants';
 import { sellerRegister } from '../../../../typescript/interfaces/register';
-import Title from '../../../../components/sheard/Title';
+import Title from '../../../../components/sheard/TitleComponent';
 import { supabase } from '../../../../services/supabase/supabase';
 import { Link, useNavigate } from 'react-router-dom';
 import { categoryLabels } from '../../../../typescript/types/categories';
-import { options } from '../../../../utilis/sellerTypeOptions';
+import { options } from '../../../../utilis/constants/sellerTypeOptions';
+import { useEffect } from 'react';
 
 const { Text } = Typography;
   
@@ -15,83 +16,107 @@ const SellerRegister = () => {
 
      const handleRegister = async (values: sellerRegister) => {
         const { firstName, lastName, email, phone, password, region, city, street, postIndex, businessRegion, businessCity, businessStreet, businessPostIndex, businessPhone, shopName, description, type, categories } = values;
-        
-        try {
-            const user1 = supabase.auth.getUser();
-            if (!user1) {
-            throw new Error("User is not authenticated.");
-            } else {
-            console.log("User authenticated:", user1);
-            }
-            const { data, error } = await supabase.auth.signUp({
-                email,
-                password,
-                options: {
-                    emailRedirectTo: undefined,
-                    data: {  
-                        userRole: "seller",  
-                    }    
+        const termsAndConditionsSelected = form.getFieldValue('termsAndConditions');
+        const sellerPoliciesSelected = form.getFieldValue('sellerPolicies');
+
+        if (!termsAndConditionsSelected || !sellerPoliciesSelected) {
+            notification.error({
+              message: 'Պարտադիր համաձայնություն',
+              description: 'Խնդրում ենք ընդունել պայմաններն ու համաձայնությունները:',
+            });
+          } else {      
+            try {
+                const user1 = supabase.auth.getUser();
+                if (!user1) {
+                    throw new Error("Օգտագործողը չի հաստատվել։");
+                } else {
+                    console.log("Օգտագործողը հաստատվել է:", user1);
                 }
-            });           
-            if (error) {
-                throw new Error(error.message);
-            }
-            const user = data.user;
-            if (!user) {
-                throw new Error("User registration failed. No user data returned.");
-            }
-            const address = { region, city, street, postIndex };
-            const { error: dbError } = await supabase
-                .from("users")
-                .insert([
-                    {
-                        id: user.id,
-                        role: 'seller',
-                        firstName,
-                        lastName,
-                        email,
-                        phone,
-                        address,
-                        card: [],
+                const { data, error } = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        emailRedirectTo: undefined,
+                        data: {
+                            userRole: "seller",
+                        }
                     }
-                ]);
-
-                const businessAddress = { businessRegion, businessCity, businessStreet, businessPostIndex, businessPhone };
-
-                const { error: sellerError } = await supabase
-                .from("sellers")
-                .insert([
-                    {
-                        id: user.id,
-                        email,
-                        businessAddress,
-                        shopName,
-                        description,
-                        type, 
-                        categories,
-                        products: [],
-                    }
-                ]);
-
-            if (dbError || sellerError) {
-                const error = dbError ?? sellerError;
-                if(error){
+                });
+                if (error) {
                     throw new Error(error.message);
                 }
-            }
-            notification.success({
-                message: "Registration Successful",
-                description: "Your account has been created successfully."
-            });
-            navigate(ROUTE_NAMES.LOGIN);
-    
-        } catch (error: any) {
-            notification.error({
-                message: "Registration Failed",
-                description: error.message
-            });
-        }
+                const user = data.user;
+                if (!user) {
+                    throw new Error("Օգտագործողի գրանցումը ձախողվեց։ Չկան օգտատիրոջ տվյալներ։");
+                }
+                const address = { region, city, street, postIndex };
+                const { error: dbError } = await supabase
+                    .from("users")
+                    .insert([
+                        {
+                            id: user.id,
+                            role: 'seller',
+                            firstName,
+                            lastName,
+                            email,
+                            phone,
+                            address,
+                        }
+                    ]);
+                
+                const businessAddress = { businessRegion, businessCity, businessStreet, businessPostIndex, businessPhone };
+                
+                const { error: sellerError } = await supabase
+                    .from("sellers")
+                    .insert([
+                        {
+                            id: user.id,
+                            email,
+                            businessAddress,    
+                            shopName,
+                            description,
+                            type,
+                            categories,
+                        }
+                    ]);
+                
+                if (dbError || sellerError) {
+                    const error = dbError ?? sellerError;
+                    if(error){
+                        throw new Error(error.message);
+                    }
+                }
+                localStorage.removeItem('SellerFormValues');
+                localStorage.removeItem('navigateAddress');
+            
+                notification.success({
+                    message: "Գրանցումը հաջողությամբ իրականացվել է",
+                    description: "Ձեր հաշիվը հաջողությամբ ստեղծվել է։"
+                });
+                navigate(ROUTE_NAMES.LOGIN);
+                
+                } catch (error: any) {
+                    notification.error({
+                        message: "Գրանցումը ձախողվեց",
+                        description: error.message
+                    });
+                }
+          }
     };
+
+    const handleNavigate = () => {
+        const values = form.getFieldsValue();
+        localStorage.setItem('SellerFormValues', JSON.stringify(values));
+        localStorage.setItem('navigateAddress', ROUTE_NAMES.SELLERREGISTER);
+    };
+
+    useEffect(() => {
+        const savedValues = localStorage.getItem('SellerFormValues');
+        if (savedValues) {
+            form.setFieldsValue(JSON.parse(savedValues));
+          }
+    }, []);
+
     
     return(
         <div className="flex flex-col justify-center items-center min-h-screen text-center bg-gray-50 p-6">
@@ -279,19 +304,19 @@ const SellerRegister = () => {
                 showSearch={false}  
                 />
             </Form.Item>
-            
+
             <Form.Item
             name="termsAndConditions"
             valuePropName="checked"
             rules={[{ required: true, message: 'Պարտադիր է կարդալ և համաձայնություն հայտնել' }]}>
-            <Checkbox>Պայմաններ և համաձայնություն</Checkbox>
+            <Checkbox onChange={(e) => form.setFieldValue('termsAndConditions', e.target.checked)}/><Link to={ROUTE_NAMES.SELLERCONTRACT} onClick={() => handleNavigate()}>Պայմաններ և համաձայնություն</Link>
             </Form.Item>
 
             <Form.Item
             name="sellerPolicies"
             valuePropName="checked"
             rules={[{ required: true, message: 'Համաձայն եմ վաճառողի քաղաքականության հետ' }]}>
-            <Checkbox>Համաձայն եմ վաճառողի քաղաքականության հետ</Checkbox>
+            <Checkbox onChange={(e) => form.setFieldValue('sellerPolicies', e.target.checked)}/><Link to={ROUTE_NAMES.TERMSANDCONDITIONS} onClick={() => handleNavigate()}>Համաձայն եմ վաճառողի քաղաքականության հետ:</Link>
             </Form.Item>
 
             {/* do this using links and write it */}

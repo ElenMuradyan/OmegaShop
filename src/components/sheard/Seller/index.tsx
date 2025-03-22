@@ -1,37 +1,91 @@
-import { useSelector } from "react-redux"
-import { RootState } from "../../../state-management/redux/store"
 import { Link } from "react-router-dom";
-import { ROUTE_NAMES } from "../../../utilis/constants";
+import { ROUTE_NAMES } from "../../../utilis/constants/constants";
 import { seller } from "../../../typescript/types/sellersSliceType";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+import { product } from "../../../typescript/types/product";
+import { supabase } from "../../../services/supabase/supabase";
+import LoadingWrapper from "../Loading";
 
-const Seller = ({data}: {data: seller}) => {
-    const { sellers } = useSelector((state:RootState) => state.sellers);
-    console.log(sellers);
-    const { description, categories, id, email, shopName} = data;
+const Seller = ({ data }: { data: seller }) => {
+  const { description, categories, id, email, shopName, myproducts } = data;
+  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState<product[]>([]);
+
+  useEffect(() => {
+    setLoading(true);
+    const fetchProducts = async (ids: string[]) => {
+      try {
+        const { data, error } = await supabase
+          .from("products")
+          .select("*")
+          .in("id", ids);
+
+        if (error) throw error;
+
+        setProducts(data);
+      } catch (err: any) {
+        console.log(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts(myproducts.slice(0, 3));
+  }, []);
+
   return (
+    <LoadingWrapper isLoading={loading}>
     <Link
-    to={`${ROUTE_NAMES.PROFILE}/${id}`}
-    className="text-gray-700 cursor-pointer"
+      to={`${ROUTE_NAMES.PROFILE}/${id}`}
+      className="block w-full cursor-pointer"
     >
-    <div className="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out">
-        
-        <div className="w-24 h-24 rounded-full">
-        <Avatar size={50} style={{backgroundColor: 'black'}}><UserOutlined style={{fontSize: '25px'}}/></Avatar>
+      <div className="flex flex-col md:flex-row items-start md:items-center p-6 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out bg-white">
+        <div className="w-24 h-24 flex-shrink-0">
+          <Avatar size={80} style={{ backgroundColor: "black" }}>
+            <UserOutlined style={{ fontSize: "40px" }} />
+          </Avatar>
         </div>
-        
-        <div className="flex flex-col justify-between flex-grow">
-        <p className="text-lg font-semibold text-gray-800">{shopName}</p>
-        <p className="text-sm text-gray-600">{description}</p>
-        <div className="mt-2 text-xs text-gray-500">
-            <p>Categories: {categories.join(", ")}</p>
-            <p>Email: {email}</p>
-        </div>
-        </div>
-    </div>
-    </Link>
-  )
-}
 
-export default Seller
+        <div className="flex flex-col flex-grow ml-4">
+          <p className="text-xl font-semibold text-gray-800">{shopName}</p>
+          <p className="text-sm text-gray-600">{description}</p>
+          <div className="mt-2 text-xs text-gray-500">
+            <p>
+              <span className="font-semibold">Կատեգորիաներ:</span>{" "}
+              {categories.join(", ")}
+            </p>
+            <p>
+              <span className="font-semibold">Էլ․ փոստ:</span> {email}
+            </p>
+          </div>
+
+          {products.length > 0 && (
+            <div className="mt-4">
+              <h3 className="text-sm font-semibold text-gray-700 mb-2">
+                Առաջարկվող Ապրանքներ
+              </h3>
+              <div className="flex gap-3 overflow-x-auto">
+                {products.map((product) => (
+                  <div
+                    key={product.id}
+                    className="w-24 h-24 flex-shrink-0 border border-gray-300 rounded-lg overflow-hidden"
+                  >
+                    <img
+                      src={product.images[0]}
+                      alt={product.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </Link>
+    </LoadingWrapper>
+  );
+};
+
+export default Seller;

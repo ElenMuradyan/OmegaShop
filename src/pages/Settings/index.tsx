@@ -3,8 +3,8 @@ import { Typography, Divider, Button } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state-management/redux/store";
 import { Link } from "react-router-dom";
-import { profileOptions } from "../../utilis/profile";
-import { ROUTE_NAMES } from "../../utilis/constants";
+import { profileOptions } from "../../utilis/constants/profile";
+import { ROUTE_NAMES } from "../../utilis/constants/constants";
 
 const { Title } = Typography;
 
@@ -58,7 +58,7 @@ const Settings = () => {
                 className="text-gray-800 hover:text-black flex items-center space-x-2"
                 >
                     <UserOutlined />
-                    <span>ՁԵՐ ՀԱՍՑԵՆ</span>
+                    <span>ՁԵՐ ԱՆՁՆԱԿԱՆ ՏՎՅԱԼՆԵՐԸ</span>
                 </Button>
                 </Link>      
   

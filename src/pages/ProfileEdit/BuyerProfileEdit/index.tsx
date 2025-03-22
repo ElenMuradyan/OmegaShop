@@ -5,7 +5,7 @@ import { AppDispatch, RootState } from "../../../state-management/redux/store";
 import { supabase } from "../../../services/supabase/supabase";
 import { fetchUserData } from "../../../state-management/redux/slices/userDataSlice";
 import { Link } from "react-router-dom";
-import { ROUTE_NAMES } from "../../../utilis/constants";
+import { ROUTE_NAMES } from "../../../utilis/constants/constants";
 import { EnvironmentOutlined, UserOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons";
 import { buyerRegister } from "../../../typescript/interfaces/register";
 

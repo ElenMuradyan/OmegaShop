@@ -1,4 +1,4 @@
-import { ROUTE_NAMES } from '../../../utilis/constants';
+import { ROUTE_NAMES } from '../../../utilis/constants/constants';
 import logotext from '../../../utilis/Images/logotext.png';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { SearchOutlined, UserOutlined, ShoppingOutlined, RightOutlined, MenuOutlined } from "@ant-design/icons";
@@ -31,7 +31,7 @@ const Navbar = () => {
 
         <div className='flex items-center gap-6'>
             <SearchOutlined className='cursor-pointer'/>
-            <div className='group relstie'>
+            <div className='group relative'>
                 {
                     isAuth ? <ProfileDropDown /> : <UserOutlined onClick={() => navigate(ROUTE_NAMES.LOGIN)}/>
                 }
@@ -49,7 +49,6 @@ const Navbar = () => {
         <div className={`fixed top-0 right-0 bottom-0 overflow-hidden bg-white transition-all duration-300 ease-in-out shadow-lg ${menuOpen ? 'w-full' : 'w-0'} flex flex-col`}>
             <div onClick={() => setMenuOpen(false)} className='flex items-center gap-2 px-4 py-3 text-gray-600 cursor-pointer hover:bg-gray-100'>
                 <RightOutlined className='text-xl'/>
-                <p className='text-base'>Back</p>
             </div>
             {
                 NavbarItems.map((value) => {                    
@@ -64,4 +63,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default Navbar;

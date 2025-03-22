@@ -1,43 +1,55 @@
-import Title from "../../components/sheard/Title";
+import Title from "../../components/sheard/TitleComponent"; 
 import image from '../../utilis/Images/hero6.jpg';
 
 const About = () => {
   return (
     <div>
       <div className="text-2xl text-center pt-8 border-t">
-        <Title text1="ABOUT" text2="US" />
+        <Title text1="ՄԵՐ" text2="ՄԱՍԻՆ" />
       </div>
 
       <div className="my-10 flex flex-col md:flex-row gap-16">
         <img src={image} alt="" className="w-full md:max-w-[450px]" />
         <div className="flex flex-col justify-center gap-6 md:w-2/4 text-gray-600">
-        <p>E-commerce (electronic commerce) refers to the buying and selling of goods and services online. It has transformed traditional shopping by allowing consumers to purchase products from anywhere, anytime, using computers, smartphones, or tablets. E-commerce platforms offer a variety of products, from clothing and electronics to groceries and digital services. With secure payment gateways and efficient delivery networks, online shopping has become more convenient and accessible than ever.</p>
-        <p>E-commerce benefits both businesses and consumers by reducing operational costs, expanding market reach, and offering personalized shopping experiences. Businesses can analyze customer behavior, recommend relevant products, and provide seamless checkout experiences. Customers enjoy the ease of comparing prices, reading reviews, and receiving doorstep deliveries. With advancements in technology, such as AI-driven recommendations and mobile-friendly designs, e-commerce continues to grow rapidly, shaping the future of retail.</p>
-        <b className="text-gray-800">OUR MISSION</b>
-        <p>At Omega, our mission is to provide high-quality, essential products that make everyday life easier and more convenient. We strive to offer a seamless shopping experience, ensuring that customers can find everything they need for their homes in one place—whether it’s clothing, hygiene products, or household essentials.</p>
+          <p>
+            Էլեկտրոնային առևտուրը (e-commerce) վերաբերում է ապրանքների և ծառայությունների առցանց վաճառքին և գնմանը։ Այն փոխակերպել է ավանդական գնումների գործընթացը՝ հնարավորություն տալով մարդկանց ձեռք բերել անհրաժեշտ ապրանքներ աշխարհի ցանկացած կետից՝ ցանկացած ժամանակ։ Էլեկտրոնային առևտրի հարթակները առաջարկում են լայն տեսականի՝ հագուստից և էլեկտրոնիկայից մինչև սննդամթերք ու թվային ծառայություններ։ Ապահով վճարային համակարգերի և արդյունավետ առաքման ցանցերի շնորհիվ առցանց գնումներն այսօր ավելի հարմար ու հասանելի են։
+          </p>
+          <p>
+            Էլեկտրոնային առևտուրը ձեռնարկություններին ու սպառողներին օգնում է նվազեցնել ծախսերը, ընդլայնել շուկան և ապահովել անհատականացված գնումների փորձ։ Բիզնեսները կարող են վերլուծել հաճախորդների վարքագիծը, առաջարկել համապատասխան ապրանքներ և ապահովել դյուրին գնումների գործընթաց։ Սպառողները, իրենց հերթին, կարող են համեմատել գները, կարդալ ակնարկներ և ստանալ պատվերները անմիջապես իրենց դռան մոտ։ Տեխնոլոգիաների զարգացման հետ մեկտեղ (ինչպես արհեստական բանականության միջոցով առաջարկները և բջջային հարմարեցված դիզայնները) էլեկտրոնային առևտուրը շարունակում է աճել՝ ձևավորելով մանրածախ առևտրի ապագան։
+          </p>
+          <b className="text-gray-800">ՄԵՐ ԱՌԱՔԵԼՈՒԹՅՈՒՆԸ</b>
+          <p>
+            Omega-ում մեր առաքելությունն է մատուցել բարձրորակ, կարևոր ապրանքներ, որոնք կդյուրացնեն և կհարմարեցնեն առօրյա կյանքը։ Մենք ձգտում ենք ապահովել հարթ և հարմար գնումների փորձ, որպեսզի մեր հաճախորդները կարողանան մեկ վայրում գտնել իրենց անհրաժեշտ բոլոր ապրանքները՝ հագուստ, հիգիենայի միջոցներ և կենցաղային անհրաժեշտություններ։
+          </p>
         </div>
       </div>
 
       <div className="text-4xl py-4">
-        <Title text1="WHY" text2="CHOOSE US" />
+        <Title text1="ԻՆՉՈՒ" text2="ԸՆՏՐԵԼ ՄԵԶ" />
       </div>
 
       <div className="flex flex-col md:flex-row text-sm mb-20">
         <div className="border px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5">
-          <b>Quality Assurance:</b>
-          <p className="text-gray-600">At Omega, we prioritize quality in every product we offer. Our team carefully selects and verifies each item to ensure it meets high standards of durability, safety, and performance. From sourcing reliable brands to conducting thorough quality checks, we are committed to delivering only the best to our customers.</p>
+          <b>Որակի Վստահություն</b>
+          <p className="text-gray-600">
+            Omega-ում մենք առաջնահերթություն ենք տալիս յուրաքանչյուր առաջարկվող ապրանքի որակին։ Մեր թիմը մանրակրկիտ ընտրում և ստուգում է բոլոր ապրանքները՝ ապահովելու համար դրանց դիմացկունությունը, անվտանգությունը և բարձր որակը։ Մենք համագործակցում ենք վստահելի ապրանքանիշերի հետ և անցկացնում ենք որակի խիստ ստուգումներ՝ մեր հաճախորդներին լավագույնը առաջարկելու համար։
+          </p>
         </div>
         <div className="border px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5">
-          <b>Convinience:</b>
-          <p className="text-gray-600">At Omega, we prioritize quality in every product we offer. Our team carefully selects and verifies each item to ensure it meets high standards of durability, safety, and performance. From sourcing reliable brands to conducting thorough quality checks, we are committed to delivering only the best to our customers.</p>
+          <b>Հարմարավետություն</b>
+          <p className="text-gray-600">
+            Մենք հասկանում ենք ժամանակի արժեքը, ուստի առաջարկում ենք արագ և հեշտ գնումների գործընթաց։ Մեր հարթակում կարող եք մի քանի կտտոցով գտնել անհրաժեշտ ապրանքները, կատարել գնումներ 24/7 և ստանալ պատվերները Ձեր նախընտրած հասցեով։
+          </p>
         </div>        
         <div className="border px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5">
-          <b>Exceptional Customer Service:</b>
-          <p className="text-gray-600">At Omega, we prioritize quality in every product we offer. Our team carefully selects and verifies each item to ensure it meets high standards of durability, safety, and performance. From sourcing reliable brands to conducting thorough quality checks, we are committed to delivering only the best to our customers.</p>
+          <b>Գերազանց Հաճախորդային Սպասարկում</b>
+          <p className="text-gray-600">
+            Մեր թիմը միշտ պատրաստ է օգնել և տրամադրել անհատական մոտեցում յուրաքանչյուր հաճախորդին։ Մենք ձգտում ենք արագ արձագանքել հարցերին, լուծել խնդիրները և ապահովել բարձրորակ սպասարկում, որպեսզի մեր հաճախորդները միշտ գոհ մնան։
+          </p>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default About
+export default About;

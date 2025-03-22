@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import { ROUTE_NAMES } from "./utilis/constants";
+import { ROUTE_NAMES } from "./utilis/constants/constants";
 import Collection from "./pages/Collection";
 import About from "./pages/About";
 import Card from "./pages/Card";
@@ -33,6 +33,11 @@ import AddProduct from "./pages/AddProductPage";
 import { fetchMyProducts } from "./state-management/redux/slices/myProductsSlice";
 import MyProducts from "./pages/MyProducts";
 import { fetchProducts } from "./state-management/redux/slices/products";
+import CustomersOrdersLayout from "./layouts/CustomersOrdersLayout";
+import SellersOrders from "./pages/SellersOrders";
+import BuyerContract from "./pages/Contracts/BuyerContract";
+import SellerContract from "./pages/Contracts/SellerContract";
+import TermsAndConditions from "./pages/Contracts/TermsAndConditions";
 
 function App() {
   const { isAuth } = useSelector((store: RootState) => store.userData.authUserInfo);
@@ -41,6 +46,8 @@ function App() {
   useEffect(()=>{
     const restoreSession = async () => {
       const { data } = await supabase.auth.getSession();
+       console.log(data.session?.user);
+       
       if(data.session?.user?.email){
         await dispatch(fetchUserData(data.session.user.email));
         await dispatch(fetchProducts());
@@ -72,6 +79,9 @@ function App() {
           <Route path={ROUTE_NAMES.SHARE} element={<Links/>} />
           <Route path={ROUTE_NAMES.HELP} element={<Help />} />
           <Route path={ROUTE_NAMES.SELLERS} element={<Sellers />} />
+          <Route path={ROUTE_NAMES.BUYERCONTRACT} element={<BuyerContract />}/>
+          <Route path={ROUTE_NAMES.SELLERCONTRACT} element={<SellerContract />}/>
+          <Route path={ROUTE_NAMES.TERMSANDCONDITIONS} element={<TermsAndConditions />} />
           {/* Cabinet */}
 
           <Route path={ROUTE_NAMES.CABINET} element={isAuth ? <CabinetLayout /> : <Navigate to={ROUTE_NAMES.LOGIN} />}>
@@ -89,6 +99,11 @@ function App() {
             <Route path={ROUTE_NAMES.MYPRODUCTS} element={<MyProducts />} />
             <Route path={ROUTE_NAMES.CARD} element={<Card/>} />
             <Route path={ROUTE_NAMES.ORDERS} element={<Orders/>} />
+
+            <Route path={ROUTE_NAMES.CUSTOMERORDERS} element={<CustomersOrdersLayout />}>
+              <Route path={`${ROUTE_NAMES.CUSTOMERORDERS}/:status`} element={<SellersOrders />}/>
+            </Route>
+
             <Route path={ROUTE_NAMES.PLACEORDER} element={<PlaceOrder/>} />
             <Route path={ROUTE_NAMES.SETTINGS} element={<Settings />} />
             <Route path={`${ROUTE_NAMES.PRODUCT}/:productId`} element={<Product/>} />

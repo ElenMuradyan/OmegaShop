@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { cartProduct } from "../../../typescript/interfaces/product";
-import { ROUTE_NAMES } from "../../../utilis/constants";
+import { ROUTE_NAMES } from "../../../utilis/constants/constants";
 import { CheckOutlined, DeleteOutlined, LoadingOutlined } from "@ant-design/icons";
-import { cartNames } from "../../../utilis/optionNamesOptions";
+import { cartNames } from "../../../utilis/constants/optionNamesOptions";
 import { supabase } from "../../../services/supabase/supabase";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state-management/redux/store";
@@ -37,7 +37,7 @@ const CartProductItem = ({ productId, image, name, price, stock, maxValue, optio
       if (updateError) throw updateError;
       dispatch(setCart(updatedCart));
     }catch(error: any){
-      console.error("Error deleting from cart:", error.message);
+      console.error("Սխալ զամբյուղից հեռացնելիս:", error.message);
     }
     };
 
@@ -67,7 +67,7 @@ const CartProductItem = ({ productId, image, name, price, stock, maxValue, optio
                 ordering
             }));
         }catch(error: any){
-            console.error("Error changing ordering;", error.message);
+            console.error("Սխալ պատվերը փոխելու ժամանակ;", error.message);
           }
     }
 

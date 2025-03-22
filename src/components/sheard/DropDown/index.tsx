@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state-management/redux/store";
 import { supabase } from "../../../services/supabase/supabase";
 import { setIsAuth } from "../../../state-management/redux/slices/userDataSlice";
-import { ROUTE_NAMES } from "../../../utilis/constants";
+import { ROUTE_NAMES } from "../../../utilis/constants/constants";
 
 const { useToken } = theme;
 
@@ -37,44 +37,59 @@ const ProfileDropDown = () => {
 
   const buyerItems: MenuProps["items"] = [
       {
-          label: 'My Profile',
+          label: 'Իմ Պրոֆիլը',
           key: '0',
           onClick: () => navigate(`${ROUTE_NAMES.PROFILE}/${userData?.id}`)
       }, 
       {
-          label: 'Settings',
+          label: 'Կարգավորումներ',
           key: '1',
           onClick: () => navigate(ROUTE_NAMES.SETTINGS)
       },
       {
-          label: 'Logout',
-          key: '2',
+        label: 'Պատվերներ',
+        key: '2',
+        onClick: () => navigate(ROUTE_NAMES.ORDERS)
+    },
+      {
+          label: 'Ելք',
+          key: '3',
           onClick: () => handleSignOut()
       }
   ];
 
   const sellerItems: MenuProps["items"] = [
     {
-      label: "My Profile",
+      label: "Իմ Պրոֆիլը",
       key: "0",
       onClick: () => navigate(`${ROUTE_NAMES.PROFILE}/${userData?.id}`),
     },
     {
-      label: "My Products",
+      label: "Իմ Ապրանքները",
       key: "1",
       onClick: () => navigate(ROUTE_NAMES.MYPRODUCTS),
     },
     {
-      label: "Settings",
-      key: "2",
+      label: 'Իմ Պատվերները',
+      key: '2',
+      onClick: () => navigate(ROUTE_NAMES.ORDERS)
+    },
+    {
+      label: 'Հաճախորդի Պատվերներ',
+      key: '3',
+      onClick: () => navigate(ROUTE_NAMES.NEWORDERS)
+    },
+    {
+      label: "Կարգավորումներ",
+      key: "4",
       onClick: () => navigate(ROUTE_NAMES.SETTINGS),
     },
     {
-      label: "Logout",
-      key: "3",
+      label: "Ելք",
+      key: "5",
       onClick: () => handleSignOut(),
     },
-  ]
+  ];
 
   return (
       <Dropdown menu={{items: userData?.role === 'seller' ? sellerItems : buyerItems,

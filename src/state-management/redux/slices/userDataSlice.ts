@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { supabase } from "../../../services/supabase/supabase";
-import { userData, userDataSliceType } from "../../../typescript/types/userDataState";
+import { order, userData, userDataSliceType } from "../../../typescript/types/userDataState";
 import { cartProduct } from "../../../typescript/interfaces/product";
 
 const initialState: userDataSliceType = {
@@ -9,16 +9,34 @@ const initialState: userDataSliceType = {
     authUserInfo: {
         isAuth: false,
         userData: null,
+        userOrders: [],
     },
 };
 
 export const fetchUserData = createAsyncThunk(
     "users/fetchUserData",
-    async(email : string, { rejectWithValue }) => {
+    async(email : string, { rejectWithValue, dispatch }) => {
         try{
             const { data, error } = await supabase.from('users').select('*').eq("email", email).single();
             if(error) throw error;
+
+            dispatch(fetchUserOrderProducts(data.orders));
             return data as userData;
+        }catch(error: any){
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const fetchUserOrderProducts = createAsyncThunk(
+    "orders/fetchUserOrderProducts",
+    async (orderIds: string[], { rejectWithValue }) => {
+        try{
+            const { data, error } = await supabase.from('orders').select('*').in("id", orderIds);
+
+            if (error) throw error;
+
+            return data as order[];
         }catch(error: any){
             return rejectWithValue(error.message);
         }
@@ -44,6 +62,10 @@ const userDataSlice = createSlice({
             if(state.authUserInfo.userData){
                 state.authUserInfo.userData.cart[action.payload.index].ordering = action.payload.ordering;
             }
+        },
+        setUserOrders: (state, action) => {
+            const updatedOrders = [...state.authUserInfo.userOrders, action.payload];
+            state.authUserInfo.userOrders = updatedOrders;
         }
     },
     extraReducers:(builder) => {
@@ -61,8 +83,14 @@ const userDataSlice = createSlice({
             state.error = action.payload as string;
             state.authUserInfo.isAuth = false;
         })
+        .addCase(fetchUserOrderProducts.fulfilled, (state, action) => {
+            state.authUserInfo.userOrders = action.payload;
+        })
+        .addCase(fetchUserOrderProducts.rejected, (state) => {
+            state.authUserInfo.userOrders = [];
+        })
     }
 });
 
-export const { changeLoading, setIsAuth, setCart, setOrdering } = userDataSlice.actions;
+export const { changeLoading, setIsAuth, setCart, setOrdering, setUserOrders } = userDataSlice.actions;
 export default userDataSlice.reducer;

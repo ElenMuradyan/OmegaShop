@@ -4,13 +4,13 @@ import RelatedProducts from "../../components/sheard/RelatedProducts";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state-management/redux/store";
 import { fetchProductInfo } from "../../state-management/redux/slices/productSlice";
-import { names } from "../../utilis/optionNamesOptions";
+import { names } from "../../utilis/constants/optionNamesOptions";
 import { orderedProductInfo, selectedOptions } from "../../typescript/types/oderedProductInfo";
 import { Input } from "antd";
 import { supabase } from "../../services/supabase/supabase";
 import { LoadingOutlined } from "@ant-design/icons";
 import { setCart } from "../../state-management/redux/slices/userDataSlice";
-import { ROUTE_NAMES } from "../../utilis/constants";
+import { ROUTE_NAMES } from "../../utilis/constants/constants";
 
 const Product = () => {
   const { productId } = useParams();

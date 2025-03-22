@@ -13,7 +13,7 @@ const Sellers = () => {
     },[dispatch]);
 
     return (
-        <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="flex flex-col gap-3">
         {
             sellers.map((item, index) => {
                 return(

@@ -1,44 +1,45 @@
 import { Form, Input } from "antd"
-import Title from "../../components/sheard/Title"
+import Title from "../../components/sheard/TitleComponent"
 import CardTotal from "../../components/sheard/CardTotal";
 import { useNavigate } from "react-router-dom";
-import { ROUTE_NAMES } from "../../utilis/constants";
-import { useSelector } from "react-redux";
-import { RootState } from "../../state-management/redux/store";
+import { ROUTE_NAMES } from "../../utilis/constants/constants";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../state-management/redux/store";
 import { useEffect, useState } from "react";
 import { address, cartProductType } from "../../typescript/types/userDataState";
 import { supabase } from "../../services/supabase/supabase";
 import { cartProduct } from "../../typescript/interfaces/product";
 import { LoadingOutlined } from "@ant-design/icons";
+import { orderStatuses } from "../../utilis/constants/orderStatuses";
+import { setUserOrders } from "../../state-management/redux/slices/userDataSlice";
 
 const PlaceOrder = () => {
   const { userData } = useSelector((state: RootState) => state.userData.authUserInfo);
+  const { myShopInfo } = useSelector((state: RootState) => state.shopInfo);
   const [ loading, setLoading ] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
   const [ form ] = Form.useForm();
   const navigate = useNavigate();
 
   const handleOrder = async (values: address) => {
     try{
       setLoading(true);
-      const { data: user, error } = await supabase.
-      from('users')
-      .select('*')
-      .eq("id", userData?.id)
-      .single();
+      const products:cartProductType[] = userData?.cart ? userData.cart.filter((item: cartProductType) => item.ordering) : [];
 
-      if (error) throw error;
-  
-      const products:cartProductType[] = user.cart ? user.cart.filter((item: cartProductType) => item.ordering) : [];
+      const order = products.reduce<Record<string, cartProduct[]>>((acc, item) => {
+        acc[item.autorEmail] = acc[item.autorEmail] ? [...acc[item.autorEmail], item] : [item];
+        return acc;
+      }, {});
 
-      const order: Record<string, cartProduct[]> = {}
-      products.forEach((item) => {
-        if(order[item.autorEmail]){
-          order[item.autorEmail].push(item);
-        }else{
-          order[item.autorEmail] = [item];
-        }
-      })
-  
+      await Promise.all(products.map(async (item) => {
+        const { error } = await supabase
+            .from("products")
+            .update({ stock: item.maxValue - item.stock })
+            .eq("id", item.productId); 
+    
+        if (error) throw error;
+    }));
+    
       await Promise.all(
         Object.entries(order).map(async([sellerEmail, sellerProducts]) => {
           const totalPrice = sellerProducts.reduce(
@@ -46,67 +47,56 @@ const PlaceOrder = () => {
             0
           );
 
-          const orderDetailsForSeller = {
+          const orderDetails = {
             address: values,
             products: sellerProducts,
             totalPrice,
-            status: 'pending',
-            consumer: userData?.email,
-            orderDate: new Date(),
+            status: Object.keys(orderStatuses)[0],
+            sellerEmail,
+            consumerEmail: userData?.email,
           };
 
-          const { data: seller, error: fetchError } = await supabase
-          .from("sellers")
-          .select("newOrders")
-          .eq("email", sellerEmail)
-          .single();
+          dispatch(setUserOrders(orderDetails));
 
-        if (fetchError) throw fetchError;
+        const { data: order, error: dbError } = await supabase
+        .from("orders")
+        .insert(orderDetails)
+        .select('id')
+        .single();
+         
+        if (dbError) throw dbError;
 
-        const updatedOrdersForSeller = [...(seller.newOrders || []), orderDetailsForSeller];
+        const updatedOrdersForSeller = [...(myShopInfo?.newOrders || []), order.id];
 
-        const { error: updateError } = await supabase
+        const { error: sellerUpdateError } = await supabase
           .from("sellers")
           .update({ newOrders: updatedOrdersForSeller })
           .eq("email", sellerEmail);
 
-        if (updateError) throw updateError;
+        if (sellerUpdateError) throw sellerUpdateError;
 
-        const orderDetailsForBuyer = {
-          address: values,
-          products: sellerProducts,
-          totalPrice,
-          status: "pending",
-          sellerEmail,
-          orderDate: new Date(),
-        }
+        const updatedOrdersForBuyer = [...(userData?.orders || []), order.id];
 
-        const updatedOrdersForBuyer = [...(user.orders || []), orderDetailsForBuyer];
-        const { error: orderError } = await supabase
+        const updatedCart = userData?.cart ? userData?.cart.filter((item: cartProductType) => !item.ordering) : [];
+
+        const { error: buyerUpdateError } = await supabase
         .from("users")
-        .update({ orders: updatedOrdersForBuyer })
-        .eq("id", userData?.id);
-
-        if (orderError) throw updateError;
-
-        const updatedCart = user.cart ? user.cart.filter((item: cartProductType) => !item.ordering) : [];
-
-        const { error: cartUpdateError } = await supabase
-        .from("users")
-        .update({ cart: updatedCart })
+        .update({ cart: updatedCart,
+          orders: updatedOrdersForBuyer
+         })
         .eq("id", userData?.id);
   
-        if (cartUpdateError) throw updateError;
-        }) 
-      )
-      navigate(ROUTE_NAMES.ORDERS);
-      console.log("Orders placed successfully!");
-    }catch(error: any){
-      console.error("Order processing failed:", error.message);
-    }finally{
-      setLoading(false);
-    }
+        if (buyerUpdateError) throw buyerUpdateError;
+      })
+    )
+    navigate(ROUTE_NAMES.ORDERS);
+    console.log("Պատվերները հաջողությամբ տեղադրված են!");
+  }catch(error: any){
+    console.error("Պատվերի մշակումը ձախողվեց:", error.message);
+  }finally{
+    setLoading(false);
   }
+};
 
   useEffect(() => {
     form.setFieldsValue(userData?.address);

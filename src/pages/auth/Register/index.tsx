@@ -1,5 +1,5 @@
 import { Breadcrumb } from "antd";
-import { ROUTE_NAMES } from "../../../utilis/constants";
+import { ROUTE_NAMES } from "../../../utilis/constants/constants";
 import { Link, useLocation } from "react-router-dom";
 import SellerRegister from "./SellerRegister";
 import { ShopOutlined, ShoppingCartOutlined } from "@ant-design/icons";

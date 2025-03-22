@@ -1,4 +1,4 @@
-import Title from "../Title";
+import Title from "../TitleComponent";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../state-management/redux/store";
 import ProductList from "../ProductList";
@@ -9,10 +9,7 @@ const LatestCollection = () => {
   return (
     <div className="my-10">
       <div className="text-center py-8 text-3xl">
-        <Title text1={'LATEST'} text2={'COLLECTIONS'}></Title>
-        <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600">
-        {/* Hi everyone this page is for you to show the best apranqner. */}
-        </p>
+        <Title text1={'ՎԵՐՋԻՆ'} text2={'ՀԱՎԱՔԱԾՈՒՆԵՐ'}></Title>
       </div>
       <ProductList products={products}/>
     </div>

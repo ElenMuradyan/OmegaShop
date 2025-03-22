@@ -6,7 +6,7 @@ import { product } from "../../../typescript/types/product";
 const initialState: sellerProfileSliceType = {
     loading: true,
     shopInfo: null,
-    products: []
+    products: [],
 };
 
 export const fetchSellerProfileInfo = createAsyncThunk(
@@ -67,7 +67,7 @@ const sellerProfileSlice = createSlice({
         })
         .addCase(fetchSellerProducts.rejected, (state) => {
             state.products = [];
-        });
+        })
     }
 });
 

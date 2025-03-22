@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import Title from "../Title"
+import Title from "../TitleComponent";
 import { RootState } from "../../../state-management/redux/store";
 import { useEffect, useState } from "react";
 
@@ -18,22 +18,22 @@ const CardTotal = () => {
   return (
     <div className="w-full">
       <div className="text-2xl">
-        <Title text1="CARD" text2="TOTALS" />
+        <Title text1="ՎՃԱՐԱՅԻՆ" text2="ՏՎՅԱԼՆԵՐ" />
       </div>
 
       <div className="flex flex-col gap-2 mt-2 text-sm">
         <div className="flex justify-between">
-            <p>Subtotal</p>
+            <p>Ապրանքի վճար</p>
             <p>{subtotal} AMD</p>
         </div>
         <hr />
         <div className="flex justify-between">
-            <p>Delivery fee</p>
+            <p>Առաքման վճար</p>
             <p>500 AMD</p>
         </div>
         <hr />
         <div className="flex justify-between">
-            <p>Total</p>
+            <p>Ընդհանուր</p>
             <p>{subtotal+500} AMD</p>
         </div>
       </div>

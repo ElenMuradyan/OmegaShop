@@ -10,6 +10,12 @@ export const ROUTE_NAMES = {
     CABINET: '/cabinet',
     CARD: '/cabinet/card',
     ORDERS: '/cabinet/orders',
+    NEWORDERS: '/cabinet/customerorders/newOrders',
+    SENTORDERS: '/cabinet/customerorders/sentOrders',
+    DONEORDERS: '/cabinet/customerorders/doneOrders',
+    PROCESSINGORDERS: '/cabinet/customerorders/processingOrders',
+    FAILEDORDERS: '/cabinet/customerorders/failedOrders',
+    CUSTOMERORDERS: '/cabinet/customerorders',
     PLACEORDER: '/cabinet/placeorder',
     PROFILE: '/cabinet/profile',
     PRODUCT: '/cabinet/product',
@@ -26,6 +32,9 @@ export const ROUTE_NAMES = {
     SELLERS: '/sellers',
     MYPRODUCTS: '/cabinet/myproducts',
     ADDPRODUCT: '/cabinet/addproduct',
+    BUYERCONTRACT: '/buyerContract',
+    SELLERCONTRACT: '/sellerContract',
+    TERMSANDCONDITIONS: '/termsAndConditions',
 };
 
 export const regexpValidation = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;

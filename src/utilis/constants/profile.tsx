@@ -8,7 +8,7 @@ import {
     TeamOutlined, 
     HeartOutlined 
 } from "@ant-design/icons";
-import { profileOption } from "../typescript/types/profileOption";
+import { profileOption } from "../../typescript/types/profileOption";
 import { ROUTE_NAMES } from "./constants";
 
 const KEYS = {

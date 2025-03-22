@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { related } from "../../../typescript/interfaces/related";
 import ProductList from "../ProductList";
-import Title from "../Title";
+import Title from "../TitleComponent";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../state-management/redux/store";
 import { product } from "../../../typescript/types/product";
@@ -22,7 +22,7 @@ const RelatedProducts = ({category, subcategory}: related) => {
   return (
     <div className="my-24">
       <div className="text-center text-3xl py-2">
-        <Title text1="RELATED" text2="PRODUCTS" />
+        <Title text1="ԿԱՊՎԱԾ" text2="ԱՊՐԱՆՔՆԵՐ" />
       </div>
 
         <ProductList products={relatedProducts}/>

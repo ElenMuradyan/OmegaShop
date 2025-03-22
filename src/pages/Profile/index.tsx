@@ -24,12 +24,12 @@ const Profile = () => {
         <div className="flex-1">
             <h2 className="text-2xl font-bold">{shopInfo?.shopName}</h2>
             <p className="text-gray-500">{shopInfo?.categories.join(", ")}</p>
-            <div className="mt-2 flex gap-3">
+            {/* <div className="mt-2 flex gap-3">
                     <>
                         <button className="px-4 py-1 text-sm bg-blue-500 text-white rounded-md">Follow</button>
                         <button className="px-4 py-1 text-sm bg-gray-200 rounded-md">Message</button>
                     </>
-            </div>
+            </div> */}
         </div>
     </div>
 

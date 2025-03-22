@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../../services/supabase/supabase";
 import { fetchUserData } from "../../../state-management/redux/slices/userDataSlice";
 import { EnvironmentOutlined, HomeOutlined, SendOutlined } from "@ant-design/icons";
-import Title from "../../../components/sheard/Title";
+import Title from "../../../components/sheard/TitleComponent";
 import { fetchShopInfo } from "../../../state-management/redux/slices/shopInfoSlice";
 
 const { Text } = Typography;
@@ -61,9 +61,7 @@ const SellerAddressEdit = () => {
         }
     };
 
-    useEffect(() => {  
-        console.log(myShopInfo?.businessAddress);
-        
+    useEffect(() => {          
         if (userData?.address || myShopInfo?.businessAddress) {
             form.setFieldsValue({
                 ...userData?.address ?? {},  

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Form, Input, Button, notification, message } from "antd";
-import { SendOutlined, MailOutlined, UserOutlined, MessageOutlined } from "@ant-design/icons";
+import { Form, Input, Button, notification } from "antd";
+import { SendOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import { RootState } from "../../state-management/redux/store";
 import { useSelector } from "react-redux";
 import emailjs from "emailjs-com";
@@ -22,15 +22,15 @@ const Help = () => {
 
             if (response.status === 200) {
                 notification.success({
-                    message: "Message Sent!",
-                    description: "We will get back to you soon.",
+                    message: "Հաղորդագրությունը ուղարկվեց!",
+                    description: "Մենք կպատասխանենք շուտով։",
                 });
             }
 
         }catch(error){
             notification.error({
-                message: "Error",
-                description: "Failed to send the message. Try again later.",
+                message: "Տեղեկություն",
+                description: "Հաղորդագրությունը ուղարկելու ժամանակ սխալ տեղի ունեցավ։ Փորձեք նորից։",
             });
         }finally{
             setLoading(false);
@@ -49,34 +49,31 @@ const Help = () => {
           }}        
         >
             <Form.Item
-                label="Your Name"
+                label="Ձեր անունը"
                 name="from_name"
-                rules={[{ required: true, message: "Please enter your name!" }]}
-            >
-                <Input placeholder="Enter your name" prefix={<UserOutlined />} />
+                rules={[{ required: true, message: "Խնդրում ենք մուտքագրել ձեր անունը!" }]}>
+                <Input placeholder="Մուտքագրեք ձեր անունը" prefix={<UserOutlined />} />
             </Form.Item>
 
             <Form.Item
-                label="Your Email"
+                label="Ձեր էլփոստը"
                 name="from_email"
-                rules={[
-                    { required: true, message: "Please enter your email!" },
-                    { type: "email", message: "Enter a valid email!" },
-                ]}
-            >
-                <Input placeholder="Enter your email" prefix={<MailOutlined />}/>
+                rules={[ 
+                    { required: true, message: "Խնդրում ենք մուտքագրել ձեր էլփոստը!" },
+                    { type: "email", message: "Մուտքագրեք ճիշտ էլփոստի հասցե!" },
+                ]}>
+                <Input placeholder="Մուտքագրեք ձեր էլփոստը" prefix={<MailOutlined />}/>
             </Form.Item>
 
             <Form.Item
-                label="Your Message"
+                label="Ձեր հաղորդագրությունը"
                 name="message"
-                rules={[{ required: true, message: "Please enter your message!" }]}
-            >
-                <Input.TextArea rows={4} placeholder="Write your message..."  />
+                rules={[{ required: true, message: "Խնդրում ենք մուտքագրել ձեր հաղորդագրությունը!" }]}>
+                <Input.TextArea rows={4} placeholder="Գրեք ձեր հաղորդագրությունը..."  />
             </Form.Item>
 
             <Button type="primary" htmlType="submit" loading={loading} icon={<SendOutlined />}>
-                Send Message
+                Ուղարկել հաղորդագրություն
             </Button>
         </Form>
     );

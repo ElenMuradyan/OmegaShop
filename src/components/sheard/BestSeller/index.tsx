@@ -1,6 +1,6 @@
-import { useSelector } from "react-redux"
-import Title from "../Title"
-import { RootState } from "../../../state-management/redux/store"
+import { useSelector } from "react-redux";
+import Title from "../TitleComponent";
+import { RootState } from "../../../state-management/redux/store";
 import ProductList from "../ProductList";
 
 const BestSeller = () => {
@@ -9,14 +9,11 @@ const BestSeller = () => {
   return (
     <div className="my-10">
       <div className="text-center text-3xl py-8">
-        <Title text1={'BEST'} text2={'SELLERS'}/>
-        <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600">
-        Hi everyone this page is for you to show the best apranqner.
-        </p>
+        <Title text1={'ԼԱՎԱԳՈՒՅՆ'} text2={'ՎԱՃԱՌՈՂՆԵՐ'} />
       </div>
       <ProductList products={products} />
     </div>
   )
 }
 
-export default BestSeller
+export default BestSeller;

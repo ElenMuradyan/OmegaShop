@@ -1,4 +1,4 @@
-import { ROUTE_NAMES } from "../../utilis/constants"
+import { ROUTE_NAMES } from "../../utilis/constants/constants"
 
 type NavbarItem = {
     label: string,
@@ -6,8 +6,8 @@ type NavbarItem = {
 }
 
 export const NavbarItems: NavbarItem[] = [
-    { label: "HOME", path: ROUTE_NAMES.HOME },
-    { label: "COLLECTION", path: ROUTE_NAMES.COLLECTION },
-    { label: "ABOUT", path: ROUTE_NAMES.ABOUT },
-    { label: "OUR SELLERS", path: ROUTE_NAMES.SELLERS },
-]
+    { label: "ԳԼԽԱՎՈՐ", path: ROUTE_NAMES.HOME },
+    { label: "ՀԱՎԱՔԱԾՈՒ", path: ROUTE_NAMES.COLLECTION },
+    { label: "ՄԵՐ ՄԱՍԻՆ", path: ROUTE_NAMES.ABOUT },
+    { label: "ՄԵՐ ՎԱՃԱՌՈՂՆԵՐԸ", path: ROUTE_NAMES.SELLERS },
+];

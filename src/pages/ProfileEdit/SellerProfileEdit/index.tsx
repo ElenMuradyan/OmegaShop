@@ -5,12 +5,12 @@ import { AppDispatch, RootState } from "../../../state-management/redux/store";
 import { supabase } from "../../../services/supabase/supabase";
 import { fetchUserData } from "../../../state-management/redux/slices/userDataSlice";
 import { Link } from "react-router-dom";
-import { ROUTE_NAMES } from "../../../utilis/constants";
+import { ROUTE_NAMES } from "../../../utilis/constants/constants";
 import { EnvironmentOutlined, UserOutlined } from "@ant-design/icons";
 import { sellerRegister } from "../../../typescript/interfaces/register";
 import { categoryLabels } from "../../../typescript/types/categories";
-import { options } from "../../../utilis/sellerTypeOptions";
-import Title from "../../../components/sheard/Title";
+import { options } from "../../../utilis/constants/sellerTypeOptions";
+import Title from "../../../components/sheard/TitleComponent";
 import { fetchShopInfo } from "../../../state-management/redux/slices/shopInfoSlice";
 
 const { Text } = Typography;
