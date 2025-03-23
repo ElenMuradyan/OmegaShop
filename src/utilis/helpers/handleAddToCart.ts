@@ -1,0 +1,51 @@
+import { addDoc, collection, getDocs } from "firebase/firestore";
+import { FIRESTORE_PATH_NAMES } from "../constants/firebaseConstants";
+import { db } from "../../services/firebase/firebase";
+import { setCart } from "../../state-management/redux/slices/userDataSlice";
+import { optionType } from "../../typescript/interfaces/product";
+import { handleAddToCartInterface } from "../../typescript/types/handleAddToCartInterface";
+
+export const handleAddToCart = async ({productInfo, choosenOptions, setErrorMessage, orderedProductInfo, userData, setButtonLoading, productId, dispatch, setChoosenOptions, setOrderedProductInfo} : handleAddToCartInterface) => {
+    const allOptionsSelected = productInfo?.options.every(
+      (item: optionType) => choosenOptions[item.optionName]
+    );
+
+    if (!allOptionsSelected) {
+      setErrorMessage("Խնդրում ենք ընտրել բոլոր հատկությունները (Please select all options)");
+      return;
+    }
+
+    if (!(orderedProductInfo.stock > 0 && productInfo?.stock && orderedProductInfo.stock <= productInfo?.stock) || !orderedProductInfo.stock) {
+      setErrorMessage("Խնդրում ենք մուտքագրել ճիշտ քանակ (Please enter a valid stock amount)");
+      return;
+    }
+    if(userData){
+      try{
+        setButtonLoading(true);
+        const cartCollectionRef = collection(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, userData.id, FIRESTORE_PATH_NAMES.CART);
+
+        const cartItem = {
+            autorEmail: productInfo.autor,
+            productId,
+            stock: orderedProductInfo.stock,
+            options: orderedProductInfo.options,
+            price: productInfo.price,
+            image: productInfo.images[0],
+            name: productInfo.name,
+            ordering: false,
+            maxValue: productInfo.stock,
+        }  
+        await addDoc(cartCollectionRef, cartItem);
+        const updatedCartSnapshot = await getDocs(cartCollectionRef);
+        const updatedCart = updatedCartSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      
+        dispatch(setCart(updatedCart));
+        setChoosenOptions({});
+        setOrderedProductInfo({stock: 0, options: {}});
+      }catch(error: any){
+        console.error("Error adding to cart:", error.message);
+      }finally{
+        setButtonLoading(false);
+      }
+    }
+};

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Form, Input, Button, notification, Typography, Spin, Select } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state-management/redux/store";
-import { supabase } from "../../../services/supabase/supabase";
 import { fetchUserData } from "../../../state-management/redux/slices/userDataSlice";
 import { Link } from "react-router-dom";
 import { ROUTE_NAMES } from "../../../utilis/constants/constants";
@@ -12,6 +11,7 @@ import { categoryLabels } from "../../../typescript/types/categories";
 import { options } from "../../../utilis/constants/sellerTypeOptions";
 import Title from "../../../components/sheard/TitleComponent";
 import { fetchShopInfo } from "../../../state-management/redux/slices/shopInfoSlice";
+import { handleEditBuyerData, handleEditSellerData } from "../../../utilis/helpers/handleEditBuyerData";
 
 const { Text } = Typography;
 
@@ -28,34 +28,19 @@ const SellerProfileEdit = () => {
 
     const handleEditUserProfile = async (values: sellerRegister) => {
         setButtonLoading(true);
-        console.log(values);
         const { firstName, lastName, email, phone, shopName, description, type, categories } = values;
 
         try {
-            const { error } = await supabase
-                .from("users")
-                .update({ firstName, lastName, phone, email })
-                .eq("email", email);
-
-            if (error) {
-                throw new Error(error.message);
-            };
-
-            const { error: businessError } = await supabase
-            .from("sellers")
-            .update({ shopName, description, type, categories })
-            .eq("email", email);
-
-            if (businessError) {
-                throw new Error(businessError.message);
-            };
-
+          if(userData?.id){
+            handleEditBuyerData({ firstName, lastName, phone, email }, userData.id);
+            handleEditSellerData({ shopName, description, type, categories }, userData.id);
             dispatch(fetchUserData());
             dispatch(fetchShopInfo(email));
 
             notification.success({
                 message: "Տվյալները հաջողությամբ թարմացվեցին։",
             });
+          }
         } catch {
             notification.error({
                 message: "Կներեք, մենք չկարողացանք փոփոխել ձեր տվյալները։",

@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { supabase } from "../../../services/supabase/supabase";
 import { seller, sellersSliceType } from "../../../typescript/types/sellersSliceType";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../services/firebase/firebase";

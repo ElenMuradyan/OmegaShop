@@ -1,6 +1,5 @@
 import { Button, Form, Input, notification, Typography } from 'antd';
 import { ROUTE_NAMES } from '../../../utilis/constants/constants';
-import { supabase } from '../../../services/supabase/supabase';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../../../typescript/interfaces/login';
 import { useDispatch } from 'react-redux';
@@ -71,6 +70,7 @@ const Login = () => {
                         htmlType="submit"
                         size="large"
                         className="w-full sm:w-auto px-16 py-3 rounded-lg text-white bg-black hover:bg-gray-800"
+                        loading={loading}
                     >
                         ՄՈՒՏՔ
                     </Button>

@@ -1,4 +1,4 @@
-import { ROUTE_NAMES } from "../../utilis/constants"
+import { ROUTE_NAMES } from "../../utilis/constants/constants"
 
 type DropdownItem = {
     label: string,

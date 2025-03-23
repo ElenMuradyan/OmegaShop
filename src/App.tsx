@@ -3,7 +3,6 @@ import Home from "./pages/Home";
 import { ROUTE_NAMES } from "./utilis/constants/constants";
 import Collection from "./pages/Collection";
 import About from "./pages/About";
-import Card from "./pages/Card";
 import PlaceOrder from "./pages/PlaceOrder";
 import Orders from "./pages/Orders";
 import Login from "./pages/auth/Login";
@@ -15,7 +14,6 @@ import { AppDispatch, RootState } from "./state-management/redux/store";
 import { useEffect } from "react";
 import { changeLoading, fetchUserData } from "./state-management/redux/slices/userDataSlice";
 import CabinetLayout from "./layouts/Cabinet";
-import { supabase } from "./services/supabase/supabase";
 import LoadingWrapper from "./components/sheard/Loading";
 import Settings from "./pages/Settings";
 import Help from "./pages/Help";
@@ -38,6 +36,7 @@ import BuyerContract from "./pages/Contracts/BuyerContract";
 import SellerContract from "./pages/Contracts/SellerContract";
 import TermsAndConditions from "./pages/Contracts/TermsAndConditions";
 import { auth } from "./services/firebase/firebase";
+import Cart from "./pages/Cart";
 
 function App() {
   const { isAuth } = useSelector((store: RootState) => store.userData.authUserInfo);
@@ -98,7 +97,7 @@ function App() {
 
             <Route path={ROUTE_NAMES.ADDPRODUCT} element={<AddProduct />} />
             <Route path={ROUTE_NAMES.MYPRODUCTS} element={<MyProducts />} />
-            <Route path={ROUTE_NAMES.CARD} element={<Card/>} />
+            <Route path={ROUTE_NAMES.CARD} element={<Cart/>} />
             <Route path={ROUTE_NAMES.ORDERS} element={<Orders/>} />
 
             <Route path={ROUTE_NAMES.CUSTOMERORDERS} element={<CustomersOrdersLayout />}>

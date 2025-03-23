@@ -1,11 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { supabase } from "../../../services/supabase/supabase";
 import { sellerProfileSliceType, shopInfoType } from "../../../typescript/types/shopInfoSliceType";
 import { product } from "../../../typescript/types/product";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../services/firebase/firebase";
 import { FIRESTORE_PATH_NAMES } from "../../../utilis/constants/firebaseConstants";
-import { seller } from "../../../typescript/types/sellersSliceType";
 
 const initialState: sellerProfileSliceType = {
     loading: true,

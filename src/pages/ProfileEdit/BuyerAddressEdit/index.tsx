@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state-management/redux/store";
 import { address } from "../../../typescript/types/userDataState";
 import { useEffect, useState } from "react";
-import { supabase } from "../../../services/supabase/supabase";
 import { fetchUserData } from "../../../state-management/redux/slices/userDataSlice";
 import { EnvironmentOutlined, HomeOutlined, SendOutlined } from "@ant-design/icons";
+import { handleEditBuyerData } from "../../../utilis/helpers/handleEditBuyerData";
 
 const { Text } = Typography;
 
@@ -17,19 +17,11 @@ const BuyerAddressEdit = () => {
 
     const handleEditUserAddress = async (values: address) => {
         setButtonLoading(true);
-
         try {
-            if (userData?.email) {
-                const email = userData.email;
-                const { error } = await supabase
-                    .from("users")
-                    .update({ address: values })
-                    .eq("email", email);
-
-                if (error) {
-                    throw new Error(error.message);
-                }
-
+            if (userData?.id) {
+              const id = userData.id;
+              const object = {address: values}
+              handleEditBuyerData(object, id);
                 dispatch(fetchUserData());
                 notification.success({
                     message: "Հասցեն հաջողությամբ թարմացվել է։",
@@ -45,9 +37,7 @@ const BuyerAddressEdit = () => {
         }
     };
 
-    useEffect(() => {    
-      console.log(userData?.address);
-        
+    useEffect(() => {            
         form.setFieldsValue(userData?.address);
     }, [userData]);
 

@@ -2,7 +2,6 @@ import { Button, Checkbox, Form, Input, notification, Select, Typography } from 
 import { regexpValidation, ROUTE_NAMES } from '../../../../utilis/constants/constants';
 import { sellerRegister } from '../../../../typescript/interfaces/register';
 import Title from '../../../../components/sheard/TitleComponent';
-import { supabase } from '../../../../services/supabase/supabase';
 import { Link, useNavigate } from 'react-router-dom';
 import { categoryLabels } from '../../../../typescript/types/categories';
 import { options } from '../../../../utilis/constants/sellerTypeOptions';

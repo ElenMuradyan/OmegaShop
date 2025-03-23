@@ -1,14 +1,14 @@
-import { Button, Form, Input, notification, Select } from "antd";
-import { product } from "../../typescript/interfaces/product";
+import { Button, Form, Input, Select } from "antd";
 import { Categories, categoryLabels } from "../../typescript/types/categories";
 import { useState } from "react";
 import { DefaultOptionType } from "antd/es/select";
 import ImageUpload from "../../components/sheard/ImageUpload";
-import { supabase } from "../../services/supabase/supabase";
 import FormList from "../../components/sheard/FormList";
 import { useNavigate } from "react-router-dom";
-import { ROUTE_NAMES } from "../../utilis/constants/constants";
 import { options } from "../../utilis/constants/productOptions";
+import { useSelector } from "react-redux";
+import { RootState } from "../../state-management/redux/store";
+import { handleAddProduct } from "../../utilis/helpers/handleAddProduct";
 
 const AddProduct = () => {
     const [ form ] = Form.useForm();
@@ -16,67 +16,7 @@ const AddProduct = () => {
     const [ price, setPrice ] = useState<number>(0);
     const [ subCategories, setSubCategories ] = useState<DefaultOptionType[]>([]);
     const [ imageUrls, setImageUrls ] = useState<string[]>([]);
-
-    const addProduct = async (values: product) => {
-        const { name, description, price, category, subCategory, usedType, stock, options } = values;
-        
-        try {
-            const { data } = await supabase.auth.getSession();
-            if (data.session?.user?.email) {
-                const autor = data.session?.user?.email;
-                console.log('User email:', autor); 
-    
-                const { data: productData, error: productError } = await supabase
-                    .from("products")
-                    .insert([
-                        {
-                            name,
-                            description,
-                            price: Number(price),
-                            images: imageUrls,
-                            category,
-                            subCategory,
-                            usedType,
-                            stock: Number(stock),
-                            autor,
-                            options,
-                        }
-                    ])
-                    .select("id");
-    
-                if (productError) {
-                    throw new Error(productError.message);
-                }
-    
-                const productId = productData[0].id; 
-                console.log('Product ID:', productId);
-    
-                const { error: sellerError } = await supabase.rpc("append_product_to_seller", {
-                    input_email: autor,
-                    input_product_id: productId,
-                });
-    
-                if (sellerError) {
-                    console.error('RPC Error:', sellerError);
-                    notification.error({
-                        message: "Error while adding product to seller",
-                        description: sellerError.message,
-                    });
-                    throw new Error(sellerError.message);
-                }
-    
-                notification.success({
-                    message: "Ապրանքն ավելացվեց։",
-                });
-                navigate(ROUTE_NAMES.MYPRODUCTS);
-            }
-        } catch (error: any) {
-            notification.error({
-                message: "Ապրանքը չավելացվեց։",
-                description: error.message,
-            });
-        }
-    };
+    const { userData } = useSelector((state: RootState) => state.userData.authUserInfo)
     
     const handleImageUpload = (url: string) => {
         setImageUrls(prevUrls => [...prevUrls, url]);
@@ -104,7 +44,7 @@ const AddProduct = () => {
             🛒 Ավելացնել նոր ապրանք
         </h2>
         
-        <Form form={form} layout="vertical" onFinish={addProduct} className="space-y-6">
+        <Form form={form} layout="vertical" onFinish={(values) => handleAddProduct({values, userData, imageUrls, navigate})} className="space-y-6">
             
             <Form.Item name="name" rules={[{ required: true, message: "Խնդրում ենք մուտքագրել ապրանքի անունը" }]}>          
             <Input className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />

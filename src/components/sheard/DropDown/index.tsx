@@ -3,9 +3,10 @@ import { UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state-management/redux/store";
-import { supabase } from "../../../services/supabase/supabase";
 import { setIsAuth } from "../../../state-management/redux/slices/userDataSlice";
 import { ROUTE_NAMES } from "../../../utilis/constants/constants";
+import { auth } from "../../../services/firebase/firebase";
+import { signOut } from "firebase/auth";
 
 const { useToken } = theme;
 
@@ -17,17 +18,8 @@ const ProfileDropDown = () => {
   
   const handleSignOut = async () => {
     try{
-        const { error } = await supabase.auth.signOut();
-
-        if (error) {
-            throw error;
-        };
-
-        notification.success({
-            message: "Դուրս եկաք համակարգից հաջողությամբ։",
-        });
-
-        dispatch(setIsAuth(false));
+      await signOut(auth);
+      dispatch(setIsAuth(false));
     }catch{
         notification.error({
             message: 'Կներեք, ինչ-որ բան սխալ գնաց։'

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import RelatedProducts from "../../components/sheard/RelatedProducts";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state-management/redux/store";
@@ -7,10 +7,8 @@ import { fetchProductInfo } from "../../state-management/redux/slices/productSli
 import { names } from "../../utilis/constants/optionNamesOptions";
 import { orderedProductInfo, selectedOptions } from "../../typescript/types/oderedProductInfo";
 import { Input } from "antd";
-import { supabase } from "../../services/supabase/supabase";
 import { LoadingOutlined } from "@ant-design/icons";
-import { setCart } from "../../state-management/redux/slices/userDataSlice";
-import { ROUTE_NAMES } from "../../utilis/constants/constants";
+import { handleAddToCart } from "../../utilis/helpers/handleAddToCart";
 
 const Product = () => {
   const { productId } = useParams();
@@ -20,67 +18,11 @@ const Product = () => {
   const [imageurl, setimageurl] = useState(productInfo?.images[0]);
   const [ choosenOptions, setChoosenOptions ] = useState<selectedOptions>({});
   const [ buttonLoading, setButtonLoading ] = useState<boolean>(false);
-  const [ orderedProductInfo, setOrederedProductInfo ] = useState<orderedProductInfo>({stock: 0, options: choosenOptions});
+  const [ orderedProductInfo, setOrderedProductInfo ] = useState<orderedProductInfo>({stock: 0, options: choosenOptions});
   const [ errrorMessage, setErrorMessage ] = useState<string>('');
-  const navigate = useNavigate();
-
-  const handleAddToCard = async () => {
-    const allOptionsSelected = productInfo?.options.every(
-      (item) => choosenOptions[item.optionName]
-    );
-
-    if (!allOptionsSelected) {
-      setErrorMessage("Խնդրում ենք ընտրել բոլոր հատկությունները (Please select all options)");
-      return;
-    }
-
-    if (!(orderedProductInfo.stock > 0 && productInfo?.stock && orderedProductInfo.stock <= productInfo?.stock) || !orderedProductInfo.stock) {
-      setErrorMessage("Խնդրում ենք մուտքագրել ճիշտ քանակ (Please enter a valid stock amount)");
-      return;
-    }
-
-    try{
-      setButtonLoading(true);
-      const { data: user, error: fetchError } = await supabase
-      .from("users")
-      .select("cart")
-      .eq("id", userData?.id)
-      .single();
-
-      if (fetchError) throw fetchError;
-
-      let updatedCart = user.cart || [];
-
-      updatedCart.push({
-        autorEmail: productInfo.autor,
-        productId,
-        stock: orderedProductInfo.stock,
-        options: orderedProductInfo.options,
-        price: productInfo.price,
-        image: productInfo.images[0],
-        name: productInfo.name,
-        ordering: false,
-        maxValue: productInfo.stock,
-      });
-
-      const { error: updateError } = await supabase
-      .from("users")
-      .update({ cart: updatedCart })
-      .eq("id", userData?.id);
-
-      if (updateError) throw updateError;
-
-      dispatch(setCart(updatedCart));
-      navigate(ROUTE_NAMES.CARD);
-    }catch(error: any){
-      console.error("Error adding to cart:", error.message);
-    }finally{
-      setButtonLoading(false);
-    }
-  };
 
   useEffect(() => {
-    setOrederedProductInfo((prev) => ({
+    setOrderedProductInfo((prev) => ({
       ...prev,
       options: choosenOptions,  
     }));
@@ -154,13 +96,13 @@ const Product = () => {
         <p>Ընտրեք քանակը</p>
         <Input type="number" min={1} max={productInfo?.stock} onChange={(e) => {
           setErrorMessage('')
-          setOrederedProductInfo((prev) => ({
+          setOrderedProductInfo((prev) => ({
             ...prev,
             stock: Number(e.target.value)
         }))}}/>
 
         <hr className="m-8 sm:w-4/5"/>
-          <button onClick={handleAddToCard} className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700">{buttonLoading ? <><LoadingOutlined/> ...LOADING</> : 'ADD TO CARD'}</button>
+          <button onClick={() => handleAddToCart({productInfo, choosenOptions, setErrorMessage, orderedProductInfo, userData, setButtonLoading, productId, dispatch, setChoosenOptions, setOrderedProductInfo })} className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700">{buttonLoading ? <><LoadingOutlined/> ...LOADING</> : 'ADD TO CARD'}</button>
           {errrorMessage && <p className="text-red-500">{errrorMessage}</p>}
           <hr className="mt-8 sm:w-4/5"/>
           <div className="text-sm text-gray-500 mt-5 flex flex-col gap-1">

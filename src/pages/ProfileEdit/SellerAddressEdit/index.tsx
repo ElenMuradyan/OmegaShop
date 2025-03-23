@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state-management/redux/store";
 import { sellerAddresses } from "../../../typescript/types/userDataState";
 import { useEffect, useState } from "react";
-import { supabase } from "../../../services/supabase/supabase";
 import { fetchUserData } from "../../../state-management/redux/slices/userDataSlice";
 import { EnvironmentOutlined, HomeOutlined, SendOutlined } from "@ant-design/icons";
 import Title from "../../../components/sheard/TitleComponent";
 import { fetchShopInfo } from "../../../state-management/redux/slices/shopInfoSlice";
+import { handleEditBuyerData, handleEditSellerData } from "../../../utilis/helpers/handleEditBuyerData";
 
 const { Text } = Typography;
 
@@ -25,25 +25,10 @@ const SellerAddressEdit = () => {
         const address = {region, city, street, postIndex};
         const businessAddress = {businessRegion, businessCity, businessStreet, businessPostIndex, businessPhone};
         try {
-            if (userData?.email) {
+            if (userData?.id) {
                 const email = userData.email;
-                const { error } = await supabase
-                    .from("users")
-                    .update({ address: address })
-                    .eq("email", email);
-
-                if (error) {
-                    throw new Error(error.message);
-                };
-
-                const { error: shopError } = await supabase
-                .from("sellers")
-                .update({ businessAddress: businessAddress })
-                .eq("email", email);
-
-                if (shopError) {
-                    throw new Error(shopError.message);
-                };
+                handleEditBuyerData({ address: address }, userData.id);
+                handleEditSellerData({ businessAddress: businessAddress }, userData.id);
 
                 dispatch(fetchUserData());
                 dispatch(fetchShopInfo(email));

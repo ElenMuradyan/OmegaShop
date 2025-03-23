@@ -23,8 +23,8 @@ export type userData = {
 }
 
 export type order = {
-    id: string,
-    orderDate: string,
+    id?: string,
+    orderDate: number,
     address: address,
     status: string,
     products: cartProductType[],

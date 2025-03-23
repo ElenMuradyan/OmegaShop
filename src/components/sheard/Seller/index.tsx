@@ -5,8 +5,10 @@ import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { product } from "../../../typescript/types/product";
-import { supabase } from "../../../services/supabase/supabase";
 import LoadingWrapper from "../Loading";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../../services/firebase/firebase";
+import { FIRESTORE_PATH_NAMES } from "../../../utilis/constants/firebaseConstants";
 
 const Seller = ({ data }: { data: seller }) => {
   const { description, categories, id, email, shopName, myproducts } = data;
@@ -16,16 +18,19 @@ const Seller = ({ data }: { data: seller }) => {
   useEffect(() => {
     setLoading(true);
     const fetchProducts = async (ids: string[]) => {
+      if (ids.length === 0) return; 
       try {
-        const { data, error } = await supabase
-          .from("products")
-          .select("*")
-          .in("id", ids);
-
-        if (error) throw error;
-
-        setProducts(data);
-      } catch (err: any) {
+        const productsRef = collection(db, FIRESTORE_PATH_NAMES.PRODUCTS);
+        const q = query(productsRef, where("id", "in", ids));
+        const querySnapshot = await getDocs(q);
+        
+        const fetchedProducts = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }as product));
+  
+        setProducts(fetchedProducts);
+        } catch (err: any) {
         console.log(err.message);
       } finally {
         setLoading(false);

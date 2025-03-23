@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { cartProductType, order, userData, userDataSliceType } from "../../../typescript/types/userDataState";
-import { cartProduct } from "../../../typescript/interfaces/product";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../../../services/firebase/firebase";
 import { FIRESTORE_PATH_NAMES } from "../../../utilis/constants/firebaseConstants";

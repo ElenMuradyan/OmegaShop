@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { ROUTE_NAMES } from "../../../utilis/constants/constants";
 import { useEffect, useState } from "react";
 import { order, userData } from "../../../typescript/types/userDataState";
-import { supabase } from "../../../services/supabase/supabase";
+
 import { FaMoneyBills } from "react-icons/fa6";
 import { Modal } from "antd";
 import { AppDispatch, RootState } from "../../../state-management/redux/store";
@@ -13,6 +13,9 @@ import { handleChangeStatus } from "../../../utilis/helpers/sellerOrderListFunct
 import { handleStatusChange } from "../../../state-management/redux/slices/shopInfoSlice";
 import { OrderKeys } from "../../../typescript/types/shopInfoSliceType";
 import LoadingWrapper from "../Loading";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../../services/firebase/firebase";
+import { FIRESTORE_PATH_NAMES } from "../../../utilis/constants/firebaseConstants";
 
 const SellerOrderList = ({ order }: { order: order }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -31,15 +34,14 @@ const SellerOrderList = ({ order }: { order: order }) => {
     const fetchConsumer = async () => {
       try {
         setLoading(true);
-        const { data: user, error } = await supabase
-          .from("users")
-          .select("*")
-          .eq("email", consumerEmail)
-          .single();
-
-        if (error) throw error;
-
-        setConsumerInfo(user);
+        const userRef = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, consumerEmail);
+        const userSnap = await getDoc(userRef);
+    
+        if (!userSnap.exists()) {
+          throw new Error("User not found");
+        }
+    
+        setConsumerInfo(userSnap.data() as userData);    
       } catch (error: any) {
         console.log(error.message);
       } finally {
