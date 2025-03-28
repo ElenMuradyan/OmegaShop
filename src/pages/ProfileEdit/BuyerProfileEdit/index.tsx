@@ -26,8 +26,8 @@ const BuyerProfileEdit = () => {
         const { firstName, lastName, email, phone } = values;
 
         try {
-          if(userData?.id){
-            handleEditBuyerData({ firstName, lastName, email, phone }, userData.id);
+          if(userData?.uid){
+            handleEditBuyerData({ firstName, lastName, email, phone }, userData.uid);
             dispatch(fetchUserData());
             notification.success({
                 message: "Տվյալները հաջողությամբ թարմացվեցին։",

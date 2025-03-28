@@ -25,10 +25,10 @@ const SellerAddressEdit = () => {
         const address = {region, city, street, postIndex};
         const businessAddress = {businessRegion, businessCity, businessStreet, businessPostIndex, businessPhone};
         try {
-            if (userData?.id) {
+            if (userData?.uid) {
                 const email = userData.email;
-                handleEditBuyerData({ address: address }, userData.id);
-                handleEditSellerData({ businessAddress: businessAddress }, userData.id);
+                handleEditBuyerData({ address: address }, userData.uid);
+                handleEditSellerData({ businessAddress: businessAddress }, userData.uid);
 
                 dispatch(fetchUserData());
                 dispatch(fetchShopInfo(email));
@@ -46,7 +46,10 @@ const SellerAddressEdit = () => {
         }
     };
 
-    useEffect(() => {          
+    useEffect(() => {
+      userData && dispatch(fetchShopInfo(userData?.uid));
+    }, [])
+    useEffect(() => {                
         if (userData?.address || myShopInfo?.businessAddress) {
             form.setFieldsValue({
                 ...userData?.address ?? {},  

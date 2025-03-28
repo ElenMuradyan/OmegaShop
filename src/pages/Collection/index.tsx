@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Categories } from "../../typescript/types/categories";
-import { DownOutlined } from "@ant-design/icons";
+import { DownOutlined, SearchOutlined } from "@ant-design/icons";
 import Title from "../../components/sheard/TitleComponent";
 import { Select } from "antd";
 import { arragementValues } from "../../typescript/types/productArragement";
@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../state-management/redux/store";
 import ProductList from "../../components/sheard/ProductList";
 import { product } from "../../typescript/types/product";
+import SearchBar from "../../components/sheard/Search";
 
 const Collection = () => {
   const [ showFilter, setShowFilter ] = useState(false);
@@ -18,6 +19,8 @@ const Collection = () => {
 
   const [sortOrder, setSortOrder] = useState<string | null>(null);
   const [ filteredProducts, setFilteredProducts ] = useState<product[]>([]);
+
+  const [ inputValue, setInputValue ] = useState<string>('');
 
   const handleCategoryChange = (category: string) => {
     selectedCategory === category ? setSelectedCategory('') : setSelectedCategory(category);
@@ -45,10 +48,14 @@ const Collection = () => {
       if (sortOrder === arragementValues[1].value) return a.price - b.price;
       if (sortOrder === arragementValues[2].value) return b.price - a.price;
       return 0;
-    });
+    }
+  );
+  if(inputValue){
+    filteredProducts.filter(item => item.name.includes(inputValue) || item.description.includes(inputValue) || item.category.includes(inputValue) || item.subCategory.includes(inputValue))
+  }
 
     setFilteredProducts(filteredProducts);
-  }, [sortOrder, selectedCategory, selectedSubCategories, products]);
+  }, [sortOrder, selectedCategory, selectedSubCategories, products, inputValue]);
 
   return (
     <div className="flex flex-col gap-1 sm:gap-10 pt-10 border-t">
@@ -100,7 +107,7 @@ const Collection = () => {
 
       <div className="flex-1">
         <div className="flex justify-between text-base sm:text-2xl mb-4 gap-2 sm:gap-4">
-          <Title text1="ALL" text2="COLLECTIONS" />
+          <Title text1="ԲՈԼՈՐ" text2="ՀԱՎԱՔԱԾՈՒՆԵՐԸ" />
           <Select onChange={handleSortChange} options={arragementValues} placeholder='Select arragement' className="sm:w-1/3"/>
         </div>
           <ProductList products={filteredProducts} />

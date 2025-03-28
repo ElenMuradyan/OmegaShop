@@ -14,4 +14,8 @@ export type seller = {
     id: string,
     email: string,
     myproducts: string[],
+    newOrders: string[],
+    processingOrders: string[],
+    sentOrders: string[],
+    doneOrders: string[],
 }

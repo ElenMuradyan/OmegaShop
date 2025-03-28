@@ -4,15 +4,16 @@ import CartProductItem from "../CartProductItem";
 
 const CartProductList = () => {
   const { cart } = useSelector((state: RootState) => state.userData.authUserInfo);
+    console.log(cart);
     
   return (
     <div className="gap-y-6">
       {
         cart.map((item, key) => {
-            const { productId, autorEmail, stock, image, price, name, options, maxValue, ordering } = item;
+            const { productId, autor, stock, image, price, name, options, maxValue, ordering, cartItemId } = item;
             
             return(
-                <CartProductItem autorEmail={autorEmail} productId={productId} image={image} name={name} price={price} stock={stock} index={key} key={key} options={options} maxValue={maxValue} ordering={ordering}/>
+                <CartProductItem cartItemId={cartItemId} autor={autor} productId={productId} image={image} name={name} price={price} stock={stock} index={key} key={key} options={options} maxValue={maxValue} ordering={ordering}/>
             )
         })
       }

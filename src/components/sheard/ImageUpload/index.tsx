@@ -2,10 +2,14 @@ import { PlusOutlined } from "@ant-design/icons";
 import { notification, Upload } from "antd";
 import { supabase } from "../../../services/supabase/supabase";
 import { RcFile, UploadProps } from "antd/es/upload";
-import { ImageUploadProps } from "../../../typescript/interfaces/ImageUploadProps";
 import React from "react";
 
-const ImageUpload: React.FC<ImageUploadProps> = ({onFinish}) => {
+export interface ImageUploadProps {
+  onFinish: (url: string) => void;
+  handleDelete?: (url: string) => void;
+}
+
+const ImageUpload: React.FC<ImageUploadProps> = ({onFinish, handleDelete}) => {
     const uploadButton = (
         <button style={{ border: 0, background: 'none' }} type="button">
           <PlusOutlined />
@@ -48,13 +52,51 @@ const ImageUpload: React.FC<ImageUploadProps> = ({onFinish}) => {
               })
           }
        };
-    
+
+       const handleRemove = async (file: any) => {
+        try {
+          const filePath = file.response.path;
+          if (!filePath) {
+            notification.error({
+              message: "Չհաջողվեց հեռացնել։",
+              description: "Նկարի հղումը սխալ է։",
+            });
+            return false;
+          }
+      
+          const { error } = await supabase.storage.from("product-images").remove([filePath]);
+      
+          if (error) throw error;
+      
+          notification.success({
+            message: "Հաջողությամբ հեռացվեց։",
+          });
+
+          const { data } = supabase.storage
+          .from("product-images")
+          .getPublicUrl(filePath);
+
+          if (handleDelete) {
+            handleDelete(data.publicUrl);
+          }
+      
+          return true;
+        } catch (error: any) {
+          notification.error({
+            message: "Ինչ-որ բան սխալ գնաց։",
+            description: error.message,
+          });
+          return false;
+        }
+      }
+          
   return (
     <div>
             <Upload
                 listType="picture-card"
                 customRequest={handleImageUpload}
                 showUploadList={true}
+                onRemove={handleRemove}
                 multiple
             >
                 {uploadButton}

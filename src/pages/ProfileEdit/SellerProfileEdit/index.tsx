@@ -31,9 +31,9 @@ const SellerProfileEdit = () => {
         const { firstName, lastName, email, phone, shopName, description, type, categories } = values;
 
         try {
-          if(userData?.id){
-            handleEditBuyerData({ firstName, lastName, phone, email }, userData.id);
-            handleEditSellerData({ shopName, description, type, categories }, userData.id);
+          if(userData?.uid){
+            handleEditBuyerData({ firstName, lastName, phone, email }, userData.uid);
+            handleEditSellerData({ shopName, description, type, categories }, userData.uid);
             dispatch(fetchUserData());
             dispatch(fetchShopInfo(email));
 

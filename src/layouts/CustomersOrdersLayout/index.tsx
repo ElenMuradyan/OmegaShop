@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { Breadcrumb } from "antd";
 import { Link, useLocation } from "react-router-dom";
@@ -9,10 +9,18 @@ import {
     CheckCircleOutlined,
     FieldTimeOutlined
 } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../state-management/redux/store";
+import { fetchShopInfo } from "../../state-management/redux/slices/shopInfoSlice";
 
 const CustomersOrdersLayout: React.FC = () => {
     const { pathname } = useLocation();
+    const dispatch = useDispatch<AppDispatch>();
+    const { userData } = useSelector((state: RootState) => state.userData.authUserInfo) 
 
+    useEffect(() => {
+      userData && dispatch(fetchShopInfo(userData?.uid));
+    }, [pathname])
     return (
         <div>
             <div className="flex justify-center items-center py-4">

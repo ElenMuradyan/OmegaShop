@@ -39,31 +39,20 @@ import { auth } from "./services/firebase/firebase";
 import Cart from "./pages/Cart";
 
 function App() {
-  const { isAuth } = useSelector((store: RootState) => store.userData.authUserInfo);
+  const { authUserInfo:{isAuth, userData}, loading } = useSelector((store: RootState) => store.userData);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(()=>{
-    const restoreSession = async () => {
-      const user = auth.currentUser;
-
-      if(user && user.email){
-        await dispatch(fetchUserData());
-        await dispatch(fetchProducts());
-
-        const userRole = user.displayName;
-        console.log(userRole);
-        
-        if(userRole === 'seller'){          
-          dispatch(fetchShopInfo(user.email));
+        const user = auth.currentUser;
+        dispatch(fetchUserData());
+        dispatch(fetchProducts());             
+        if(user?.displayName === 'seller'){          
+          userData && dispatch(fetchShopInfo(userData.uid));
         }
-      }
-      dispatch(changeLoading(false));
-    }
-    restoreSession();
   },[]);
 
   return (
-    <LoadingWrapper>
+    <LoadingWrapper isLoading={loading}>
       <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
         <ScrollToTop />
         <Routes>

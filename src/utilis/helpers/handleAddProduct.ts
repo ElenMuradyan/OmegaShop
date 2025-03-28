@@ -7,11 +7,13 @@ import { ROUTE_NAMES } from "../constants/constants";
 
 export const handleAddProduct = async ({values, userData, imageUrls, navigate}: addProductInterface) => {
         const { name, description, price, category, subCategory, usedType, stock, options } = values;
-        
+        if(userData){
+            const sanitizedOptions = options || [];
+
         try {
-            if(userData){
                 const productRef = await addDoc(collection(db, FIRESTORE_PATH_NAMES.PRODUCTS),
                 {
+                    id: '',
                     name,
                     description,
                     price: Number(price),
@@ -20,26 +22,28 @@ export const handleAddProduct = async ({values, userData, imageUrls, navigate}: 
                     subCategory,
                     usedType,
                     stock: Number(stock),
-                    autor: userData.email,
-                    options,
+                    autor: userData.uid,
+                    options: sanitizedOptions,
                 }
             )
 
-            const sellerRef = doc(db, FIRESTORE_PATH_NAMES.SELLERS, userData.id);
+            const sellerRef = doc(db, FIRESTORE_PATH_NAMES.SELLERS, userData.uid);
             await updateDoc(sellerRef, {
-                myProducts: arrayUnion(productRef.id),
+                myproducts: arrayUnion(productRef.id),
             });
+            await updateDoc(productRef, {
+                id: productRef.id
+            })
     
             notification.success({
                 message: "Ապրանքն ավելացվեց։",
             });
     
             navigate(ROUTE_NAMES.MYPRODUCTS);    
-            }
         } catch (error: any) {
             notification.error({
                 message: "Ապրանքը չավելացվեց։",
                 description: error.message,
         });
-    }
+    }}
 };

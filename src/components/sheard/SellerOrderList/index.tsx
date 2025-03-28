@@ -4,7 +4,6 @@ import { Link, useParams } from "react-router-dom";
 import { ROUTE_NAMES } from "../../../utilis/constants/constants";
 import { useEffect, useState } from "react";
 import { order, userData } from "../../../typescript/types/userDataState";
-
 import { FaMoneyBills } from "react-icons/fa6";
 import { Modal } from "antd";
 import { AppDispatch, RootState } from "../../../state-management/redux/store";
@@ -16,11 +15,12 @@ import LoadingWrapper from "../Loading";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../../services/firebase/firebase";
 import { FIRESTORE_PATH_NAMES } from "../../../utilis/constants/firebaseConstants";
+import { saveScrollPosition } from "../../../utilis/helpers/handleNavigate";
 
 const SellerOrderList = ({ order }: { order: order }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { orders } = useSelector((state: RootState) => state.shopInfo);
-  const { products, orderDate, totalPrice, address, consumerEmail } = order;
+  const { products, orderDate, totalPrice, address, consumerId } = order;
   const { status } = useParams<{ status: OrderKeys }>();
   const orderInfo = orderStatuses[status as string];
   const [consumerInfo, setConsumerInfo] = useState<userData>();
@@ -34,7 +34,7 @@ const SellerOrderList = ({ order }: { order: order }) => {
     const fetchConsumer = async () => {
       try {
         setLoading(true);
-        const userRef = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, consumerEmail);
+        const userRef = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, consumerId);
         const userSnap = await getDoc(userRef);
     
         if (!userSnap.exists()) {
@@ -84,7 +84,7 @@ const SellerOrderList = ({ order }: { order: order }) => {
 
           <div className="mb-4">
             <h3 className="font-semibold text-gray-700">Գնորդի տվյալներ</h3>
-            <Link to={`${ROUTE_NAMES.PROFILE}/${consumerInfo?.id}`} className="text-blue-600 hover:underline">
+            <Link to={`${ROUTE_NAMES.PROFILE}/${consumerInfo?.uid}`} className="text-blue-600 hover:underline">
               Տեսնել գնորդի էջը
             </Link>
             <p className="text-gray-600">
@@ -100,7 +100,7 @@ const SellerOrderList = ({ order }: { order: order }) => {
 
           <div className="space-y-4">
             {products.map((product, index) => (
-              <Link key={index} to={`${ROUTE_NAMES.PRODUCT}/${product.productId}`}>
+              <Link onClick={() => saveScrollPosition()}  key={index} to={`${ROUTE_NAMES.PRODUCT}/${product.productId}`}>
                 <div className="p-4 bg-gray-50 border rounded-lg flex flex-col md:flex-row md:items-center gap-4 hover:shadow-md transition">
                   <img src={product.image} alt={product.name} className="w-20 h-20 object-cover rounded-lg" />
                   <div className="flex-1">
@@ -108,7 +108,7 @@ const SellerOrderList = ({ order }: { order: order }) => {
                     <div className="flex flex-wrap gap-3 text-sm text-gray-600 mt-2">
                       <p className="text-base font-semibold">{product.price} AMD</p>
                       <p>Քանակ: {product.stock}</p>
-                      {Object.entries(product.options).map(([key, value], idx) => (
+                      {product.options && Object.entries(product.options).map(([key, value], idx) => (
                         <p key={idx} className="bg-gray-200 px-2 py-1 rounded-md">{`${key}: ${value}`}</p>
                       ))}
                     </div>

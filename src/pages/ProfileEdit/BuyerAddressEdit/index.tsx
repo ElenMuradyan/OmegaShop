@@ -18,8 +18,8 @@ const BuyerAddressEdit = () => {
     const handleEditUserAddress = async (values: address) => {
         setButtonLoading(true);
         try {
-            if (userData?.id) {
-              const id = userData.id;
+            if (userData?.uid) {
+              const id = userData.uid;
               const object = {address: values}
               handleEditBuyerData(object, id);
                 dispatch(fetchUserData());

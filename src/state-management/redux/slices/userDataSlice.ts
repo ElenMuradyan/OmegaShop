@@ -23,6 +23,7 @@ export const fetchUserData = createAsyncThunk(
         return new Promise<userData | null>((resolve, reject) => {
             onAuthStateChanged(auth, (user) => {
                 if(user) {
+                    dispatch(changeLoading(true));
                     const userRef = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, user.uid);
                     getDoc(userRef)
                     .then((userData) => {
@@ -73,7 +74,7 @@ export const fetchUserCart = createAsyncThunk(
             const cartSnap = await getDocs(cartRef);
 
             const cartProducts = cartSnap.docs.map(doc => ({
-                id: doc.id,
+                cartItemId: doc.id,
                 ...doc.data()
             }));
 
@@ -112,12 +113,15 @@ const userDataSlice = createSlice({
     extraReducers:(builder) => {
         builder
         .addCase(fetchUserData.pending, (state) => {
+            state.authUserInfo.cart = [];
+            state.authUserInfo.userData = null;
+            state.authUserInfo.userOrders = [];
             state.loading = true;
         })
-        .addCase(fetchUserData.fulfilled, (state, action) => {
-            state.loading = false;
+        .addCase(fetchUserData.fulfilled, (state, action) => {            
             state.authUserInfo.isAuth = true;
             state.authUserInfo.userData = action.payload;
+            state.loading = false;
         })
         .addCase(fetchUserData.rejected, (state, action) => {
             state.loading = false;

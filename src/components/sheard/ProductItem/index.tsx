@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { product } from "../../../typescript/interfaces/product";
 import { ROUTE_NAMES } from "../../../utilis/constants/constants";
+import { saveScrollPosition } from "../../../utilis/helpers/handleNavigate";
 
 const ProductItem = ({
   id,
@@ -12,6 +13,7 @@ const ProductItem = ({
 }: product) => {
   return (
     <Link
+    onClick={() => saveScrollPosition()} 
       to={`${ROUTE_NAMES.PRODUCT}/${id}`}
       className="text-gray-700 cursor-pointer shadow-lg rounded-lg p-2 transition-transform hover:shadow-xl"
     >

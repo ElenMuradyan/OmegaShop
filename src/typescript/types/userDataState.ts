@@ -12,7 +12,7 @@ export type userDataSliceType = {
 }
 
 export type userData = {
-    id: string,
+    uid: string,
     firstName: string,
     lastName: string,
     email: string,
@@ -23,14 +23,14 @@ export type userData = {
 }
 
 export type order = {
-    id?: string,
+    id: string,
     orderDate: number,
     address: address,
     status: string,
     products: cartProductType[],
     totalPrice: number,
-    consumerEmail: string,
-    sellerEmail: string,
+    consumerId: string,
+    sellerId: string,
 };
 
 export type address = {
@@ -53,9 +53,9 @@ export type sellerAddresses = {
 }
 
 export type cartProductType = {
-    id: string,
+    cartItemId: string,
     productId: string,
-    autorEmail: string,
+    autor: string,
     name: string,
     price: number,
     image: string,
@@ -63,5 +63,5 @@ export type cartProductType = {
     maxValue: number,
     index: number,
     ordering: boolean,
-    options: optionType[],
+    options?: optionType[],
 }

@@ -7,7 +7,6 @@ import SearchBar from "../../components/sheard/Search";
 const Home = () => {  
   return (
     <div>
-      <SearchBar />
       <Hero />
       <LatestCollection />
       <BestSeller />

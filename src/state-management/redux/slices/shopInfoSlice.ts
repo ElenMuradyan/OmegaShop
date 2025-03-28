@@ -20,7 +20,7 @@ const initialState: shopInfoSliceType = {
 
 export const fetchOrders = createAsyncThunk(
     "orders/fetchOrders",
-    async(orders: Record<string, string[]>, { rejectWithValue, dispatch }) => {
+    async(orders: Record<string, string[]>, { rejectWithValue, dispatch }) => {        
         try{
             const results = await Promise.all(
                 Object.entries(orders).map(async([key, value]) => {                    
@@ -84,10 +84,8 @@ export const fetchMyProducts = createAsyncThunk(
 
             const productsSnap = await getDocs(productsQuery);
             const products = productsSnap.docs.map(item => ({
-                id: item.id,
                 ...item.data()
-            }))
-
+            }))            
             return products as product[];
         }catch(error: any){
             return rejectWithValue(error.message);
@@ -97,29 +95,33 @@ export const fetchMyProducts = createAsyncThunk(
 
 export const fetchShopInfo = createAsyncThunk(
     "sellers/fetchShopInfo",
-    async(email :string, { rejectWithValue, dispatch }) => {
-        try{
-            const sellerRef = doc(db, FIRESTORE_PATH_NAMES.SELLERS, email);
-            const sellerDoc = await getDoc(sellerRef);
-
-            if (!sellerDoc.exists()) {
-                throw new Error("Seller not found");
-            }
- 
-            const sellerData = sellerDoc.data();
-            const orders = {
-                newOrders: sellerData.newOrders,
-                sentOrders: sellerData.sentOrders,
-                doneOrders: sellerData.doneOrders,
-                failedOrders: sellerData.failedOrders,
-                processingOrders: sellerData.processingOrders
-            }
-            dispatch(fetchOrders(orders));
-            dispatch(fetchMyProducts(sellerData.myproducts));
-
-            return { id: sellerDoc.id, ...sellerData } as shopInfoType;
-        }catch(error: any){
-            return rejectWithValue(error.message);
+    async(id :string | null, { rejectWithValue, dispatch }) => {
+        if(id){
+            try{
+                const sellerRef = doc(db, FIRESTORE_PATH_NAMES.SELLERS, id);
+                const sellerDoc = await getDoc(sellerRef);
+    
+                if (!sellerDoc.exists()) {
+                    throw new Error("Seller not found");
+                }
+     
+                const sellerData = sellerDoc.data();
+                const orders = {
+                    newOrders: sellerData.newOrders,
+                    sentOrders: sellerData.sentOrders,
+                    doneOrders: sellerData.doneOrders,
+                    failedOrders: sellerData.failedOrders,
+                    processingOrders: sellerData.processingOrders
+                }
+                dispatch(fetchOrders(orders));
+                dispatch(fetchMyProducts(sellerData.myproducts));
+    
+                return { id: sellerDoc.id, ...sellerData } as shopInfoType;
+            }catch(error: any){
+                return rejectWithValue(error.message);
+            }    
+        }else{
+            return null;
         }
     }
 );
@@ -167,10 +169,10 @@ const shopInfoSlice = createSlice({
                 doneOrders: [],
             };
         })
-        .addCase(fetchMyProducts.fulfilled, (state, action) => {
+        .addCase(fetchMyProducts.fulfilled, (state, action) => {            
             state.myproducts = action.payload;
         })
-        .addCase(fetchMyProducts.fulfilled, (state) => {
+        .addCase(fetchMyProducts.rejected, (state) => {
             state.myproducts = [];
         })
     }

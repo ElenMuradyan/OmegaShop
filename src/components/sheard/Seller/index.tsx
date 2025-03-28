@@ -18,7 +18,10 @@ const Seller = ({ data }: { data: seller }) => {
   useEffect(() => {
     setLoading(true);
     const fetchProducts = async (ids: string[]) => {
-      if (ids.length === 0) return; 
+      if (ids.length === 0){
+        setLoading(false);
+        return;
+      }; 
       try {
         const productsRef = collection(db, FIRESTORE_PATH_NAMES.PRODUCTS);
         const q = query(productsRef, where("id", "in", ids));

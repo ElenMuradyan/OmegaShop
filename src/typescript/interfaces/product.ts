@@ -9,7 +9,7 @@ export interface product {
     subCategory: string,
     stock: number,
     usedType: string,
-    options: optionType[],
+    options?: optionType[],
 }
 
 export type optionType = {
@@ -18,8 +18,9 @@ export type optionType = {
 }
 
 export interface cartProduct {
-    autorEmail: string,
+    autor: string,
     productId: string,
+    cartItemId: string,
     name: string,
     price: number,
     image: string,
@@ -27,5 +28,5 @@ export interface cartProduct {
     maxValue: number,
     index: number,
     ordering: boolean,
-    options: optionType[],
+    options?: optionType[],
 }

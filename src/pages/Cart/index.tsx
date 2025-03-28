@@ -2,17 +2,24 @@ import Title from "../../components/sheard/TitleComponent"
 import CardTotal from "../../components/sheard/CardTotal";
 import { useNavigate } from "react-router-dom";
 import CartProductList from "../../components/sheard/CartProductList";
-import { useSelector } from "react-redux";
-import { RootState } from "../../state-management/redux/store";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../state-management/redux/store";
+import { useEffect, useState } from "react";
 import { handleOrder } from "../../utilis/helpers/handleOrder";
+import { fetchUserCart } from "../../state-management/redux/slices/userDataSlice";
+import LoadingWrapper from "../../components/sheard/Loading";
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { cart } = useSelector((state: RootState) => state.userData.authUserInfo);
+  const { authUserInfo:{cart, userData}, loading } = useSelector((state: RootState) => state.userData);
   const [ errorMessage, setErrorMessage ] = useState<string>('');
+  const dispatch = useDispatch<AppDispatch>();
 
+  useEffect(() => {
+   userData && dispatch(fetchUserCart(userData?.uid));
+  }, []);
   return (
+    <LoadingWrapper isLoading={loading}>
     <div className="border-t pt-14">
       <div className="text-2xl mb-3">
         <Title text1="ՁԵՐ" text2="ԶԱՄԲՅՈՒՂԸ" />
@@ -26,6 +33,7 @@ const Cart = () => {
         </div>
       </div>
     </div>
+    </LoadingWrapper>
   )
 }
 

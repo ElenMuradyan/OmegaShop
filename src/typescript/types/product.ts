@@ -11,7 +11,7 @@ export type product = {
     stock: number,
     usedType: string,
     autor: string,
-    options: optionType[],
+    options?: optionType[],
 }
 
 export type productInitialValue = {

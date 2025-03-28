@@ -31,7 +31,7 @@ const ProfileDropDown = () => {
       {
           label: 'Իմ Պրոֆիլը',
           key: '0',
-          onClick: () => navigate(`${ROUTE_NAMES.PROFILE}/${userData?.id}`)
+          onClick: () => navigate(`${ROUTE_NAMES.PROFILE}/${userData?.uid}`)
       }, 
       {
           label: 'Կարգավորումներ',
@@ -54,7 +54,7 @@ const ProfileDropDown = () => {
     {
       label: "Իմ Պրոֆիլը",
       key: "0",
-      onClick: () => navigate(`${ROUTE_NAMES.PROFILE}/${userData?.id}`),
+      onClick: () => navigate(`${ROUTE_NAMES.PROFILE}/${userData?.uid}`),
     },
     {
       label: "Իմ Ապրանքները",

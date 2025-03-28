@@ -1,7 +1,7 @@
 import { collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "../../services/firebase/firebase";
 import { FIRESTORE_PATH_NAMES } from "../constants/firebaseConstants";
-import { setCart, setOrdering } from "../../state-management/redux/slices/userDataSlice";
+import { fetchUserCart, setCart, setOrdering } from "../../state-management/redux/slices/userDataSlice";
 import { handleDeleteCartItemInterface } from "../../typescript/types/handleDeleteCartItemInterface";
 import { cartProductType } from "../../typescript/types/userDataState";
 import { handleStockChangeInterface } from "../../typescript/types/handleStockChangeInterface";
@@ -9,7 +9,7 @@ import { handleStockChangeInterface } from "../../typescript/types/handleStockCh
 export const handleDeleteCartItem = async ({index, userData, dispatch}: handleDeleteCartItemInterface) => {
     if(userData){
     try{
-        const cartRef = collection(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, userData.id, FIRESTORE_PATH_NAMES.CART);
+        const cartRef = collection(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, userData.uid, FIRESTORE_PATH_NAMES.CART);
         const cartSnap = await getDocs(cartRef);
         const cartItems = cartSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         if (index < 0 || index >= cartItems.length) {
@@ -17,7 +17,7 @@ export const handleDeleteCartItem = async ({index, userData, dispatch}: handleDe
           }
       
         const itemToDelete = cartItems[index];
-        await deleteDoc(doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, userData.id, FIRESTORE_PATH_NAMES.CART, itemToDelete.id));
+        await deleteDoc(doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, userData.uid, FIRESTORE_PATH_NAMES.CART, itemToDelete.id));
         
         const updatedCart = cartItems.filter((_, i) => i !== index);
         dispatch(setCart(updatedCart));
@@ -30,13 +30,14 @@ export const handleDeleteCartItem = async ({index, userData, dispatch}: handleDe
 export const handleAddToOrder = async ({index, userData, dispatch}: handleDeleteCartItemInterface) => {
     if(userData){
         try{
-            const cartRef = collection(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, userData.id, "cart");
+            const cartRef = collection(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, userData.uid, "cart");
             const cartSnap = await getDocs(cartRef);
-            const cartItems = cartSnap.docs.map(doc => ({ id: doc.id, ...doc.data() } as cartProductType));
+            const cartItems = cartSnap.docs.map(doc => ({ cartItemId: doc.id, ...doc.data() } as cartProductType));
             const item = cartItems[index];
             let ordering = !item.ordering;
 
-            const itemRef = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, userData.id, "cart", item.id);
+            const itemRef = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, userData.uid, "cart", item.cartItemId);
+            
             await updateDoc(itemRef, { ordering: ordering });
 
             dispatch(setOrdering({
@@ -49,20 +50,22 @@ export const handleAddToOrder = async ({index, userData, dispatch}: handleDelete
     }
 };
 
-export const handleStockChange = async ({index, userData, setLoading, inputValue, setSubmitChange}: handleStockChangeInterface) => {
+export const handleStockChange = async ({index, userData, setLoading, inputValue, setSubmitChange, dispatch}: handleStockChangeInterface) => {
     if(userData){
         try{
             setLoading(true);
-            const cartRef = collection(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, userData.id, "cart");
+            const cartRef = collection(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, userData.uid, "cart");
             const cartSnap = await getDocs(cartRef);
-            const cartItems = cartSnap.docs.map(doc => ({ id: doc.id, ...doc.data() } as cartProductType));
+            const cartItems = cartSnap.docs.map(doc => ({ cartItemId: doc.id, ...doc.data() } as cartProductType));
             const item = cartItems[index];
-            const itemRef = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, userData.id, "cart", item.id);
+            const itemRef = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, userData.uid, "cart", item.cartItemId);
     
             await updateDoc(itemRef, {
                 stock: inputValue
             });
+
             setSubmitChange(false);
+            dispatch(fetchUserCart(userData.uid));
         }catch(error: any){
             console.log(error.message);
         }finally{

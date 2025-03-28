@@ -7,8 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state-management/redux/store";
 import { useState } from "react";
 import { handleAddToOrder, handleDeleteCartItem, handleStockChange } from "../../../utilis/helpers/handleDeleteCart";
+import { saveScrollPosition } from "../../../utilis/helpers/handleNavigate";
+import { cartProductType } from "../../../typescript/types/userDataState";
 
-const CartProductItem = ({ productId, image, name, price, stock, maxValue, options, index, ordering }: cartProduct) => {    
+const CartProductItem = ({ productId, image, name, price, stock, maxValue, options, index, ordering }: cartProductType) => {    
     const { userData } = useSelector((state: RootState) => state.userData.authUserInfo)
     const dispatch = useDispatch<AppDispatch>();
     const [ submitChange, setSubmitChange ] = useState<boolean>(false);
@@ -24,7 +26,7 @@ const CartProductItem = ({ productId, image, name, price, stock, maxValue, optio
     <div className="py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_o.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4 cursor-pointer hover:bg-slate-50">
     <div className="flex items-center gap-6">
         <input type="checkbox" checked={ordering} onChange={() => handleAddToOrder({index, dispatch, userData})}/>
-        <Link to={`${ROUTE_NAMES.PRODUCT}/${productId}`}>
+        <Link onClick={() => saveScrollPosition()} to={`${ROUTE_NAMES.PRODUCT}/${productId}`}>
         <img src={image} className="w-16 sm:w-20" alt=""/>
         </Link>
       <div>
@@ -32,7 +34,7 @@ const CartProductItem = ({ productId, image, name, price, stock, maxValue, optio
         <div className="flex items-center gap-5 mt-2">
           <p>{price} AMD</p>
           {
-            Object.entries(options).map((item, index) => {
+            options && Object.entries(options).map((item, index) => {
                 return(
                     <p className="px-2 sm:px-3 sm:py-1 border bg-slate-50 hover:bg-slate-100" key={index}>{`${cartNames[item[0]]}: ${item[1]}`}</p>
                 )
@@ -47,7 +49,7 @@ const CartProductItem = ({ productId, image, name, price, stock, maxValue, optio
         submitChange ? 
         <button>
             {
-                loading ? <LoadingOutlined /> : <CheckOutlined onClick={() => handleStockChange({index, userData, setLoading, inputValue, setSubmitChange})}/>
+                loading ? <LoadingOutlined /> : <CheckOutlined onClick={() => handleStockChange({index, userData, setLoading, inputValue, setSubmitChange, dispatch})}/>
             }
         </button>
         : null

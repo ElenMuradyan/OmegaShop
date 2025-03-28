@@ -22,6 +22,10 @@ const AddProduct = () => {
         setImageUrls(prevUrls => [...prevUrls, url]);
     };
 
+    const handleDelete = (url: string) => {
+        setImageUrls(prevUrls => prevUrls.filter(i => i !== url));
+    };
+
     const handleChangeCategory = (value: string) => {
         Categories.forEach((item) => {
             if(item.label === value){
@@ -53,7 +57,7 @@ const AddProduct = () => {
             <Form.Item name="price" label="Գին (դրամ)" rules={[{ required: true, message: "Խնդրում ենք մուտքագրել գինը" }]}>          
             <Input 
                 min={0} 
-                onChange={(e) => setPrice(Number(Number(e.target.value) * 80 / 100))} 
+                onChange={(e) => setPrice(Number(Number(e.target.value) * 70 / 100))} 
                 type="number" 
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" 
             />
@@ -68,7 +72,7 @@ const AddProduct = () => {
             </Form.Item>
 
             <Form.Item name="images" label="Նկարների հղումներ">   
-            <ImageUpload onFinish={handleImageUpload}/>
+            <ImageUpload onFinish={handleImageUpload} handleDelete={handleDelete}/>
             </Form.Item>
 
             <div className="grid grid-cols-2 gap-4">

@@ -1,13 +1,30 @@
-import { useSelector } from 'react-redux';
-import { RootState } from '../../state-management/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../state-management/redux/store';
 import ProductList from '../../components/sheard/ProductList';
 import { AppstoreAddOutlined } from '@ant-design/icons';
 import { ROUTE_NAMES } from '../../utilis/constants/constants';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { fetchMyProducts, fetchShopInfo } from '../../state-management/redux/slices/shopInfoSlice';
+import LoadingWrapper from '../../components/sheard/Loading';
 
 const MyProducts = () => {
-    const { myproducts } = useSelector((store: RootState) => store.shopInfo)
+    const { myproducts, myShopInfo, loading } = useSelector((store: RootState) => store.shopInfo);
+    const { userData } = useSelector((store: RootState) => store.userData.authUserInfo);
+
+    const dispatch = useDispatch<AppDispatch>();
+    useEffect(() => {
+      if(userData) {
+        console.log(true);
+        dispatch(fetchShopInfo(userData.uid))
+        myShopInfo && dispatch(fetchMyProducts(myShopInfo.myproducts));
+      }else{
+        console.log(false);
+      }
+    }, []);
+
   return (
+    <LoadingWrapper isLoading={loading}>
     <div className="bg-white p-6 shadow-md rounded-lg">
       <Link
         to={ROUTE_NAMES.ADDPRODUCT}
@@ -21,6 +38,7 @@ const MyProducts = () => {
         <ProductList products={myproducts} />
       </div>
     </div>
+    </LoadingWrapper>
   )
 }
 
