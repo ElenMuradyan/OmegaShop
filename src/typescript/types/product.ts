@@ -11,6 +11,7 @@ export type product = {
     stock: number,
     usedType: string,
     autor: string,
+    returnType: boolean,
     options?: optionType[],
 }
 

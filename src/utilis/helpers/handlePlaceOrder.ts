@@ -50,6 +50,7 @@ export const handlePlaceOrder = async ({values, userData, setLoading, cart, disp
               status: Object.keys(orderStatuses)[0],
               sellerId,
               consumerId: userData?.uid,
+              returnedItemsDetails: null,
             };
 
             dispatch(setUserOrders(orderDetails));

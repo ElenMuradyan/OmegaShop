@@ -4,13 +4,13 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBnpE-1lS2lx8g-I96MhVg3W8W3SWzG4VU",
-  authDomain: "omegashop-67199.firebaseapp.com",
-  projectId: "omegashop-67199",
-  storageBucket: "omegashop-67199.firebasestorage.app",
-  messagingSenderId: "503950051302",
-  appId: "1:503950051302:web:c7a8ba0e158325da11b827",
-  measurementId: "G-DQRW345RF2"
+  apiKey: import.meta.env.VITE_FIREBASE_APIKEY,
+  authDomain:import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);

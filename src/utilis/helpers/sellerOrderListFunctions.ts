@@ -24,6 +24,6 @@ export const handleChangeStatus = async ({order, setModalOpen, prev, next} : han
     }catch(err: any){
       console.log(err.message);
     }finally{
-      setModalOpen(false)
+     setModalOpen && setModalOpen(false)
     }
 };

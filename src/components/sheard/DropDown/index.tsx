@@ -39,9 +39,9 @@ const ProfileDropDown = () => {
           onClick: () => navigate(ROUTE_NAMES.SETTINGS)
       },
       {
-        label: 'Պատվերներ',
+        label: 'Զամբյուղ',
         key: '2',
-        onClick: () => navigate(ROUTE_NAMES.ORDERS)
+        onClick: () => navigate(ROUTE_NAMES.CARD)
     },
       {
           label: 'Ելք',
@@ -62,9 +62,9 @@ const ProfileDropDown = () => {
       onClick: () => navigate(ROUTE_NAMES.MYPRODUCTS),
     },
     {
-      label: 'Իմ Պատվերները',
+      label: 'Զամբյուղ',
       key: '2',
-      onClick: () => navigate(ROUTE_NAMES.ORDERS)
+      onClick: () => navigate(ROUTE_NAMES.CARD)
     },
     {
       label: 'Հաճախորդի Պատվերներ',

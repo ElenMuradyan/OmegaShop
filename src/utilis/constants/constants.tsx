@@ -35,6 +35,8 @@ export const ROUTE_NAMES = {
     BUYERCONTRACT: '/buyerContract',
     SELLERCONTRACT: '/sellerContract',
     TERMSANDCONDITIONS: '/termsAndConditions',
+    CHECKOUT: '/cabinet/checkout',
+    RETURN: '/cabinet/return'
 };
 
 export const regexpValidation = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;

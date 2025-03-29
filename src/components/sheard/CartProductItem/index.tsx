@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { cartProduct } from "../../../typescript/interfaces/product";
 import { ROUTE_NAMES } from "../../../utilis/constants/constants";
 import { CheckOutlined, DeleteOutlined, LoadingOutlined } from "@ant-design/icons";
 import { cartNames } from "../../../utilis/constants/optionNamesOptions";

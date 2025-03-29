@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Categories } from "../../typescript/types/categories";
-import { DownOutlined, SearchOutlined } from "@ant-design/icons";
+import { DownOutlined } from "@ant-design/icons";
 import Title from "../../components/sheard/TitleComponent";
 import { Select } from "antd";
 import { arragementValues } from "../../typescript/types/productArragement";
@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../state-management/redux/store";
 import ProductList from "../../components/sheard/ProductList";
 import { product } from "../../typescript/types/product";
-import SearchBar from "../../components/sheard/Search";
 
 const Collection = () => {
   const [ showFilter, setShowFilter ] = useState(false);
@@ -19,8 +18,6 @@ const Collection = () => {
 
   const [sortOrder, setSortOrder] = useState<string | null>(null);
   const [ filteredProducts, setFilteredProducts ] = useState<product[]>([]);
-
-  const [ inputValue, setInputValue ] = useState<string>('');
 
   const handleCategoryChange = (category: string) => {
     selectedCategory === category ? setSelectedCategory('') : setSelectedCategory(category);
@@ -50,12 +47,9 @@ const Collection = () => {
       return 0;
     }
   );
-  if(inputValue){
-    filteredProducts.filter(item => item.name.includes(inputValue) || item.description.includes(inputValue) || item.category.includes(inputValue) || item.subCategory.includes(inputValue))
-  }
 
     setFilteredProducts(filteredProducts);
-  }, [sortOrder, selectedCategory, selectedSubCategories, products, inputValue]);
+  }, [sortOrder, selectedCategory, selectedSubCategories, products]);
 
   return (
     <div className="flex flex-col gap-1 sm:gap-10 pt-10 border-t">

@@ -27,6 +27,7 @@ export const handleAddToCart = async ({productInfo, choosenOptions, setErrorMess
 
         const cartItem = {
             autor: productInfo.autor,
+            returnType: productInfo.returnType,
             productId,
             stock: orderedProductInfo.stock,
             options: orderedProductInfo.options,

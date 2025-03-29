@@ -1,4 +1,5 @@
 import { optionType } from "../interfaces/product"
+import { returnedItemsType } from "./returnedItems";
 
 export type userDataSliceType = {
     loading: boolean,
@@ -31,6 +32,7 @@ export type order = {
     totalPrice: number,
     consumerId: string,
     sellerId: string,
+    returnedItemsDetails?: returnedItemsType | null,
 };
 
 export type address = {
@@ -63,5 +65,6 @@ export type cartProductType = {
     maxValue: number,
     index: number,
     ordering: boolean,
+    returnType: boolean,
     options?: optionType[],
 }

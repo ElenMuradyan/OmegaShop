@@ -6,7 +6,7 @@ import { notification } from "antd";
 import { ROUTE_NAMES } from "../constants/constants";
 
 export const handleAddProduct = async ({values, userData, imageUrls, navigate}: addProductInterface) => {
-        const { name, description, price, category, subCategory, usedType, stock, options } = values;
+        const { name, description, price, category, subCategory, usedType, stock, options, returnType } = values;
         if(userData){
             const sanitizedOptions = options || [];
 
@@ -24,6 +24,7 @@ export const handleAddProduct = async ({values, userData, imageUrls, navigate}: 
                     stock: Number(stock),
                     autor: userData.uid,
                     options: sanitizedOptions,
+                    returnType,
                 }
             )
 

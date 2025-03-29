@@ -1,12 +1,9 @@
 import { BackwardOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AppDispatch } from "../../../state-management/redux/store";
 
 const BackButton = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch<AppDispatch>();
 
     const handleOnClick = () => {
         const scrollPosition = sessionStorage.getItem("scrollPosition");

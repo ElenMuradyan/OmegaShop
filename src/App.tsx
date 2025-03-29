@@ -12,7 +12,7 @@ import Register from "./pages/auth/Register";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./state-management/redux/store";
 import { useEffect } from "react";
-import { changeLoading, fetchUserData } from "./state-management/redux/slices/userDataSlice";
+import { fetchUserData } from "./state-management/redux/slices/userDataSlice";
 import CabinetLayout from "./layouts/Cabinet";
 import LoadingWrapper from "./components/sheard/Loading";
 import Settings from "./pages/Settings";
@@ -37,6 +37,8 @@ import SellerContract from "./pages/Contracts/SellerContract";
 import TermsAndConditions from "./pages/Contracts/TermsAndConditions";
 import { auth } from "./services/firebase/firebase";
 import Cart from "./pages/Cart";
+import PayPalCheckout from "./pages/PayPal";
+import ReturnPage from "./components/sheard/ReturnPage";
 
 function App() {
   const { authUserInfo:{isAuth, userData}, loading } = useSelector((store: RootState) => store.userData);
@@ -83,11 +85,13 @@ function App() {
             <Route path={ROUTE_NAMES.BUYEREDITSDDRESS} element={<BuyerAddressEdit />} />
             <Route path={ROUTE_NAMES.SELLEREDITADDRESS} element={<SellerAddressEdit />} />
             </Route>
+            <Route path={ROUTE_NAMES.CHECKOUT} element={<PayPalCheckout />} />
 
             <Route path={ROUTE_NAMES.ADDPRODUCT} element={<AddProduct />} />
             <Route path={ROUTE_NAMES.MYPRODUCTS} element={<MyProducts />} />
             <Route path={ROUTE_NAMES.CARD} element={<Cart/>} />
             <Route path={ROUTE_NAMES.ORDERS} element={<Orders/>} />
+            <Route path={ROUTE_NAMES.RETURN} element={<ReturnPage/>} />
 
             <Route path={ROUTE_NAMES.CUSTOMERORDERS} element={<CustomersOrdersLayout />}>
               <Route path={`${ROUTE_NAMES.CUSTOMERORDERS}/:status`} element={<SellersOrders />}/>

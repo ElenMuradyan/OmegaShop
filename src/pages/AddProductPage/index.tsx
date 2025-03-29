@@ -5,7 +5,7 @@ import { DefaultOptionType } from "antd/es/select";
 import ImageUpload from "../../components/sheard/ImageUpload";
 import FormList from "../../components/sheard/FormList";
 import { useNavigate } from "react-router-dom";
-import { options } from "../../utilis/constants/productOptions";
+import { options, returnOptions } from "../../utilis/constants/productOptions";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state-management/redux/store";
 import { handleAddProduct } from "../../utilis/helpers/handleAddProduct";
@@ -87,6 +87,10 @@ const AddProduct = () => {
 
             <Form.Item name="usedType" label="Ապրանքի վիճակը" rules={[{ required: true, message: "Խնդրում ենք ընտրել տարբերակը" }]}>          
             <Select options={options} className="w-full"/>
+            </Form.Item>
+
+            <Form.Item name="returnType" label="Ապրանքի վերադարձի ենթակա լինելը։" rules={[{ required: true, message: "Խնդրում ենք ընտրել տարբերակը" }]}>          
+            <Select options={returnOptions} className="w-full"/>
             </Form.Item>
 
             <Form.Item name="stock" label="Պահեստում առկա քանակ" rules={[{ required: true, message: "Խնդրում ենք մուտքագրել քանակը" }]}>          

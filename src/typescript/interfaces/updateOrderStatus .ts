@@ -3,7 +3,7 @@ import { order } from "../types/userDataState";
 
 export interface handleChangeStatusInterface {
     order: order,
-    setModalOpen: (value: boolean) => void,
+    setModalOpen?: (value: boolean) => void,
     prev: OrderKeys,
     next: OrderKeys,
 }

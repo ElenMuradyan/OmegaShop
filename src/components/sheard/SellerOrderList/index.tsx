@@ -1,18 +1,18 @@
-import { EnvironmentOutlined, PhoneOutlined, UserOutlined } from "@ant-design/icons";
+import { EnvironmentOutlined, LoadingOutlined, PhoneOutlined, UserOutlined } from "@ant-design/icons";
 import { orderStatuses } from "../../../utilis/constants/orderStatuses";
 import { Link, useParams } from "react-router-dom";
 import { ROUTE_NAMES } from "../../../utilis/constants/constants";
 import { useEffect, useState } from "react";
 import { order, userData } from "../../../typescript/types/userDataState";
 import { FaMoneyBills } from "react-icons/fa6";
-import { Modal } from "antd";
+import { Modal, notification } from "antd";
 import { AppDispatch, RootState } from "../../../state-management/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { handleChangeStatus } from "../../../utilis/helpers/sellerOrderListFunctions";
-import { handleStatusChange } from "../../../state-management/redux/slices/shopInfoSlice";
+import { fetchOrders, fetchShopInfo, handleStatusChange } from "../../../state-management/redux/slices/shopInfoSlice";
 import { OrderKeys } from "../../../typescript/types/shopInfoSliceType";
 import LoadingWrapper from "../Loading";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../services/firebase/firebase";
 import { FIRESTORE_PATH_NAMES } from "../../../utilis/constants/firebaseConstants";
 import { saveScrollPosition } from "../../../utilis/helpers/handleNavigate";
@@ -20,13 +20,13 @@ import { saveScrollPosition } from "../../../utilis/helpers/handleNavigate";
 const SellerOrderList = ({ order }: { order: order }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { orders } = useSelector((state: RootState) => state.shopInfo);
-  const { products, orderDate, totalPrice, address, consumerId } = order;
+  const { userData } = useSelector((state: RootState) => state.userData.authUserInfo);
+  const { products, orderDate, totalPrice, address, consumerId, returnedItemsDetails } = order;
   const { status } = useParams<{ status: OrderKeys }>();
   const orderInfo = orderStatuses[status as string];
   const [consumerInfo, setConsumerInfo] = useState<userData>();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-
   const orderStatusesArray = Object.keys(orderStatuses);
   const index = orderStatusesArray.indexOf(status as string);
 
@@ -63,6 +63,26 @@ const SellerOrderList = ({ order }: { order: order }) => {
     dispatch(handleStatusChange(newOrdersObject));
 
     handleChangeStatus({ order, setModalOpen, prev, next });
+  };
+
+  const confirmReturn = async () => {
+    try{
+      setLoading(true);
+      const orderRef = doc(db, FIRESTORE_PATH_NAMES.ORDERS, order.id);
+      await updateDoc(orderRef, {
+        returnedItemsDetails:{
+          ...returnedItemsDetails,
+          confirmedReturn: true
+        }
+      })  
+    }catch(error: any){
+      notification.error({
+        message: error.message
+      })
+     userData && dispatch(fetchShopInfo(userData.uid));
+    }finally{
+      setLoading(false);
+    }
   };
 
   return (
@@ -149,9 +169,39 @@ const SellerOrderList = ({ order }: { order: order }) => {
             )}
           </div>
 
-          <p className="text-gray-600 mt-2 flex items-center gap-2">
-            <FaMoneyBills /> Դուք կարող եք ստանալ ձեր գումարը, երբ հաճախորդը ստանա ապրանքները։
-          </p>
+          {status === 'doneOrders' && returnedItemsDetails && (
+                <div>
+                    <p className="font-bold text-gray-700">Վերադարձված ապրանքներ</p>
+
+                    {returnedItemsDetails.products.map((product, index) => (
+                        <div key={index} className="flex items-center bg-gray-50 p-4 rounded-lg border shadow-sm gap-4">
+                            <img src={product.image} alt={product.name} className="w-24 h-24 object-cover rounded-lg" />
+                            <div className="flex-1">
+                                <p className="font-medium text-gray-800">{product.name}</p>
+                                <p className="text-base font-semibold text-gray-700">{product.price} AMD</p>
+                                <p className="text-sm text-gray-600">Քանակ: {product.stock}</p>
+                            </div>
+                        </div>
+                    ))}
+                    {
+                    !returnedItemsDetails.confirmedReturn && <button
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                    onClick={() => confirmReturn()}
+                  >
+                    {
+                      loading ? <LoadingOutlined /> : <p>Հաստատեք, որ ստացել եք վերադարձված ապրանքները</p>
+                    }
+                  </button>
+                    }
+                </div>
+            )}
+
+            {
+              order.status !== 'doneOrders' &&
+              <p className="text-gray-600 mt-2 flex items-center gap-2">
+              <FaMoneyBills /> Դուք կարող եք ստանալ ձեր գումարը, երբ հաճախորդը ստանա ապրանքները։
+            </p>  
+            }
         </>
     </div>
     </LoadingWrapper>

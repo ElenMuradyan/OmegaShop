@@ -8,3 +8,15 @@ export const options = [
         value: 'unused'
     },
 ]
+
+export const returnOptions = [
+    {
+        label: 'Հնարավոր է վերադարձնել',
+        value: true
+    },
+    {
+        label: 'Հնարավոր չէ վերադարձնել',
+        value: false
+    },
+]
+

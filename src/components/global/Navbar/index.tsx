@@ -10,9 +10,11 @@ import ProfileDropDown from '../../sheard/DropDown';
 
 const Navbar = () => {
   const { isAuth } = useSelector((store: RootState) => store.userData.authUserInfo);
+  const { userOrders } = useSelector((store: RootState) => store.userData.authUserInfo);
   const [ menuOpen, setMenuOpen ] = useState(false);
   const navigate = useNavigate();
-  
+  const gotOrders = userOrders.filter(item => item.status === 'sentOrders' && item.returnedItemsDetails === null);
+
   return (
     <div className="flex items-center justify-between py-5 font-medium">
         <img src={logotext} className='w-40' alt=''></img>
@@ -36,9 +38,11 @@ const Navbar = () => {
                     isAuth ? <ProfileDropDown /> : <UserOutlined onClick={() => navigate(ROUTE_NAMES.LOGIN)}/>
                 }
             </div>
-            <Link to={ROUTE_NAMES.CARD} className='relative'>
+            <Link to={ROUTE_NAMES.ORDERS} className='relative'>
             <ShoppingOutlined />
-            <p className='absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]'>10</p>
+            {
+                gotOrders.length > 0 && <p className='absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]'>{gotOrders.length}</p>
+            }
             </Link>
 
             <MenuOutlined onClick={() => setMenuOpen(true)} className='cursor-pointer sm:hidden'/> 

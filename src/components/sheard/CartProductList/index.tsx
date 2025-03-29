@@ -10,10 +10,10 @@ const CartProductList = () => {
     <div className="gap-y-6">
       {
         cart.map((item, key) => {
-            const { productId, autor, stock, image, price, name, options, maxValue, ordering, cartItemId } = item;
+            const { productId, autor, stock, image, price, name, options, maxValue, ordering, cartItemId, returnType } = item;
             
             return(
-                <CartProductItem cartItemId={cartItemId} autor={autor} productId={productId} image={image} name={name} price={price} stock={stock} index={key} key={key} options={options} maxValue={maxValue} ordering={ordering}/>
+                <CartProductItem returnType={returnType} cartItemId={cartItemId} autor={autor} productId={productId} image={image} name={name} price={price} stock={stock} index={key} key={key} options={options} maxValue={maxValue} ordering={ordering}/>
             )
         })
       }

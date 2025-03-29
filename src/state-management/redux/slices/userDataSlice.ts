@@ -4,6 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../../../services/firebase/firebase";
 import { FIRESTORE_PATH_NAMES } from "../../../utilis/constants/firebaseConstants";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { getOrderPriority } from "../../../utilis/helpers/getOrderPriority";
 
 const initialState: userDataSliceType = {
     loading: true,
@@ -42,7 +43,7 @@ export const fetchUserData = createAsyncThunk(
           });
         });
     }
-  );
+);
     
 
 export const fetchUserOrderProducts = createAsyncThunk(
@@ -58,6 +59,12 @@ export const fetchUserOrderProducts = createAsyncThunk(
                     orders.push({ id: orderSnap.id, ...orderSnap.data() } as order);
                 }
             }
+
+            orders.sort((a, b) => {
+                const priorityA = getOrderPriority(a);
+                const priorityB = getOrderPriority(b);
+                return priorityA - priorityB;
+            });
             
             return orders;
         }catch(error: any){
