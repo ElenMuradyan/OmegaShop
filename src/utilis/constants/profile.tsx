@@ -1,11 +1,9 @@
 import { 
     ShoppingOutlined, 
     ShoppingCartOutlined, 
-    CreditCardOutlined, 
     QuestionCircleOutlined, 
     ShareAltOutlined, 
     ShopOutlined, 
-    TeamOutlined, 
     HeartOutlined 
 } from "@ant-design/icons";
 import { profileOption } from "../../typescript/types/profileOption";
@@ -47,17 +45,6 @@ export const profileOptions: Record<string, profileOption> = {
                 label: 'ՄԵՆՔ ՍՈՑ ՑԱՆՑԵՐՈՒՄ',
                 icon: <ShareAltOutlined />,
                 link: ROUTE_NAMES.SHARE,
-            },
-        },
-    },
-    [KEYS.PERSONAL]: {
-        label: KEYS.PERSONAL,
-        icon: <TeamOutlined />,
-        options: {
-            CARDS: {
-                label: 'ԻՄ ՔԱՐՏԵՐԸ',
-                icon: <CreditCardOutlined />,
-                link: ROUTE_NAMES.CARDS,
             },
         },
     },

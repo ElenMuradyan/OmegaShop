@@ -56,7 +56,14 @@ export const fetchUserOrderProducts = createAsyncThunk(
                 const orderSnap = await getDoc(orderRef);
 
                 if(orderSnap.exists()){
-                    orders.push({ id: orderSnap.id, ...orderSnap.data() } as order);
+                    const orderData = orderSnap.data();
+
+                    const serializedOrder = {
+                        ...orderData,
+                        id: orderSnap.id,
+                    };
+
+                    orders.push(serializedOrder as order);
                 }
             }
 
@@ -80,9 +87,9 @@ export const fetchUserCart = createAsyncThunk(
             const cartRef = collection(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, userId, FIRESTORE_PATH_NAMES.CART);
             const cartSnap = await getDocs(cartRef);
 
-            const cartProducts = cartSnap.docs.map(doc => ({
+            const cartProducts = cartSnap.docs.map((doc) => ({
                 cartItemId: doc.id,
-                ...doc.data()
+                ...doc.data(),
             }));
 
             return cartProducts;
@@ -90,7 +97,7 @@ export const fetchUserCart = createAsyncThunk(
             return rejectWithValue(error.message);
         }
     }
-)
+);
 
 const userDataSlice = createSlice({
     name: 'userData',
@@ -107,9 +114,14 @@ const userDataSlice = createSlice({
                 state.authUserInfo.cart = action.payload as cartProductType[];
             }
         },
-        setOrdering: (state, action) => {
-            if(state.authUserInfo.userData){
+        setOrdering: (state, action) => {            
+            if(state.authUserInfo.userData){                
                 state.authUserInfo.cart[action.payload.index].ordering = action.payload.ordering;
+            }
+        },
+        deleteItem: (state, action) => {            
+            if(state.authUserInfo.userData){        
+                state.authUserInfo.cart = state.authUserInfo.cart.filter(item => item !== state.authUserInfo.cart[action.payload]);
             }
         },
         setUserOrders: (state, action) => {
@@ -150,5 +162,5 @@ const userDataSlice = createSlice({
     }
 });
 
-export const { changeLoading, setIsAuth, setCart, setOrdering, setUserOrders } = userDataSlice.actions;
+export const { changeLoading, setIsAuth, setCart, setOrdering, setUserOrders, deleteItem } = userDataSlice.actions;
 export default userDataSlice.reducer;

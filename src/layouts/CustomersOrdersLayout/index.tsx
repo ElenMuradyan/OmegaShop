@@ -19,10 +19,11 @@ const CustomersOrdersLayout: React.FC = () => {
     const { userData } = useSelector((state: RootState) => state.userData.authUserInfo); 
     const { orders } = useSelector((state: RootState) => state.shopInfo);
 
-    const returnedOrders = orders.doneOrders.filter(item => !item.returnedItemsDetails?.confirmedReturn);
+    const returnedOrders = orders.doneOrders.filter(item => item.returnedItemsDetails && !item.returnedItemsDetails.confirmedReturn);
     useEffect(() => {
       userData && dispatch(fetchShopInfo(userData?.uid));
-    }, [pathname])
+    }, [pathname]);
+
     return (
         <div>
             <div className="flex justify-center items-center py-4">

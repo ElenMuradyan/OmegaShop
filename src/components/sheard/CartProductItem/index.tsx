@@ -9,7 +9,7 @@ import { handleAddToOrder, handleDeleteCartItem, handleStockChange } from "../..
 import { saveScrollPosition } from "../../../utilis/helpers/handleNavigate";
 import { cartProductType } from "../../../typescript/types/userDataState";
 
-const CartProductItem = ({ productId, image, name, price, stock, maxValue, options, index, ordering }: cartProductType) => {    
+const CartProductItem = ({ productId, image, name, price, stock, maxValue, options, ordering, cartItemId, index }: cartProductType) => {    
     const { userData } = useSelector((state: RootState) => state.userData.authUserInfo)
     const dispatch = useDispatch<AppDispatch>();
     const [ submitChange, setSubmitChange ] = useState<boolean>(false);
@@ -24,7 +24,7 @@ const CartProductItem = ({ productId, image, name, price, stock, maxValue, optio
   return (
     <div className="py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_o.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4 cursor-pointer hover:bg-slate-50">
     <div className="flex items-center gap-6">
-        <input type="checkbox" checked={ordering} onChange={() => handleAddToOrder({index, dispatch, userData})}/>
+        <input type="checkbox" checked={ordering} onChange={() => handleAddToOrder({ cartItemId, dispatch, userData, index, ordering})}/>
         <Link onClick={() => saveScrollPosition()} to={`${ROUTE_NAMES.PRODUCT}/${productId}`}>
         <img src={image} className="w-16 sm:w-20" alt=""/>
         </Link>
@@ -48,13 +48,13 @@ const CartProductItem = ({ productId, image, name, price, stock, maxValue, optio
         submitChange ? 
         <button>
             {
-                loading ? <LoadingOutlined /> : <CheckOutlined onClick={() => handleStockChange({index, userData, setLoading, inputValue, setSubmitChange, dispatch})}/>
+                loading ? <LoadingOutlined /> : <CheckOutlined onClick={() => handleStockChange({ cartItemId, userData, setLoading, inputValue, setSubmitChange, dispatch})}/>
             }
         </button>
         : null
     }
     </div>
-    <DeleteOutlined className="cursor-pointer" onClick={() => handleDeleteCartItem({index, userData, dispatch})}/>
+    <DeleteOutlined className="cursor-pointer" onClick={() => handleDeleteCartItem({cartItemId, userData, appDispatch: dispatch, dispatch, index})}/>
   </div>
 )};
 export default CartProductItem;

@@ -1,18 +1,19 @@
 import { useState } from "react";
-import { cartProductType, order } from "../../../typescript/types/userDataState";
-import { OrderKeys } from "../../../typescript/types/shopInfoSliceType";
+import { cartProductType } from "../../typescript/types/userDataState";
+import { OrderKeys } from "../../typescript/types/shopInfoSliceType";
 import { doc, updateDoc } from "firebase/firestore";
-import { FIRESTORE_PATH_NAMES } from "../../../utilis/constants/firebaseConstants";
-import { db } from "../../../services/firebase/firebase";
+import { FIRESTORE_PATH_NAMES } from "../../utilis/constants/firebaseConstants";
+import { db } from "../../services/firebase/firebase";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../state-management/redux/store";
-import { handleStatusChange } from "../../../state-management/redux/slices/shopInfoSlice";
-import { handleChangeStatus } from "../../../utilis/helpers/sellerOrderListFunctions";
+import { AppDispatch, RootState } from "../../state-management/redux/store";
+import { handleStatusChange } from "../../state-management/redux/slices/shopInfoSlice";
+import { handleChangeStatus } from "../../utilis/helpers/sellerOrderListFunctions";
 import { Checkbox } from "antd";
-import { cartNames } from "../../../utilis/constants/optionNamesOptions";
-import { returnDetails } from "../../../typescript/types/returnedItems";
+import { cartNames } from "../../utilis/constants/optionNamesOptions";
+import { returnDetails } from "../../typescript/types/returnedItems";
 import { useNavigate } from "react-router-dom";
-import { ROUTE_NAMES } from "../../../utilis/constants/constants";
+import { ROUTE_NAMES } from "../../utilis/constants/constants";
+import { fetchUserData } from "../../state-management/redux/slices/userDataSlice";
 
 const ReturnPage = () => {
     const item = localStorage.getItem('returnDetails');
@@ -52,8 +53,9 @@ const ReturnPage = () => {
                 [next]: [...orders[next], order],
             };
             dispatch(handleStatusChange(newOrdersObject));
+            dispatch(fetchUserData());
             handleChangeStatus({ order, prev, next }); 
-            navigate(ROUTE_NAMES.DONEORDERS);
+            navigate(ROUTE_NAMES.ORDERS);
         };
     
         const handleCheckReturnProduct = (index: number, selected: boolean) => {

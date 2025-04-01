@@ -9,7 +9,7 @@ import { Modal, notification } from "antd";
 import { AppDispatch, RootState } from "../../../state-management/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { handleChangeStatus } from "../../../utilis/helpers/sellerOrderListFunctions";
-import { fetchOrders, fetchShopInfo, handleStatusChange } from "../../../state-management/redux/slices/shopInfoSlice";
+import { fetchShopInfo, handleStatusChange } from "../../../state-management/redux/slices/shopInfoSlice";
 import { OrderKeys } from "../../../typescript/types/shopInfoSliceType";
 import LoadingWrapper from "../Loading";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
@@ -74,11 +74,12 @@ const SellerOrderList = ({ order }: { order: order }) => {
           ...returnedItemsDetails,
           confirmedReturn: true
         }
-      })  
+      });  
+      userData && dispatch(fetchShopInfo(userData.uid));
     }catch(error: any){
       notification.error({
         message: error.message
-      })
+      });
      userData && dispatch(fetchShopInfo(userData.uid));
     }finally{
       setLoading(false);
@@ -184,9 +185,10 @@ const SellerOrderList = ({ order }: { order: order }) => {
                         </div>
                     ))}
                     {
-                    !returnedItemsDetails.confirmedReturn && <button
+                      !returnedItemsDetails.confirmedReturn && <button
                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
                     onClick={() => confirmReturn()}
+                    disabled={loading}
                   >
                     {
                       loading ? <LoadingOutlined /> : <p>Հաստատեք, որ ստացել եք վերադարձված ապրանքները</p>

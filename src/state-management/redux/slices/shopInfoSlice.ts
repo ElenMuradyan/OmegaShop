@@ -5,6 +5,7 @@ import { FIRESTORE_PATH_NAMES } from "../../../utilis/constants/firebaseConstant
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../services/firebase/firebase";
 import { product } from "../../../typescript/types/product";
+import { getSellerOrderPriority } from "../../../utilis/helpers/getOrderPriority";
 
 const initialState: shopInfoSliceType = {
     loading: true,
@@ -32,7 +33,14 @@ export const fetchOrders = createAsyncThunk(
             const fetchedOrders = results.reduce((acc, { key, data }) => {
                 if (key === 'newOrders') acc.newOrders = data;
                 if (key === 'sentOrders') acc.sentOrders = data;
-                if (key === 'doneOrders') acc.doneOrders = data;
+                if (key === 'doneOrders') {
+                const orders = data.sort((a, b) => {
+                    const priorityA = getSellerOrderPriority(a);
+                    const priorityB = getSellerOrderPriority(b);
+                    return priorityA - priorityB;
+                });
+                acc.doneOrders = orders;
+                };
                 if (key === 'processingOrders') acc.processingOrders = data;
                 return acc;
             }, {

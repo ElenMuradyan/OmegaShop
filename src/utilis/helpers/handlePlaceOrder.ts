@@ -59,7 +59,6 @@ export const handlePlaceOrder = async ({values, userData, setLoading, cart, disp
             const orderId = orderRef.id;
 
             await updateDoc(orderRef, {id: orderId});
-
             const sellerRef = doc(db, FIRESTORE_PATH_NAMES.SELLERS, sellerId);
             const sellerSnap = await getDoc(sellerRef);
             const sellerData = sellerSnap.data() as seller;          
@@ -77,7 +76,6 @@ export const handlePlaceOrder = async ({values, userData, setLoading, cart, disp
                 orders: orders,  
                 }
             )}));
-           
        navigate(ROUTE_NAMES.ORDERS);
       console.log("Պատվերները հաջողությամբ տեղադրված են!");
     }catch(error: any){

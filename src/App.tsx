@@ -37,8 +37,8 @@ import SellerContract from "./pages/Contracts/SellerContract";
 import TermsAndConditions from "./pages/Contracts/TermsAndConditions";
 import { auth } from "./services/firebase/firebase";
 import Cart from "./pages/Cart";
-import PayPalCheckout from "./pages/PayPal";
-import ReturnPage from "./components/sheard/ReturnPage";
+import ReturnPage from "./pages/ReturnPage";
+import SellerLayout from "./layouts/Seller";
 
 function App() {
   const { authUserInfo:{isAuth, userData}, loading } = useSelector((store: RootState) => store.userData);
@@ -80,23 +80,23 @@ function App() {
             {/* Edit */}
             <Route path={ROUTE_NAMES.EDITDATA} element={<EditDataLayout />}>
             <Route path={ROUTE_NAMES.BUYEREDITDATA} element={<BuyerProfileEdit />} />
-            <Route path={ROUTE_NAMES.SELLEREDITDATA} element={<SellerProfileEdit />} />
+            <Route path={ROUTE_NAMES.SELLEREDITDATA} element={userData?.role === 'seller' ? <SellerProfileEdit /> : <Navigate to={ROUTE_NAMES.BUYEREDITDATA}/>} />
 
-            <Route path={ROUTE_NAMES.BUYEREDITSDDRESS} element={<BuyerAddressEdit />} />
-            <Route path={ROUTE_NAMES.SELLEREDITADDRESS} element={<SellerAddressEdit />} />
+            <Route path={ROUTE_NAMES.BUYEREDITADDRESS} element={<BuyerAddressEdit />} />
+            <Route path={ROUTE_NAMES.SELLEREDITADDRESS} element={userData?.role === 'seller' ? <SellerAddressEdit /> : <Navigate to={ROUTE_NAMES.BUYEREDITADDRESS}/>} />
             </Route>
-            <Route path={ROUTE_NAMES.CHECKOUT} element={<PayPalCheckout />} />
 
-            <Route path={ROUTE_NAMES.ADDPRODUCT} element={<AddProduct />} />
-            <Route path={ROUTE_NAMES.MYPRODUCTS} element={<MyProducts />} />
             <Route path={ROUTE_NAMES.CARD} element={<Cart/>} />
             <Route path={ROUTE_NAMES.ORDERS} element={<Orders/>} />
             <Route path={ROUTE_NAMES.RETURN} element={<ReturnPage/>} />
 
-            <Route path={ROUTE_NAMES.CUSTOMERORDERS} element={<CustomersOrdersLayout />}>
+            <Route path={ROUTE_NAMES.SELLER} element={userData?.role === 'seller' ? <SellerLayout /> :  <Navigate to={ROUTE_NAMES.HOME} />}>
+              <Route path={ROUTE_NAMES.ADDPRODUCT} element={<AddProduct />} />
+              <Route path={ROUTE_NAMES.MYPRODUCTS} element={<MyProducts />} />
+              <Route path={ROUTE_NAMES.CUSTOMERORDERS} element={<CustomersOrdersLayout />}>
               <Route path={`${ROUTE_NAMES.CUSTOMERORDERS}/:status`} element={<SellersOrders />}/>
+              </Route>
             </Route>
-
             <Route path={ROUTE_NAMES.PLACEORDER} element={<PlaceOrder/>} />
             <Route path={ROUTE_NAMES.SETTINGS} element={<Settings />} />
             <Route path={`${ROUTE_NAMES.PRODUCT}/:productId`} element={<Product/>} />

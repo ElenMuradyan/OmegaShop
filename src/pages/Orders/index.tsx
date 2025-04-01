@@ -1,17 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Title from "../../components/sheard/TitleComponent";
-import { AppDispatch, RootState } from "../../state-management/redux/store";
+import { RootState } from "../../state-management/redux/store";
 import OrderComponent from "../../components/sheard/OrdersComponent";
-import { useEffect } from "react";
-import { fetchUserOrderProducts } from "../../state-management/redux/slices/userDataSlice";
 
 const Orders  = () => {
-  const { userOrders, userData } = useSelector((state: RootState) => state.userData.authUserInfo);
-  const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-     userData && dispatch(fetchUserOrderProducts(userData.orders));
-  }, []);
+  const { userOrders } = useSelector((state: RootState) => state.userData.authUserInfo);
   
   return (      
     <div className="border-t pt-16 px-4 md:px-8">

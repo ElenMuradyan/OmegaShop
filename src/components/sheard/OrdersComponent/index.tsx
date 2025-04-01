@@ -1,33 +1,28 @@
-import { cartNames, optionNamesOptions } from "../../../utilis/constants/optionNamesOptions";
+import { cartNames } from "../../../utilis/constants/optionNamesOptions";
 import { orderStatuses } from "../../../utilis/constants/orderStatuses";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTE_NAMES } from "../../../utilis/constants/constants";
 import { EnvironmentOutlined } from "@ant-design/icons";
-import { cartProductType, order } from "../../../typescript/types/userDataState";
-import { Checkbox, Modal } from "antd";
-import { useEffect, useState } from "react";
+import { order } from "../../../typescript/types/userDataState";
+import { Modal } from "antd";
+import { useState } from "react";
 import { OrderKeys } from "../../../typescript/types/shopInfoSliceType";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../state-management/redux/store";
 import { handleStatusChange } from "../../../state-management/redux/slices/shopInfoSlice";
 import { handleChangeStatus } from "../../../utilis/helpers/sellerOrderListFunctions";
-import { fetchUserOrderProducts } from "../../../state-management/redux/slices/userDataSlice";
+import { fetchUserData } from "../../../state-management/redux/slices/userDataSlice";
 
 const OrderComponent  = ({ order }: {order: order}) => {
     const { orders } = useSelector((state: RootState) => state.shopInfo);
-    const { userData } = useSelector((state: RootState) => state.userData.authUserInfo);
     const dispatch = useDispatch<AppDispatch>();
-    const { products, orderDate, totalPrice, address, status, consumerId, sellerId, id, returnedItemsDetails } = order;
+    const { products, orderDate, totalPrice, address, status, returnedItemsDetails } = order;
     const orderInfo = orderStatuses[status as string];
     const [ modalOpen, setModalOpen ] = useState<boolean>(false);
     const orderStatusesArray = Object.keys(orderStatuses);
     const index = orderStatusesArray.indexOf(status);
     const returnAbleProducts = products.filter(item => item.returnType);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        userData && dispatch(fetchUserOrderProducts(userData.orders));
-    }, [order]);
 
     const handleModalOk = () => {
         const prev: OrderKeys = orderStatusesArray[index] as OrderKeys;
@@ -39,7 +34,7 @@ const OrderComponent  = ({ order }: {order: order}) => {
         [next]: [...orders[next], order],  
         };
         dispatch(handleStatusChange(newOrdersObject));
-        userData && dispatch(fetchUserOrderProducts(userData.orders));
+        dispatch(fetchUserData());
         handleChangeStatus({order, setModalOpen, prev, next});
     };
         

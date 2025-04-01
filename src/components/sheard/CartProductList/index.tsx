@@ -4,16 +4,16 @@ import CartProductItem from "../CartProductItem";
 
 const CartProductList = () => {
   const { cart } = useSelector((state: RootState) => state.userData.authUserInfo);
-    console.log(cart);
-    
+  const reversedCart = [...cart].reverse();
+
   return (
     <div className="gap-y-6">
       {
-        cart.map((item, key) => {
+        reversedCart.map((item, key) => {
             const { productId, autor, stock, image, price, name, options, maxValue, ordering, cartItemId, returnType } = item;
             
             return(
-                <CartProductItem returnType={returnType} cartItemId={cartItemId} autor={autor} productId={productId} image={image} name={name} price={price} stock={stock} index={key} key={key} options={options} maxValue={maxValue} ordering={ordering}/>
+                <CartProductItem returnType={returnType} cartItemId={cartItemId} autor={autor} productId={productId} image={image} name={name} price={price} stock={stock} index={reversedCart.length - 1- key} key={key} options={options} maxValue={maxValue} ordering={ordering}/>
             )
         })
       }

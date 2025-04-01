@@ -69,7 +69,7 @@ const PlaceOrder = () => {
             </Form.Item>
 
             <div className="w-full text-end mt-8">
-            <button type="submit" className="bg-black text-white px-16 py-3 text-sm">{loading ? <LoadingOutlined /> : 'ORDER'}</button>
+            <button disabled={loading} type="submit" className="bg-black text-white px-16 py-3 text-sm">{loading ? <LoadingOutlined /> : 'Պատվիրել'}</button>
           </div>
           </Form>
 

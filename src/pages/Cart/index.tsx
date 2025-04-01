@@ -28,7 +28,7 @@ const Cart = () => {
         <div className="flex justify-end my-20">
         <div className="w-full sm:w-[450px]">
         <CardTotal />
-        <button className="bg-black text-white text-sm my-8 px-8 py-3" onClick={() => handleOrder({cart, navigate, setErrorMessage})}>ԱՆՑՆԵԼ ՊԱՏՎԵՐԻ ԷՋ</button>
+        <button disabled={loading} className="bg-black text-white text-sm my-8 px-8 py-3" onClick={() => handleOrder({cart, navigate, setErrorMessage})}>ԱՆՑՆԵԼ ՊԱՏՎԵՐԻ ԷՋ</button>
         <p className="text-red-500">{errorMessage}</p>
         </div>
       </div>

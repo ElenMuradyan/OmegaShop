@@ -1,7 +1,7 @@
 import { ROUTE_NAMES } from '../../../utilis/constants/constants';
 import logotext from '../../../utilis/Images/logotext.png';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { SearchOutlined, UserOutlined, ShoppingOutlined, RightOutlined, MenuOutlined } from "@ant-design/icons";
+import { UserOutlined, ShoppingOutlined, RightOutlined, MenuOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { NavbarItems } from '../../../typescript/types/NavbarItems';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -32,7 +32,7 @@ const Navbar = () => {
         </ul>
 
         <div className='flex items-center gap-6'>
-            <SearchOutlined className='cursor-pointer'/>
+            <ShoppingCartOutlined onClick={() => navigate(ROUTE_NAMES.CARD)}/>
             <div className='group relative'>
                 {
                     isAuth ? <ProfileDropDown /> : <UserOutlined onClick={() => navigate(ROUTE_NAMES.LOGIN)}/>

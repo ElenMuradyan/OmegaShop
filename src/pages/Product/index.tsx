@@ -113,7 +113,7 @@ const Product = () => {
           }))}}/>
 
           <hr className="m-8 sm:w-4/5"/>
-            <button onClick={() => handleAddToCart({productInfo, choosenOptions, setErrorMessage, orderedProductInfo, userData, setButtonLoading, productId, dispatch, setChoosenOptions, setOrderedProductInfo })} className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700">{buttonLoading ? <><LoadingOutlined/> ...LOADING</> : 'ADD TO CARD'}</button>
+            <button disabled={loading} onClick={() => handleAddToCart({productInfo, choosenOptions, setErrorMessage, orderedProductInfo, userData, setButtonLoading, productId, dispatch, setChoosenOptions, setOrderedProductInfo })} className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700">{buttonLoading ? <><LoadingOutlined/> ...LOADING</> : 'ADD TO CARD'}</button>
             {errrorMessage && <p className="text-red-500">{errrorMessage}</p>}
             <hr className="mt-8 sm:w-4/5"/>
             <div className="text-sm text-gray-500 mt-5 flex flex-col gap-1">
