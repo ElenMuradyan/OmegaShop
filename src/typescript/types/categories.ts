@@ -1,76 +1,75 @@
 import { DefaultOptionType } from "antd/es/select";
-
 type Category = {
-    label: string,
-    undercategories: underCategory[]
+  label: string,
+  undercategories: underCategory[]
 }
 
 type underCategory = {
-    label: string
+  label: string
 }
 
 export const Categories: Category[] = [
   {
-    label: "Հագուստ և Նորաձևություն",
+    label: "Clothing and Fashion",
     undercategories: [
-      { label: "Տղամարդկանց հագուստ" },
-      { label: "Կանացի հագուստ" },
-      { label: "Մանկական հագուստ" },
-      { label: "Աքսեսուարներ" },
+      { label: "Men's Clothing" },
+      { label: "Women's Clothing" },
+      { label: "Kids' Clothing" },
+      { label: "Accessories" },
     ],
   },
   {
-    label: "Նրբագեղություն և Անձնական խնամք",
+    label: "Beauty and Personal Care",
     undercategories: [
-      { label: "Մաշկի խնամք" },
-      { label: "Մազերի խնամք" },
-      { label: "Հիգիենա" },
-      { label: "Կոսմետիկա" },
+      { label: "Skin Care" },
+      { label: "Hair Care" },
+      { label: "Hygiene" },
+      { label: "Cosmetics" },
     ],
   },
   {
-    label: "Տուն և Խոհանոց",
+    label: "Home and Kitchen",
     undercategories: [
-      { label: "Խոհարարական պարագաներ" },
-      { label: "Պահեստավորման համակարգեր" },
-      { label: "Սանրվածքի պարագաներ" },
+      { label: "Cookware" },
+      { label: "Storage Systems" },
+      { label: "Hair Styling Tools" },
     ],
   },
   {
-    label: "Էլեկտրոնիկա և Տեխնոլոգիա",
+    label: "Electronics and Technology",
     undercategories: [
-      { label: "Խելացի սարքեր" },
-      { label: "Աքսեսուարներ" },
-      { label: "Աուդիո սարքեր և ականջակալներ" },
+      { label: "Smart Devices" },
+      { label: "Accessories" },
+      { label: "Audio Devices and Headphones" },
     ],
   },
   {
-    label: "Առողջություն",
+    label: "Health",
     undercategories: [
-      { label: "Ֆիթնես պարագաներ" },
-      { label: "Բժշկական պարագաներ" },
+      { label: "Fitness Equipment" },
+      { label: "Medical Equipment" },
     ],
   },
   {
-    label: "Կահույք և Դիզայն",
+    label: "Furniture and Design",
     undercategories: [
-      { label: "Բնակասենյակի կահույք" },
-      { label: "Ննջարան" },
-      { label: "Աշխատանքային կահույք" },
+      { label: "Living Room Furniture" },
+      { label: "Bedroom" },
+      { label: "Office Furniture" },
     ],
   },
   {
-    label: "Խաղալիքներ և Մանկական ապրանքներ",
+    label: "Toys and Baby Products",
     undercategories: [
-      { label: "Մանկական խաղալիքներ" },
-      { label: "Երեխաներին անհրաժեշտ իրեր" },
+      { label: "Children's Toys" },
+      { label: "Essential Baby Items" },
     ],
   },
   {
-    label: "Ավտոմեքենաներ և Գործիքներ",
+    label: "Automobiles and Tools",
     undercategories: [
-      { label: "Մեքենայի պարագաներ" },
-      { label: "Տնային գործիքներ" },
+      { label: "Car Accessories" },
+      { label: "Home Tools" },
     ],
   },
 ];
