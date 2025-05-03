@@ -28,14 +28,14 @@ const FormList = ({ form }: { form: FormInstance }) => {
                             <Form.Item
                                 {...restField}
                                 name={[name, "optionName"]}
-                                rules={[{ required: true, message: "Խնդրում ենք մուտքագրել հատկության անունը" }]}
+                                rules={[{ required: true, message: "Please enter the name of the attribute" }]}
                             >
                                 <Flex align="center" justify="center">
                                     <Select
                                         value={form.getFieldValue(["options", index, "optionName"])}
                                         defaultValue={selectOptions[index]}
                                         options={optionNamesOptions}
-                                        placeholder="Ընտրել հատկությունը"
+                                        placeholder="Select attribute"
                                         onChange={(value) => {
                                             form.setFieldValue(["options", index, "optionName"], value);
                                             form.setFieldValue(["options", index, "optionValue"], []);
@@ -50,8 +50,8 @@ const FormList = ({ form }: { form: FormInstance }) => {
 
                                     <Button
                                         onClick={() => {
-                                            handleDelete(index); // First delete from state and form
-                                            remove(name); // Then remove field
+                                            handleDelete(index);
+                                            remove(name);
                                         }}
                                     >
                                         <DeleteOutlined />
@@ -62,14 +62,14 @@ const FormList = ({ form }: { form: FormInstance }) => {
                             <Form.Item
                                 {...restField}
                                 name={[name, "optionValue"]}
-                                rules={[{ required: true, message: "Խնդրում ենք մուտքագրել հատկության արժեքը" }]}
+                                rules={[{ required: true, message: "Please enter the value of the attribute" }]}
                             >
                                 <Select mode="multiple" style={{ width: 200 }} options={suboptions[selectOptions[name]]} />
                             </Form.Item>
                         </div>
                     ))}
                     <Button type="dashed" onClick={() => add()} className="mt-2">
-                        + Ավելացնել հատկություն
+                        + Add Attribute
                     </Button>
                 </>
             )}

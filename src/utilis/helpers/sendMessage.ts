@@ -15,19 +15,18 @@ export const sendMessage = async ({values, setLoading, form}: sendMessageInterfa
 
         if (response.status === 200) {
             notification.success({
-                message: "Հաղորդագրությունը ուղարկվեց!",
-                description: "Մենք կպատասխանենք շուտով։",
+                message: "Message sent successfully!",
+                description: "We will reply soon.",
             });
         }
 
     }catch(error){
         notification.error({
-            message: "Տեղեկություն",
-            description: "Հաղորդագրությունը ուղարկելու ժամանակ սխալ տեղի ունեցավ։ Փորձեք նորից։",
+            message: "Error",
+            description: "An error occurred while sending the message. Please try again.",
         });
     }finally{
         setLoading(false);
         form.resetFields();
     }
 };
-

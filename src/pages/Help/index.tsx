@@ -20,31 +20,31 @@ const Help = () => {
           }}        
         >
             <Form.Item
-                label="Ձեր անունը"
+                label="Your Name"
                 name="from_name"
-                rules={[{ required: true, message: "Խնդրում ենք մուտքագրել ձեր անունը!" }]}>
-                <Input placeholder="Մուտքագրեք ձեր անունը" prefix={<UserOutlined />} />
+                rules={[{ required: true, message: "Please enter your name!" }]}>
+                <Input placeholder="Enter your name" prefix={<UserOutlined />} />
             </Form.Item>
 
             <Form.Item
-                label="Ձեր էլփոստը"
+                label="Your Email"
                 name="from_email"
                 rules={[ 
-                    { required: true, message: "Խնդրում ենք մուտքագրել ձեր էլփոստը!" },
-                    { type: "email", message: "Մուտքագրեք ճիշտ էլփոստի հասցե!" },
+                    { required: true, message: "Please enter your email!" },
+                    { type: "email", message: "Please enter a valid email address!" },
                 ]}>
-                <Input placeholder="Մուտքագրեք ձեր էլփոստը" prefix={<MailOutlined />}/>
+                <Input placeholder="Enter your email" prefix={<MailOutlined />}/>
             </Form.Item>
 
             <Form.Item
-                label="Ձեր հաղորդագրությունը"
+                label="Your Message"
                 name="message"
-                rules={[{ required: true, message: "Խնդրում ենք մուտքագրել ձեր հաղորդագրությունը!" }]}>
-                <Input.TextArea rows={4} placeholder="Գրեք ձեր հաղորդագրությունը..."  />
+                rules={[{ required: true, message: "Please enter your message!" }]}>
+                <Input.TextArea rows={4} placeholder="Write your message..."  />
             </Form.Item>
 
             <Button type="primary" htmlType="submit" loading={loading} icon={<SendOutlined />}>
-                Ուղարկել հաղորդագրություն
+                Send Message
             </Button>
         </Form>
     );

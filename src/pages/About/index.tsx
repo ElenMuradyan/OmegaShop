@@ -5,46 +5,46 @@ const About = () => {
   return (
     <div>
       <div className="text-2xl text-center pt-8 border-t">
-        <Title text1="ՄԵՐ" text2="ՄԱՍԻՆ" />
+        <Title text1="ABOUT" text2="US" />
       </div>
 
       <div className="my-10 flex flex-col md:flex-row gap-16">
         <img src={image} alt="" className="w-full md:max-w-[450px]" />
         <div className="flex flex-col justify-center gap-6 md:w-2/4 text-gray-600">
           <p>
-            Էլեկտրոնային առևտուրը (e-commerce) վերաբերում է ապրանքների և ծառայությունների առցանց վաճառքին և գնմանը։ Այն փոխակերպել է ավանդական գնումների գործընթացը՝ հնարավորություն տալով մարդկանց ձեռք բերել անհրաժեշտ ապրանքներ աշխարհի ցանկացած կետից՝ ցանկացած ժամանակ։ Էլեկտրոնային առևտրի հարթակները առաջարկում են լայն տեսականի՝ հագուստից և էլեկտրոնիկայից մինչև սննդամթերք ու թվային ծառայություններ։ Ապահով վճարային համակարգերի և արդյունավետ առաքման ցանցերի շնորհիվ առցանց գնումներն այսօր ավելի հարմար ու հասանելի են։
+            E-commerce refers to the online buying and selling of goods and services. It has transformed the traditional shopping process, allowing people to purchase necessary items from anywhere in the world at any time. E-commerce platforms offer a wide range of products, from clothing and electronics to food and digital services. Thanks to secure payment systems and efficient delivery networks, online shopping has become more convenient and accessible today.
           </p>
           <p>
-            Էլեկտրոնային առևտուրը ձեռնարկություններին ու սպառողներին օգնում է նվազեցնել ծախսերը, ընդլայնել շուկան և ապահովել անհատականացված գնումների փորձ։ Բիզնեսները կարող են վերլուծել հաճախորդների վարքագիծը, առաջարկել համապատասխան ապրանքներ և ապահովել դյուրին գնումների գործընթաց։ Սպառողները, իրենց հերթին, կարող են համեմատել գները, կարդալ ակնարկներ և ստանալ պատվերները անմիջապես իրենց դռան մոտ։ Տեխնոլոգիաների զարգացման հետ մեկտեղ (ինչպես արհեստական բանականության միջոցով առաջարկները և բջջային հարմարեցված դիզայնները) էլեկտրոնային առևտուրը շարունակում է աճել՝ ձևավորելով մանրածախ առևտրի ապագան։
+            E-commerce helps businesses and consumers reduce costs, expand markets, and provide a personalized shopping experience. Businesses can analyze customer behavior, offer relevant products, and ensure an easy shopping process. Consumers, in turn, can compare prices, read reviews, and receive orders directly at their doorsteps. With the advancement of technology (such as AI-driven recommendations and mobile-optimized designs), e-commerce continues to grow, shaping the future of retail.
           </p>
-          <b className="text-gray-800">ՄԵՐ ԱՌԱՔԵԼՈՒԹՅՈՒՆԸ</b>
+          <b className="text-gray-800">OUR MISSION</b>
           <p>
-            Omega-ում մեր առաքելությունն է մատուցել բարձրորակ, կարևոր ապրանքներ, որոնք կդյուրացնեն և կհարմարեցնեն առօրյա կյանքը։ Մենք ձգտում ենք ապահովել հարթ և հարմար գնումների փորձ, որպեսզի մեր հաճախորդները կարողանան մեկ վայրում գտնել իրենց անհրաժեշտ բոլոր ապրանքները՝ հագուստ, հիգիենայի միջոցներ և կենցաղային անհրաժեշտություններ։
+            At Omega, our mission is to provide high-quality, essential products that simplify and enhance everyday life. We strive to offer a smooth and convenient shopping experience, so our customers can find all the items they need in one place—clothing, hygiene products, and household essentials.
           </p>
         </div>
       </div>
 
       <div className="text-4xl py-4">
-        <Title text1="ԻՆՉՈՒ" text2="ԸՆՏՐԵԼ ՄԵԶ" />
+        <Title text1="WHY" text2="CHOOSE US" />
       </div>
 
       <div className="flex flex-col md:flex-row text-sm mb-20">
         <div className="border px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5">
-          <b>Որակի Վստահություն</b>
+          <b>Quality Assurance</b>
           <p className="text-gray-600">
-            Omega-ում մենք առաջնահերթություն ենք տալիս յուրաքանչյուր առաջարկվող ապրանքի որակին։ Մեր թիմը մանրակրկիտ ընտրում և ստուգում է բոլոր ապրանքները՝ ապահովելու համար դրանց դիմացկունությունը, անվտանգությունը և բարձր որակը։ Մենք համագործակցում ենք վստահելի ապրանքանիշերի հետ և անցկացնում ենք որակի խիստ ստուգումներ՝ մեր հաճախորդներին լավագույնը առաջարկելու համար։
+            At Omega, we prioritize the quality of every product we offer. Our team carefully selects and inspects all items to ensure their durability, safety, and high quality. We partner with trusted brands and conduct rigorous quality checks to provide the best for our customers.
           </p>
         </div>
         <div className="border px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5">
-          <b>Հարմարավետություն</b>
+          <b>Convenience</b>
           <p className="text-gray-600">
-            Մենք հասկանում ենք ժամանակի արժեքը, ուստի առաջարկում ենք արագ և հեշտ գնումների գործընթաց։ Մեր հարթակում կարող եք մի քանի կտտոցով գտնել անհրաժեշտ ապրանքները, կատարել գնումներ 24/7 և ստանալ պատվերները Ձեր նախընտրած հասցեով։
+            We understand the value of time, so we offer a fast and easy shopping process. On our platform, you can find the products you need with just a few clicks, make purchases 24/7, and have orders delivered to your preferred address.
           </p>
         </div>        
         <div className="border px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5">
-          <b>Գերազանց Հաճախորդային Սպասարկում</b>
+          <b>Excellent Customer Service</b>
           <p className="text-gray-600">
-            Մեր թիմը միշտ պատրաստ է օգնել և տրամադրել անհատական մոտեցում յուրաքանչյուր հաճախորդին։ Մենք ձգտում ենք արագ արձագանքել հարցերին, լուծել խնդիրները և ապահովել բարձրորակ սպասարկում, որպեսզի մեր հաճախորդները միշտ գոհ մնան։
+            Our team is always ready to assist and provide a personalized approach to each customer. We strive to respond quickly to inquiries, resolve issues, and provide top-quality service to ensure our customers are always satisfied.
           </p>
         </div>
       </div>

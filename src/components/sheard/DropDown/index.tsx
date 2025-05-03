@@ -21,70 +21,69 @@ const ProfileDropDown = () => {
       await signOut(auth);
       dispatch(setIsAuth(false));
     }catch{
-        notification.error({
-            message: 'Կներեք, ինչ-որ բան սխալ գնաց։'
-        })
-    };
+      notification.error({
+        message: 'Sorry, something went wrong.'
+      });
+   };
 };
 
-  const buyerItems: MenuProps["items"] = [
-      {
-          label: 'Իմ Պրոֆիլը',
-          key: '0',
-          onClick: () => navigate(`${ROUTE_NAMES.PROFILE}/${userData?.uid}`)
-      }, 
-      {
-          label: 'Կարգավորումներ',
-          key: '1',
-          onClick: () => navigate(ROUTE_NAMES.SETTINGS)
-      },
-      {
-        label: 'Զամբյուղ',
-        key: '2',
-        onClick: () => navigate(ROUTE_NAMES.CARD)
-    },
-      {
-          label: 'Ելք',
-          key: '3',
-          onClick: () => handleSignOut()
-      }
-  ];
-
-  const sellerItems: MenuProps["items"] = [
-    {
-      label: "Իմ Պրոֆիլը",
-      key: "0",
-      onClick: () => navigate(`${ROUTE_NAMES.PROFILE}/${userData?.uid}`),
-    },
-    {
-      label: "Իմ Ապրանքները",
-      key: "1",
-      onClick: () => navigate(ROUTE_NAMES.MYPRODUCTS),
-    },
-    {
-      label: 'Զամբյուղ',
+const buyerItems: MenuProps["items"] = [
+  {
+      label: 'My Profile', 
+      key: '0',
+      onClick: () => navigate(`${ROUTE_NAMES.PROFILE}/${userData?.uid}`)
+  }, 
+  {
+      label: 'Settings', 
+      key: '1',
+      onClick: () => navigate(ROUTE_NAMES.SETTINGS)
+  },
+  {
+      label: 'Cart',  
       key: '2',
       onClick: () => navigate(ROUTE_NAMES.CARD)
-    },
-    {
-      label: 'Հաճախորդի Պատվերներ',
+  },
+  {
+      label: 'Logout', 
+      key: '3',
+      onClick: () => handleSignOut()
+  }
+];
+
+const sellerItems: MenuProps["items"] = [
+  {
+      label: "My Profile", 
+      key: "0",
+      onClick: () => navigate(`${ROUTE_NAMES.PROFILE}/${userData?.uid}`),
+  },
+  {
+      label: "My Products", 
+      key: "1",
+      onClick: () => navigate(ROUTE_NAMES.MYPRODUCTS),
+  },
+  {
+      label: 'Cart',
+      key: '2',
+      onClick: () => navigate(ROUTE_NAMES.CARD)
+  },
+  {
+      label: 'Customer Orders',  
       key: '3',
       onClick: () => navigate(ROUTE_NAMES.NEWORDERS)
-    },
-    {
-      label: "Կարգավորումներ",
+  },
+  {
+      label: "Settings",  
       key: "4",
       onClick: () => navigate(ROUTE_NAMES.SETTINGS),
-    },
-    {
-      label: "Ելք",
+  },
+  {
+      label: "Logout",
       key: "5",
       onClick: () => handleSignOut(),
-    },
-  ];
-
-  return (
-      <Dropdown menu={{items: userData?.role === 'seller' ? sellerItems : buyerItems,
+  },
+];
+return (
+    <Dropdown menu={{items: userData?.role === 'seller' ? sellerItems : buyerItems,
         style: {
           fontSize: "1.25rem",
           minWidth: "200px",

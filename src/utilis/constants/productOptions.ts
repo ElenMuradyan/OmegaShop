@@ -1,22 +1,21 @@
 export const options = [
     {
-        label: 'Օգտագործված',
+        label: 'Used',
         value: 'used'
     },
     {
-        label: 'Լրիվ Նոր',
+        label: 'Brand New',
         value: 'unused'
     },
 ]
 
 export const returnOptions = [
     {
-        label: 'Հնարավոր է վերադարձնել',
+        label: 'Returnable',
         value: true
     },
     {
-        label: 'Հնարավոր չէ վերադարձնել',
+        label: 'Non-returnable',
         value: false
     },
 ]
-

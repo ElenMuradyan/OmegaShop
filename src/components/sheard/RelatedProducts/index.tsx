@@ -6,14 +6,16 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../state-management/redux/store";
 import { product } from "../../../typescript/types/product";
 
-const RelatedProducts = ({category, subcategory}: related) => {
+const RelatedProducts = ({ category, subcategory }: related) => {
   const { products } = useSelector((store: RootState) => store.products);
-  const [ relatedProducts, setRelatedProducts ] = useState<product[]>(products);
+  const [relatedProducts, setRelatedProducts] = useState<product[]>([]);
 
   useEffect(() => {
     if (products.length > 0) {
       const filteredProducts = products.filter(
-        (item) => item.category === category || item.subCategory === subcategory
+        (item) =>
+          (category && item.category === category) ||
+          (subcategory && item.subCategory === subcategory)
       );
       setRelatedProducts(filteredProducts);
     }
@@ -24,10 +26,9 @@ const RelatedProducts = ({category, subcategory}: related) => {
       <div className="text-center text-3xl py-2">
         <Title text1="ԿԱՊՎԱԾ" text2="ԱՊՐԱՆՔՆԵՐ" />
       </div>
-
-        <ProductList products={relatedProducts}/>
+      <ProductList products={relatedProducts} />
     </div>
-  )
-}
+  );
+};
 
 export default RelatedProducts;

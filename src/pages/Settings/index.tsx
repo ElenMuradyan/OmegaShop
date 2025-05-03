@@ -13,7 +13,7 @@ const Settings = () => {
 
     return (
         <div className="p-6 bg-white shadow-lg rounded-lg max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold text-center"><SettingOutlined />ԿԱՐԳԱՎՈՐՈՒՄՆԵՐ</h2>
+            <h2 className="text-2xl font-bold text-center"><SettingOutlined />SETTINGS</h2>
             <Divider className="my-6" />
             {
                     Object.entries(profileOptions).map(([key, section]) => {                        
@@ -48,7 +48,7 @@ const Settings = () => {
                 className="text-gray-800 hover:text-black flex items-center space-x-2"
                 >
                     <EnvironmentOutlined />
-                    <span>ՁԵՐ ՀԱՍՑԵՆ</span>
+                    <span>ADDRESS</span>
                 </Button>
                 </Link>    
 
@@ -58,7 +58,7 @@ const Settings = () => {
                 className="text-gray-800 hover:text-black flex items-center space-x-2"
                 >
                     <UserOutlined />
-                    <span>ՁԵՐ ԱՆՁՆԱԿԱՆ ՏՎՅԱԼՆԵՐԸ</span>
+                    <span>PROFILE</span>
                 </Button>
                 </Link>      
   

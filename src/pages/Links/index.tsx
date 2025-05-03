@@ -7,8 +7,8 @@ const Links = () => {
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
       <div className="text-center mb-8">
-        <Title level={2}>Պահեք կապը մեզ հետ</Title>
-        <Text>Հետևեք մեզ Instagram-ում, Facebook-ում և Telegram-ում՝ թարմացումների, նորությունների և բացառիկ առաջարկների համար!</Text>
+        <Title level={2}>Stay in Touch with Us</Title>
+        <Text>Follow us on Instagram, Facebook, and Telegram for updates, news, and exclusive offers!</Text>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">

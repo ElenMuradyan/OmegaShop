@@ -10,9 +10,9 @@ import { profileOption } from "../../typescript/types/profileOption";
 import { ROUTE_NAMES } from "./constants";
 
 const KEYS = {
-    PURCHASES: 'ԳՆՈՒՄՆԵՐ',
-    PERSONAL: 'ԱՆՁՆԱԿԱՆ ԻՆՖՈՐՄԱՑԻԱ',
-    PROGRAM: 'ԾՐԱԳԻՐ',
+    PURCHASES: 'PURCHASES',
+    PERSONAL: 'PERSONAL INFORMATION',
+    PROGRAM: 'PROGRAM',
 } as const;
 
 export const profileOptions: Record<string, profileOption> = {
@@ -21,12 +21,12 @@ export const profileOptions: Record<string, profileOption> = {
         icon: <ShopOutlined />,
         options: {
             ORDERS: {
-                label: 'ՁԵՐ ՊԱՏՎԵՐՆԵՐԸ',
+                label: 'YOUR ORDERS',
                 icon: <ShoppingOutlined />,
                 link: ROUTE_NAMES.ORDERS,
             },
             SHOPPING_BAG: {
-                label: 'ԶԱՄԲՅՈՒՂ',
+                label: 'SHOPPING BAG',
                 icon: <ShoppingCartOutlined />,
                 link: ROUTE_NAMES.CARD,
             },
@@ -37,12 +37,12 @@ export const profileOptions: Record<string, profileOption> = {
         icon: <HeartOutlined />,
         options: {
             HELP: {
-                label: 'ՕԳՆՈՒԹՅՈՒՆ',
+                label: 'HELP',
                 icon: <QuestionCircleOutlined />,
                 link: ROUTE_NAMES.HELP,
             },
             SOCIALS: {
-                label: 'ՄԵՆՔ ՍՈՑ ՑԱՆՑԵՐՈՒՄ',
+                label: 'WE ARE ON SOCIAL MEDIA',
                 icon: <ShareAltOutlined />,
                 link: ROUTE_NAMES.SHARE,
             },

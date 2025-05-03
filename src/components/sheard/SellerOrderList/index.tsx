@@ -104,9 +104,9 @@ const SellerOrderList = ({ order }: { order: order }) => {
           </div>
 
           <div className="mb-4">
-            <h3 className="font-semibold text-gray-700">Գնորդի տվյալներ</h3>
+            <h3 className="font-semibold text-gray-700">Buyer Information</h3>
             <Link to={`${ROUTE_NAMES.PROFILE}/${consumerInfo?.uid}`} className="text-blue-600 hover:underline">
-              Տեսնել գնորդի էջը
+              View buyer's page
             </Link>
             <p className="text-gray-600">
               <UserOutlined /> {consumerInfo?.email}
@@ -128,7 +128,7 @@ const SellerOrderList = ({ order }: { order: order }) => {
                     <p className="font-medium text-gray-800">{product.name}</p>
                     <div className="flex flex-wrap gap-3 text-sm text-gray-600 mt-2">
                       <p className="text-base font-semibold">{product.price} AMD</p>
-                      <p>Քանակ: {product.stock}</p>
+                      <p>Quantity: {product.stock}</p>
                       {product.options && Object.entries(product.options).map(([key, value], idx) => (
                         <p key={idx} className="bg-gray-200 px-2 py-1 rounded-md">{`${key}: ${value}`}</p>
                       ))}
@@ -140,13 +140,13 @@ const SellerOrderList = ({ order }: { order: order }) => {
           </div>
 
           <Modal
-            title="Հաստատել պատվերը"
+            title="Confirm Order"
             open={modalOpen}
             onOk={handleModalOk}
             onCancel={() => setModalOpen(false)}
             centered
-            okText="Հաստատել"
-            cancelText="Չեղարկել"
+            okText="Confirm"
+            cancelText="Cancel"
             okButtonProps={{
               className: "bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300",
             }}
@@ -172,7 +172,7 @@ const SellerOrderList = ({ order }: { order: order }) => {
 
           {status === 'doneOrders' && returnedItemsDetails && (
                 <div>
-                    <p className="font-bold text-gray-700">Վերադարձված ապրանքներ</p>
+                    <p className="font-bold text-gray-700">Returned Items</p>
 
                     {returnedItemsDetails.products.map((product, index) => (
                         <div key={index} className="flex items-center bg-gray-50 p-4 rounded-lg border shadow-sm gap-4">
@@ -180,7 +180,7 @@ const SellerOrderList = ({ order }: { order: order }) => {
                             <div className="flex-1">
                                 <p className="font-medium text-gray-800">{product.name}</p>
                                 <p className="text-base font-semibold text-gray-700">{product.price} AMD</p>
-                                <p className="text-sm text-gray-600">Քանակ: {product.stock}</p>
+                                <p className="text-sm text-gray-600">Quantity: {product.stock}</p>
                             </div>
                         </div>
                     ))}
@@ -191,7 +191,7 @@ const SellerOrderList = ({ order }: { order: order }) => {
                     disabled={loading}
                   >
                     {
-                      loading ? <LoadingOutlined /> : <p>Հաստատեք, որ ստացել եք վերադարձված ապրանքները</p>
+                      loading ? <LoadingOutlined /> : <p>Confirm that you received the returned items</p>
                     }
                   </button>
                     }
@@ -201,7 +201,7 @@ const SellerOrderList = ({ order }: { order: order }) => {
             {
               order.status !== 'doneOrders' &&
               <p className="text-gray-600 mt-2 flex items-center gap-2">
-              <FaMoneyBills /> Դուք կարող եք ստանալ ձեր գումարը, երբ հաճախորդը ստանա ապրանքները։
+              <FaMoneyBills /> You can receive your payment once the customer receives the items.
             </p>  
             }
         </>

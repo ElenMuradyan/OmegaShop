@@ -13,7 +13,7 @@ const ProductItem = ({
 }: product) => {
   return (
     <Link
-    onClick={() => saveScrollPosition()} 
+      onClick={() => saveScrollPosition()}
       to={`${ROUTE_NAMES.PRODUCT}/${id}`}
       className="text-gray-700 cursor-pointer shadow-lg rounded-lg p-2 transition-transform hover:shadow-xl"
     >
@@ -31,7 +31,7 @@ const ProductItem = ({
           <p className="text-sm font-medium text-gray-700">{price} ֏</p>
         </div>
 
-        <p className="text-md text-gray-800">Քանակ։ {stock}</p>
+        <p className="text-md text-gray-800">Quantity: {stock}</p>
         <p className="text-xs text-gray-600 line-clamp-2">{description}</p>
       </div>
     </Link>

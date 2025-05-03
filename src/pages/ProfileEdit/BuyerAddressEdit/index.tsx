@@ -24,13 +24,13 @@ const BuyerAddressEdit = () => {
               handleEditBuyerData(object, id);
                 dispatch(fetchUserData());
                 notification.success({
-                    message: "Հասցեն հաջողությամբ թարմացվել է։",
-                    description: "Դուք հաջողությամբ փոփոխել եք ձեր հասցեն։",
+                    message: "The address has been successfully updated.",
+                    description: "You have successfully changed your address.",
                 });
             }
         } catch {
             notification.error({
-                message: "Կներեք, մենք չկարողացանք փոփոխել ձեր հասցեն։",
+                message: "Sorry, we couldn't update your address.",
             });
         } finally {
             setButtonLoading(false);
@@ -53,13 +53,13 @@ const BuyerAddressEdit = () => {
               label={
                 <Space>
                   <HomeOutlined />
-                  <Text className="font-semibold">Մարզ</Text>
+                  <Text className="font-semibold">Region</Text>
                 </Space>
               }
               name="region"
-              rules={[{ required: true, message: 'Գրե՛ք ձեր մարզը։' }]}
+              rules={[{ required: true, message: 'Please enter your region.' }]}
             >
-              <Input placeholder="Օրինակ՝ Արարատի մարզ" className="border border-gray-300 rounded-lg py-3 px-4" />
+              <Input placeholder="For example: Ararat region" className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
     
             {/* City Field */}
@@ -67,13 +67,13 @@ const BuyerAddressEdit = () => {
               label={
                 <Space>
                   <EnvironmentOutlined />
-                  <Text className="font-semibold">Քաղաք</Text>
+                  <Text className="font-semibold">City</Text>
                 </Space>
               }
               name="city"
-              rules={[{ required: true, message: 'Գրե՛ք ձեր քաղաքը։' }]}
+              rules={[{ required: true, message: 'Please enter your city.' }]}
             >
-              <Input placeholder="Օրինակ՝ Երևան" className="border border-gray-300 rounded-lg py-3 px-4" />
+              <Input placeholder="For example: Yerevan" className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
     
             {/* Street Field */}
@@ -81,13 +81,13 @@ const BuyerAddressEdit = () => {
               label={
                 <Space>
                   <HomeOutlined />
-                  <Text className="font-semibold">Փողոց</Text>
+                  <Text className="font-semibold">Street</Text>
                 </Space>
               }
               name="street"
-              rules={[{ required: true, message: 'Գրե՛ք ձեր փողոցը։' }]}
+              rules={[{ required: true, message: 'Please enter your street.' }]}
             >
-              <Input placeholder="Օրինակ՝ Մաշտոցի պող." className="border border-gray-300 rounded-lg py-3 px-4" />
+              <Input placeholder="For example: Mashtots Avenue" className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
     
             {/* Postal Code Field */}
@@ -95,16 +95,16 @@ const BuyerAddressEdit = () => {
               label={
                 <Space>
                   <SendOutlined />
-                  <Text className="font-semibold">Փոստային ինդեքս</Text>
+                  <Text className="font-semibold">Postal Code</Text>
                 </Space>
               }
               name="postIndex"
-              rules={[
-                { required: true, message: 'Գրե՛ք ձեր փոստային ինդեքսը։' },
-                { pattern: /^[0-9]{4,6}$/, message: 'Մուտքագրեք վավեր փոստային ինդեքս։' },
+              rules={[ 
+                { required: true, message: 'Please enter your postal code.' },
+                { pattern: /^[0-9]{4,6}$/, message: 'Please enter a valid postal code.' }
               ]}
             >
-              <Input placeholder="Օրինակ՝ 0010" className="border border-gray-300 rounded-lg py-3 px-4" />
+              <Input placeholder="For example: 0010" className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
     
             {/* Action Buttons */}
@@ -117,11 +117,11 @@ const BuyerAddressEdit = () => {
                 size="large"
                 className="w-full sm:w-auto px-6 py-3 rounded-lg text-white bg-blue-500 hover:bg-blue-600"
               >
-                {buttonLoading ? 'ԽՆԴՐՈՒՄ ԵՆՔ ՍՊԱՍԵԼ...' : 'ՀԱՍՏԱՏԵԼ'}
+                {buttonLoading ? 'PLEASE WAIT...' : 'CONFIRM'}
               </Button>
             </div>
           </Form>
       );
-    };
-    
+};
+
 export default BuyerAddressEdit;

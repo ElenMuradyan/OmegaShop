@@ -1,30 +1,30 @@
 import { SelectProps } from "antd";
 
 export const optionNamesOptions = [
-    { label: "Չափս (Size)", value: "size" },
-    { label: "Գույն (Color)", value: "color" },
-    { label: "Նյութ (Material)", value: "material" },
-    { label: "Հզորություն (Power)", value: "power" },
-    { label: "Քաշ (Weight)", value: "weight" },
+    { label: "Size", value: "size" },
+    { label: "Color", value: "color" },
+    { label: "Material", value: "material" },
+    { label: "Power", value: "power" },
+    { label: "Weight", value: "weight" },
 ];
 
 export const names: Record<string, string> = {
-    size: 'չափսը',
-    color: 'գույնը',
-    material: 'նյութը',
-    power: 'հզորությունը',
-    weight: 'քաշը',
+    size: 'size',
+    color: 'color',
+    material: 'material',
+    power: 'power',
+    weight: 'weight',
 }
 
 export const cartNames: Record<string, string> = {
-    size: 'Չափսը',
-    color: 'Գույնը',
-    material: 'Նյութը',
-    power: 'Հզորությունը',
-    weight: 'Քաշը',
+    size: 'Size',
+    color: 'Color',
+    material: 'Material',
+    power: 'Power',
+    weight: 'Weight',
 }
 
-export const suboptions:Record<string, SelectProps['options']> = {
+export const suboptions: Record<string, SelectProps['options']> = {
     size: [
         { label: "X-Small", value: "X-Small" },
         { label: "Small", value: "Small" },
@@ -37,38 +37,38 @@ export const suboptions:Record<string, SelectProps['options']> = {
         { label: "One Size", value: "One Size" }
     ],
     color: [
-        { label: "Կարմիր", value: "Կարմիր" },
-        { label: "Կապույտ", value: "Կապույտ" },
-        { label: "Կանաչ", value: "Կանաչ" },
-        { label: "Սև", value: "Սև" },
-        { label: "Սպիտակ", value: "Սպիտակ" },
-        { label: "Դեղին", value: "Դեղին" },
-        { label: "Վարդագույն", value: "Վարդագույն" },
-        { label: "Մանուշակագույն", value: "Մանուշակագույն" },
-        { label: "Շագանակագույն", value: "Շագանակագույն" },
-        { label: "Մոխրագույն", value: "Մոխրագույն" }
+        { label: "Red", value: "Red" },
+        { label: "Blue", value: "Blue" },
+        { label: "Green", value: "Green" },
+        { label: "Black", value: "Black" },
+        { label: "White", value: "White" },
+        { label: "Yellow", value: "Yellow" },
+        { label: "Pink", value: "Pink" },
+        { label: "Purple", value: "Purple" },
+        { label: "Brown", value: "Brown" },
+        { label: "Gray", value: "Gray" }
     ],
     material: [
-        { label: "Բամբակ", value: "Բամբակ" },
-        { label: "Կաշի", value: "Կաշի" },
-        { label: "Պոլիեսթեր", value: "Պոլիեսթեր" },
-        { label: "Փայտ", value: "Փայտ" },
-        { label: "Մետաղ", value: "Մետաղ" },
-        { label: "Պլաստիկ", value: "Պլաստիկ" },
-        { label: "Ապակի", value: "Ապակի" },
-        { label: "Մետաքս", value: "Մետաքս" },
-        { label: "Բուրդ", value: "Բուրդ" }
+        { label: "Cotton", value: "Cotton" },
+        { label: "Leather", value: "Leather" },
+        { label: "Polyester", value: "Polyester" },
+        { label: "Wood", value: "Wood" },
+        { label: "Metal", value: "Metal" },
+        { label: "Plastic", value: "Plastic" },
+        { label: "Glass", value: "Glass" },
+        { label: "Silk", value: "Silk" },
+        { label: "Wool", value: "Wool" }
     ],
     power: [
-        { label: "Ցածր", value: "Ցածր" },
-        { label: "Միջին", value: "Միջին" },
-        { label: "Բարձր", value: "Բարձր" },
-        { label: "Ուլտրա Բարձր", value: "Ուլտրա Բարձր" }
+        { label: "Low", value: "Low" },
+        { label: "Medium", value: "Medium" },
+        { label: "High", value: "High" },
+        { label: "Ultra High", value: "Ultra High" }
     ],
     weight: [
-        { label: "Թեթև", value: "Թեթև" },
-        { label: "Միջին", value: "Միջին" },
-        { label: "Ծանր", value: "Ծանր" },
-        { label: "Շատ Ծանր", value: "Շատ Ծանր" }
+        { label: "Light", value: "Light" },
+        { label: "Medium", value: "Medium" },
+        { label: "Heavy", value: "Heavy" },
+        { label: "Very Heavy", value: "Very Heavy" }
     ]
 }

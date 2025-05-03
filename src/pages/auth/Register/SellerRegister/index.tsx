@@ -12,21 +12,21 @@ import { FIRESTORE_PATH_NAMES } from '../../../../utilis/constants/firebaseConst
 import { doc, setDoc } from 'firebase/firestore';
 
 const { Text } = Typography;
-  
-const SellerRegister = () => {
-     const [ form ] = Form.useForm();
-     const navigate = useNavigate();
-     const [ loading, setLoading ] = useState<boolean>( false );
 
-     const handleSellerRegister = async (values: sellerRegister) => {
+const SellerRegister = () => {
+    const [ form ] = Form.useForm();
+    const navigate = useNavigate();
+    const [ loading, setLoading ] = useState<boolean>( false );
+
+    const handleSellerRegister = async (values: sellerRegister) => {
         const { firstName, lastName, email, phone, password, region, city, street, postIndex, businessRegion, businessCity, businessStreet, businessPostIndex, businessPhone, shopName, description, type, categories } = values;
         const termsAndConditionsSelected = form.getFieldValue('termsAndConditions');
         const buyerPoliciesSelected = form.getFieldValue('sellerPolicies');
         
         if (!termsAndConditionsSelected || !buyerPoliciesSelected) {
             notification.error({
-              message: 'Պարտադիր համաձայնություն',
-              description: 'Խնդրում ենք ընդունել պայմաններն ու համաձայնությունները:',
+              message: 'Required Agreement',
+              description: 'Please accept the terms and agreements.',
             });
         } else {   
         try{
@@ -45,8 +45,8 @@ const SellerRegister = () => {
 
             await setDoc(createSellerDoc, { uid, email, businessAddress, shopName, description, type, categories, myproducts: [], newOrders: [], sentOrders: [], doneOrders: [], processingOrders: [], returnedProducts: [] });
             notification.success({
-                message: "Գրանցումը հաջողությամբ իրականացվել է",
-                description: "Ձեր հաշիվը հաջողությամբ ստեղծվել է։"
+                message: "Registration Successful",
+                description: "Your account has been successfully created."
             });
 
             localStorage.removeItem('SellerFormValues');
@@ -60,7 +60,7 @@ const SellerRegister = () => {
             navigate(ROUTE_NAMES.LOGIN);
         } catch (error: any) {
             notification.error({
-                message: "Գրանցումը ձախողվեց",
+                message: "Registration Failed",
                 description: error.message
             });
         }finally{
@@ -85,7 +85,7 @@ const SellerRegister = () => {
     return(
         <div className="flex flex-col justify-center items-center min-h-screen text-center bg-gray-50 p-6">
         <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-red-600">
-        ԵԹԵ ԱՐԴԵՆ ԳՐԱՆՑՎԱԾ ԵՔ ԱՅՍ ԷԼՓՈՍՏՈՎ ՈՐՊԵՍ ԳՆՈՐԴ, ԽՆԴՐՈՒՄ ԵՆՔ ԳՐԱՆՑՎԵԼ ՆՈՐ ԷԼՓՈՍՏՈՎ ՍՏԵՂԾՎԱԾ ՀԱՏՈՒԿ ԲԻԶՆԵՍ ԷՋԻ ՀԱՄԱՐ։
+        IF YOU ARE ALREADY REGISTERED WITH THIS EMAIL AS A BUYER, PLEASE REGISTER WITH A NEW EMAIL CREATED FOR BUSINESS USE.
         </p>
         <Form
             layout="vertical"
@@ -93,215 +93,198 @@ const SellerRegister = () => {
             form={form}
             className='bg-white w-full shadow-lg rounded-lg p-8 mt-6'
         >
-            <h2 className="text-2xl font-bold text-center">ԳՐԱՆՑՎԵԼ</h2>
+            <h2 className="text-2xl font-bold text-center">REGISTER</h2>
             <hr />
 
-            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='ԱՆՁՆԱԿԱՆ' text2='ՏՎՅԱԼՆԵՐ' /></h3>
+            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='PERSONAL' text2='INFORMATION' /></h3>
 
             <Form.Item
-            label={<Text className="font-semibold">Անուն</Text>}
+            label={<Text className="font-semibold">First Name</Text>}
             name="firstName"
-            rules={[{ required: true, message: 'Գրե՛ք ձեր անունը։' }]}
+            rules={[{ required: true, message: 'Please enter your first name.' }]}
             >
-            <Input placeholder="Գրե՛ք ձեր անունը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            <Input placeholder="Enter your first name." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Ազգանուն</Text>}
+            label={<Text className="font-semibold">Last Name</Text>}
             name="lastName"
-            rules={[{ required: true, message: 'Գրե՛ք ձեր ազգանունը։' }]}
+            rules={[{ required: true, message: 'Please enter your last name.' }]}
             >
-            <Input placeholder="Գրե՛ք ձեր ազգանունը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            <Input placeholder="Enter your last name." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Էլփոստ</Text>}
+            label={<Text className="font-semibold">Email</Text>}
             name="email"
-            rules={[{ required: true, message: 'Գրե՛ք ձեր էլփոստը։' }]}
+            rules={[{ required: true, message: 'Please enter your email.' }]}
             >
-            <Input type="email" placeholder="Գրե՛ք ձեր էլփոստը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            <Input type="email" placeholder="Enter your email." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Հեռախոսահամար</Text>}
+            label={<Text className="font-semibold">Phone Number</Text>}
             name="phone"
-            rules={[{ required: true, message: 'Գրե՛ք ձեր հեռախոսահամարը։' }]}
+            rules={[{ required: true, message: 'Please enter your phone number.' }]}
             >
-            <Input type="tel" placeholder="Գրե՛ք ձեր հեռախոսահամարը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            <Input type="tel" placeholder="Enter your phone number." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Գաղտնաբառ</Text>}
+            label={<Text className="font-semibold">Password</Text>}
             name="password"
-            tooltip="Գաղտնաբառը պետք է պարունակի 6-ից 16 նիշ, գոնե 1 թիվ (0-9) և 1 հատուկ նշան (!@#$%^&*), մեծատառ և փոքրատառ տառեր։"
-            rules={[
-                { required: true, message: 'Գրե՛ք ձեր գաղտնաբառը։' },
-                { pattern: regexpValidation, message: 'Գաղտնաբառը շատ պարզ է։' },
-            ]}
+            tooltip="Password must be between 6-16 characters, contain at least one number (0-9), one special character (!@#$%^&*), and both uppercase and lowercase letters."
+            rules={[{ required: true, message: 'Please enter your password.' }, { pattern: regexpValidation, message: 'Password is too simple.' }]}
             >
-            <Input.Password placeholder="Գրե՛ք ձեր գաղտնաբառը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            <Input.Password placeholder="Enter your password." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
-            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='ՁԵՐ' text2='ՀԱՍՑԵՆ' /></h3>
+            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='YOUR' text2='ADDRESS' /></h3>
 
             <Form.Item
-            label={<Text className="font-semibold">Մարզ</Text>}
+            label={<Text className="font-semibold">Region</Text>}
             name="region"
-            rules={[{ required: true, message: 'Գրե՛ք ձեր մարզը։' }]}
+            rules={[{ required: true, message: 'Please enter your region.' }]}
             >
-            <Input placeholder="Գրե՛ք ձեր մարզը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            <Input placeholder="Enter your region." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Քաղաք</Text>}
+            label={<Text className="font-semibold">City</Text>}
             name="city"
-            rules={[{ required: true, message: 'Գրե՛ք ձեր քաղաքը։' }]}
+            rules={[{ required: true, message: 'Please enter your city.' }]}
             >
-            <Input placeholder="Գրե՛ք ձեր քաղաքը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            <Input placeholder="Enter your city." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Փողոց</Text>}
+            label={<Text className="font-semibold">Street</Text>}
             name="street"
-            rules={[{ required: true, message: 'Գրե՛ք ձեր փողոցը։' }]}
+            rules={[{ required: true, message: 'Please enter your street.' }]}
             >
-            <Input placeholder="Գրե՛ք ձեր փողոցը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            <Input placeholder="Enter your street." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Փոստային ինդեքս</Text>}
+            label={<Text className="font-semibold">Postal Code</Text>}
             name="postIndex"
-            rules={[
-                { required: true, message: 'Գրե՛ք ձեր փոստային ինդեքսը։' },
-                { pattern: /^[0-9]{4,6}$/, message: 'Մուտքագրեք վավեր փոստային ինդեքս։' },
-            ]}
+            rules={[{ required: true, message: 'Please enter your postal code.' }, { pattern: /^[0-9]{4,6}$/, message: 'Enter a valid postal code.' }]}
             >
-            <Input placeholder="Գրե՛ք ձեր փոստային ինդեքսը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            <Input placeholder="Enter your postal code." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
-            <h2 className="text-2xl font-bold text-center">ԲԻԶՆԵՍ ԻՆՖՈՐՄԱՑԻԱ</h2>
+            <h2 className="text-2xl font-bold text-center">BUSINESS INFORMATION</h2>
 
-            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='ՁԵՐ ԲԻԶՆԵՍԻ' text2='ՀԱՍՑԵՆ' /></h3>
+            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='YOUR BUSINESS' text2='ADDRESS' /></h3>
 
             <Form.Item
-            label={<Text className="font-semibold">Մարզ</Text>}
+            label={<Text className="font-semibold">Region</Text>}
             name="businessRegion"
-            rules={[{ required: true, message: 'Գրե՛ք մարզը։' }]}
+            rules={[{ required: true, message: 'Please enter the region.' }]}
             >
-            <Input placeholder="Գրե՛ք մարզը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            <Input placeholder="Enter the region." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Քաղաք</Text>}
+            label={<Text className="font-semibold">City</Text>}
             name="businessCity"
-            rules={[{ required: true, message: 'Գրե՛ք քաղաքը։' }]}
+            rules={[{ required: true, message: 'Please enter the city.' }]}
             >
-            <Input placeholder="Գրե՛ք քաղաքը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            <Input placeholder="Enter the city." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Փողոց</Text>}
+            label={<Text className="font-semibold">Street</Text>}
             name="businessStreet"
-            rules={[{ required: true, message: 'Գրե՛ք փողոցը։' }]}
+            rules={[{ required: true, message: 'Please enter the street.' }]}
             >
-            <Input placeholder="Գրե՛ք փողոցը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            <Input placeholder="Enter the street." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Փոստային ինդեքս</Text>}
+            label={<Text className="font-semibold">Postal Code</Text>}
             name="businessPostIndex"
-            rules={[
-                { required: true, message: 'Գրե՛ք փոստային ինդեքսը։' },
-                { pattern: /^[0-9]{4,6}$/, message: 'Մուտքագրեք վավեր փոստային ինդեքս։' },
-            ]}
+            rules={[{ required: true, message: 'Please enter the postal code.' }, { pattern: /^[0-9]{4,6}$/, message: 'Enter a valid postal code.' }]}
             >
-            <Input placeholder="Գրե՛ք փոստային ինդեքսը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            <Input placeholder="Enter the postal code." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Աշխատանքային հեռախոսահամար</Text>}
+            label={<Text className="font-semibold">Business Phone</Text>}
             name="businessPhone"
-            rules={[{ required: true, message: 'Գրե՛ք հեռախոսահամարը։' }]}
+            rules={[{ required: true, message: 'Please enter the business phone.' }]}
             >
-            <Input type="tel" placeholder="Գրե՛ք հեռախոսահամարը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            <Input placeholder="Enter the business phone." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
-            {/* Government ID / Business License Upload (File Upload) */}
-            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='ՁԵՐ ԲԻԶՆԵՍԻ' text2='ՆԿԱՐԱԳՐՈՒԹՅՈՒՆԸ' /></h3>
-
+            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='SHOP' text2='DETAILS' /></h3>
 
             <Form.Item
-            label={<Text className="font-semibold">Խանութի անուն</Text>}
+            label={<Text className="font-semibold">Shop Name</Text>}
             name="shopName"
-            rules={[{ required: true, message: 'Գրե՛ք ձեր խանութի անունը։' }]}
+            rules={[{ required: true, message: 'Please enter your shop name.' }]}
             >
-            <Input placeholder="Գրե՛ք ձեր խանութի անունը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            <Input placeholder="Enter your shop name." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Խանութի նկարագրություն</Text>}
+            label={<Text className="font-semibold">Business Description</Text>}
             name="description"
-            rules={[{ required: true, message: 'Գրե՛ք ձեր խանութի նկարագրությունը։' }]}
+            rules={[{ required: true, message: 'Please enter your business description.' }]}
             >
-            <Input placeholder="Գրե՛ք ձեր խանութի նկարագրությունը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+            <Input.TextArea placeholder="Describe your business." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Վաճառում եք որպես անհատ թե բիզնես։</Text>}
+            label={<Text className="font-semibold">Seller Type</Text>}
             name="type"
-            rules={[{ required: true, message: 'Նշե՛ք տարբերակը։' }]}
+            rules={[{ required: true, message: 'Please select the seller type.' }]}
             >
-            <Select options={options} />
+            <Select placeholder="Select your seller type." options={options} className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
-
-            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='ՁԵՐ ԱՊՐԱՆՔԻ' text2='ՄԱՍԻՆ' /></h3>
 
             <Form.Item
-            label={<Text className="font-semibold">Ինչ տեսակի ապրանք եք վաճառելու։</Text>}
+            label={<Text className="font-semibold">Business Categories</Text>}
             name="categories"
-            rules={[{ required: true, message: 'Նշե՛ք մեկ կամ մի քանի տարբերակներ' }]}
+            rules={[{ required: true, message: 'Please select business categories.' }]}
             >
-                <Select
-                mode="multiple"
-                size={'middle'}
-                options={categoryLabels}
-                showSearch={false}  
-                />
+            <Select
+            mode="multiple"
+            placeholder="Select your business categories."
+            options={categoryLabels}
+            className="border border-gray-300 rounded-lg py-3 px-4"
+            />
             </Form.Item>
-
+    
+            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='AGREEMENTS' text2='AND POLICIES' /></h3>
+    
             <Form.Item
             name="termsAndConditions"
             valuePropName="checked"
-            rules={[{ required: true, message: 'Պարտադիր է կարդալ և համաձայնություն հայտնել' }]}>
-            <Checkbox onChange={(e) => form.setFieldValue('termsAndConditions', e.target.checked)}/><Link to={ROUTE_NAMES.SELLERCONTRACT} onClick={() => handleNavigate()}>Պայմաններ և համաձայնություն</Link>
+            rules={[{ validator: (_, value) => value ? Promise.resolve() : Promise.reject('You must accept the terms and conditions.') }]}
+            >
+            <Checkbox>I accept the <Link to="/terms-and-conditions">Terms and Conditions</Link>.</Checkbox>
             </Form.Item>
-
+    
             <Form.Item
             name="sellerPolicies"
             valuePropName="checked"
-            rules={[{ required: true, message: 'Համաձայն եմ վաճառողի քաղաքականության հետ' }]}>
-            <Checkbox onChange={(e) => form.setFieldValue('sellerPolicies', e.target.checked)}/><Link to={ROUTE_NAMES.TERMSANDCONDITIONS} onClick={() => handleNavigate()}>Համաձայն եմ վաճառողի քաղաքականության հետ:</Link>
-            </Form.Item>
-
-            {/* do this using links and write it */}
-
-            <div className="flex flex-col sm:flex-row justify-between sm:justify-between items-center space-x-4 sm:space-x-0 sm:space-y-4">
-            <Button
-                type="primary"
-                htmlType="submit"
-                size="large"
-                className="w-full sm:w-auto px-16 py-3 rounded-lg text-white bg-black hover:bg-gray-800"
-                loading={loading}
+            rules={[{ validator: (_, value) => value ? Promise.resolve() : Promise.reject('You must accept the seller policies.') }]}
             >
-                ԳՐԱՆՑՎԵԼ
+            <Checkbox>I accept the <Link to="/seller-policies">Seller Policies</Link>.</Checkbox>
+            </Form.Item>
+    
+            <Form.Item>
+            <Button type="primary" htmlType="submit" block loading={loading} onClick={handleNavigate}>
+                Register
             </Button>
-
-            <Link to={ROUTE_NAMES.LOGIN} className="text-blue-600 hover:underline">
-                ՄՈՒՏՔ ԳՈՐԾԵԼ
-            </Link>
-            </div>
+            </Form.Item>
+    
+            <p className="text-sm text-center">
+                Already have an account? <Link to={ROUTE_NAMES.LOGIN} className="font-semibold">Login here</Link>.
+            </p>
         </Form>
         </div>
-);
-};      
+    )   
+} 
 export default SellerRegister;

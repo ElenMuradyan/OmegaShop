@@ -24,139 +24,138 @@ const SellerProfileEdit = () => {
 
     useEffect(() => {
         form.setFieldsValue({ ...userData, ...myShopInfo });
-    }, [userData, myShopInfo]); 
+    }, [userData, myShopInfo]);
 
     const handleEditUserProfile = async (values: sellerRegister) => {
         setButtonLoading(true);
         const { firstName, lastName, email, phone, shopName, description, type, categories } = values;
 
         try {
-          if(userData?.uid){
-            handleEditBuyerData({ firstName, lastName, phone, email }, userData.uid);
-            handleEditSellerData({ shopName, description, type, categories }, userData.uid);
-            dispatch(fetchUserData());
-            dispatch(fetchShopInfo(email));
+            if(userData?.uid){
+                handleEditBuyerData({ firstName, lastName, phone, email }, userData.uid);
+                handleEditSellerData({ shopName, description, type, categories }, userData.uid);
+                dispatch(fetchUserData());
+                dispatch(fetchShopInfo(email));
 
-            notification.success({
-                message: "Տվյալները հաջողությամբ թարմացվեցին։",
-            });
-          }
+                notification.success({
+                    message: "Data successfully updated.",
+                });
+            }
         } catch {
             notification.error({
-                message: "Կներեք, մենք չկարողացանք փոփոխել ձեր տվյալները։",
+                message: "Sorry, we couldn't update your data.",
             });
         } finally {
             setButtonLoading(false);
         }
     };
 
-      return (
-            <Form
+    return (
+        <Form
             layout="vertical"
             form={form}
             onFinish={handleEditUserProfile}
             className="w-full sm:max-w-2xl p-8 space-y-6"
-          >
-            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='ԱՆՁՆԱԿԱՆ' text2='ՏՎՅԱԼՆԵՐ' /></h3>
+        >
+            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='PERSONAL' text2='INFORMATION' /></h3>
 
             <Form.Item
-            label={<Text className="font-semibold">Անուն</Text>}
-            name="firstName"
-            rules={[{ required: true, message: 'Գրե՛ք ձեր անունը։' }]}
+                label={<Text className="font-semibold">First Name</Text>}
+                name="firstName"
+                rules={[{ required: true, message: 'Please enter your first name.' }]}
             >
-            <Input placeholder="Գրե՛ք ձեր անունը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+                <Input placeholder="Enter your first name." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Ազգանուն</Text>}
-            name="lastName"
-            rules={[{ required: true, message: 'Գրե՛ք ձեր ազգանունը։' }]}
+                label={<Text className="font-semibold">Last Name</Text>}
+                name="lastName"
+                rules={[{ required: true, message: 'Please enter your last name.' }]}
             >
-            <Input placeholder="Գրե՛ք ձեր ազգանունը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+                <Input placeholder="Enter your last name." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Էլփոստ</Text>}
-            name="email"
-            rules={[{ required: true, message: 'Գրե՛ք ձեր էլփոստը։' }]}
+                label={<Text className="font-semibold">Email</Text>}
+                name="email"
+                rules={[{ required: true, message: 'Please enter your email.' }]}
             >
-            <Input type="email" placeholder="Գրե՛ք ձեր էլփոստը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+                <Input type="email" placeholder="Enter your email." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Հեռախոսահամար</Text>}
-            name="phone"
-            rules={[{ required: true, message: 'Գրե՛ք ձեր հեռախոսահամարը։' }]}
+                label={<Text className="font-semibold">Phone Number</Text>}
+                name="phone"
+                rules={[{ required: true, message: 'Please enter your phone number.' }]}
             >
-            <Input type="tel" placeholder="Գրե՛ք ձեր հեռախոսահամարը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+                <Input type="tel" placeholder="Enter your phone number." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             {/* Government ID / Business License Upload (File Upload) */}
-            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='ՁԵՐ ԲԻԶՆԵՍԻ' text2='ՆԿԱՐԱԳՐՈՒԹՅՈՒՆԸ' /></h3>
-
+            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='YOUR BUSINESS' text2='DESCRIPTION' /></h3>
 
             <Form.Item
-            label={<Text className="font-semibold">Խանութի անուն</Text>}
-            name="shopName"
-            rules={[{ required: true, message: 'Գրե՛ք ձեր խանութի անունը։' }]}
+                label={<Text className="font-semibold">Shop Name</Text>}
+                name="shopName"
+                rules={[{ required: true, message: 'Please enter your shop name.' }]}
             >
-            <Input placeholder="Գրե՛ք ձեր խանութի անունը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+                <Input placeholder="Enter your shop name." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Խանութի նկարագրություն</Text>}
-            name="description"
-            rules={[{ required: true, message: 'Գրե՛ք ձեր խանութի նկարագրությունը։' }]}
+                label={<Text className="font-semibold">Shop Description</Text>}
+                name="description"
+                rules={[{ required: true, message: 'Please enter your shop description.' }]}
             >
-            <Input placeholder="Գրե՛ք ձեր խանութի նկարագրությունը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+                <Input placeholder="Enter your shop description." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Վաճառում եք որպես անհատ թե բիզնես։</Text>}
-            name="type"
-            rules={[{ required: true, message: 'Նշե՛ք տարբերակը։' }]}
+                label={<Text className="font-semibold">Are you selling as an individual or business?</Text>}
+                name="type"
+                rules={[{ required: true, message: 'Please select an option.' }]}
             >
-            <Select options={options} />
+                <Select options={options} />
             </Form.Item>
 
-            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='ՁԵՐ ԱՊՐԱՆՔԻ' text2='ՄԱՍԻՆ' /></h3>
+            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='YOUR PRODUCT' text2='CATEGORY' /></h3>
 
             <Form.Item
-            label={<Text className="font-semibold">Ինչ տեսակի ապրանք եք վաճառելու։</Text>}
-            name="categories"
-            rules={[{ required: true, message: 'Նշե՛ք մեկ կամ մի քանի տարբերակներ' }]}
+                label={<Text className="font-semibold">What type of products are you selling?</Text>}
+                name="categories"
+                rules={[{ required: true, message: 'Please select one or more options' }]}
             >
                 <Select
-                mode="multiple"
-                size={'middle'}
-                options={categoryLabels}
-                showSearch={false}  
+                    mode="multiple"
+                    size={'middle'}
+                    options={categoryLabels}
+                    showSearch={false}
                 />
             </Form.Item>
-    
+
             {/* Action Buttons */}
             <div className="flex justify-between items-center space-x-4">
-              <Button
-                type="primary"
-                htmlType="submit"
-                loading={buttonLoading}
-                icon={buttonLoading ? <Spin /> : <UserOutlined />}
-                size="large"
-                className="w-full sm:w-auto px-6 py-3 rounded-lg text-white bg-blue-500 hover:bg-blue-600"
-              >
-                {buttonLoading ? 'ԽՆԴՐՈՒՄ ԵՆՔ ՍՊԱՍԵԼ...' : 'ՀԱՍՏԱՏԵԼ'}
-              </Button>
-    
-              <Link
-                to={`${ROUTE_NAMES.EDITDATA}/${userData?.role}editaddress`}
-                className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-500 hover:text-black hover:shadow-md transition-all duration-200"
-              >
-                <EnvironmentOutlined className="text-lg" />
-                <span className="text-sm font-medium">ՁԵՐ ՀԱՍՑԵՆ</span>
-              </Link>
+                <Button
+                    type="primary"
+                    htmlType="submit"
+                    loading={buttonLoading}
+                    icon={buttonLoading ? <Spin /> : <UserOutlined />}
+                    size="large"
+                    className="w-full sm:w-auto px-6 py-3 rounded-lg text-white bg-blue-500 hover:bg-blue-600"
+                >
+                    {buttonLoading ? 'PLEASE WAIT...' : 'CONFIRM'}
+                </Button>
+
+                <Link
+                    to={`${ROUTE_NAMES.EDITDATA}/${userData?.role}editaddress`}
+                    className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-500 hover:text-black hover:shadow-md transition-all duration-200"
+                >
+                    <EnvironmentOutlined className="text-lg" />
+                    <span className="text-sm font-medium">YOUR ADDRESS</span>
+                </Link>
             </div>
-          </Form>
-      );
-    };
-    
+        </Form>
+    );
+};
+
 export default SellerProfileEdit;

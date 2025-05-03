@@ -11,7 +11,7 @@ export const handleDeleteCartItem = async ({cartItemId, userData, dispatch, inde
         dispatch(deleteItem(index));
         await deleteDoc(doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, userData.uid, FIRESTORE_PATH_NAMES.CART, cartItemId));
     }catch(error: any){
-        console.error("Սխալ զամբյուղից հեռացնելիս:", error.message);
+        console.error("Error removing from cart:", error.message);
     }    
     }
 };
@@ -26,7 +26,7 @@ export const handleAddToOrder = async ({cartItemId, userData, dispatch, index, o
             const itemRef = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, userData.uid, FIRESTORE_PATH_NAMES.CART, cartItemId);            
             await updateDoc(itemRef, { ordering: ordering });
         }catch(error: any){
-            console.error("Սխալ պատվերը փոխելու ժամանակ;", error.message);
+            console.error("Error changing the order status:", error.message);
         }
     }
 };

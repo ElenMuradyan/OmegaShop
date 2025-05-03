@@ -18,23 +18,23 @@ const CardTotal = () => {
   return (
     <div className="w-full">
       <div className="text-2xl">
-        <Title text1="ՎՃԱՐԱՅԻՆ" text2="ՏՎՅԱԼՆԵՐ" />
+        <Title text1="PAYMENT" text2="DETAILS" />
       </div>
 
       <div className="flex flex-col gap-2 mt-2 text-sm">
         <div className="flex justify-between">
-            <p>Ապրանքի վճար</p>
-            <p>{subtotal} AMD</p>
+          <p>Product Price</p>
+          <p>{subtotal} AMD</p>
         </div>
         <hr />
         <div className="flex justify-between">
-            <p>Առաքման վճար</p>
-            <p>500 AMD</p>
+          <p>Delivery Fee</p>
+          <p>500 AMD</p>
         </div>
         <hr />
         <div className="flex justify-between">
-            <p>Ընդհանուր</p>
-            <p>{subtotal+500} AMD</p>
+          <p>Total</p>
+          <p>{subtotal + 500} AMD</p>
         </div>
       </div>
     </div>

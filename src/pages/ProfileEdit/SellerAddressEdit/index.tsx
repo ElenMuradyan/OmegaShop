@@ -22,8 +22,8 @@ const SellerAddressEdit = () => {
         setButtonLoading(true);
         const { region, city, street, postIndex, businessRegion, businessCity, businessStreet, businessPostIndex, businessPhone } = values;
 
-        const address = {region, city, street, postIndex};
-        const businessAddress = {businessRegion, businessCity, businessStreet, businessPostIndex, businessPhone};
+        const address = { region, city, street, postIndex };
+        const businessAddress = { businessRegion, businessCity, businessStreet, businessPostIndex, businessPhone };
         try {
             if (userData?.uid) {
                 const email = userData.email;
@@ -33,13 +33,13 @@ const SellerAddressEdit = () => {
                 dispatch(fetchUserData());
                 dispatch(fetchShopInfo(email));
                 notification.success({
-                    message: "Հասցեն հաջողությամբ թարմացվել է։",
-                    description: "Դուք հաջողությամբ փոփոխել եք ձեր հասցեն։",
+                    message: "Address updated successfully.",
+                    description: "You have successfully updated your address.",
                 });
             }
         } catch {
             notification.error({
-                message: "Կներեք, մենք չկարողացանք փոփոխել ձեր հասցեն։",
+                message: "Sorry, we couldn't change your address.",
             });
         } finally {
             setButtonLoading(false);
@@ -47,8 +47,9 @@ const SellerAddressEdit = () => {
     };
 
     useEffect(() => {
-      userData && dispatch(fetchShopInfo(userData?.uid));
-    }, [])
+        userData && dispatch(fetchShopInfo(userData?.uid));
+    }, []);
+    
     useEffect(() => {                
         if (userData?.address || myShopInfo?.businessAddress) {
             form.setFieldsValue({
@@ -57,134 +58,135 @@ const SellerAddressEdit = () => {
             });
         }
     }, [userData, myShopInfo]);
-    
+
     return (
-          <Form
+        <Form
             layout="vertical"
             form={form}
             onFinish={handleEditUserAddress}
             className="w-full sm:max-w-2xl p-8 space-y-6"
-          >
-            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='ՁԵՐ' text2='ՀԱՍՑԵՆ' /></h3>
+        >
+            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='YOUR' text2='ADDRESS' /></h3>
+            
             {/* Region Field */}
             <Form.Item
-              label={
-                <Space>
-                  <HomeOutlined />
-                  <Text className="font-semibold">Մարզ</Text>
-                </Space>
-              }
-              name="region"
-              rules={[{ required: true, message: 'Գրե՛ք ձեր մարզը։' }]}
+                label={
+                    <Space>
+                        <HomeOutlined />
+                        <Text className="font-semibold">Region</Text>
+                    </Space>
+                }
+                name="region"
+                rules={[{ required: true, message: 'Please enter your region.' }]}
             >
-              <Input placeholder="Օրինակ՝ Արարատի մարզ" className="border border-gray-300 rounded-lg py-3 px-4" />
+                <Input placeholder="For example, Ararat Region" className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
-    
+
             {/* City Field */}
             <Form.Item
-              label={
-                <Space>
-                  <EnvironmentOutlined />
-                  <Text className="font-semibold">Քաղաք</Text>
-                </Space>
-              }
-              name="city"
-              rules={[{ required: true, message: 'Գրե՛ք ձեր քաղաքը։' }]}
+                label={
+                    <Space>
+                        <EnvironmentOutlined />
+                        <Text className="font-semibold">City</Text>
+                    </Space>
+                }
+                name="city"
+                rules={[{ required: true, message: 'Please enter your city.' }]}
             >
-              <Input placeholder="Օրինակ՝ Երևան" className="border border-gray-300 rounded-lg py-3 px-4" />
+                <Input placeholder="For example, Yerevan" className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
-    
+
             {/* Street Field */}
             <Form.Item
-              label={
-                <Space>
-                  <HomeOutlined />
-                  <Text className="font-semibold">Փողոց</Text>
-                </Space>
-              }
-              name="street"
-              rules={[{ required: true, message: 'Գրե՛ք ձեր փողոցը։' }]}
+                label={
+                    <Space>
+                        <HomeOutlined />
+                        <Text className="font-semibold">Street</Text>
+                    </Space>
+                }
+                name="street"
+                rules={[{ required: true, message: 'Please enter your street.' }]}
             >
-              <Input placeholder="Օրինակ՝ Մաշտոցի պող." className="border border-gray-300 rounded-lg py-3 px-4" />
+                <Input placeholder="For example, Mashtots Avenue" className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
-    
+
             {/* Postal Code Field */}
             <Form.Item
-              label={
-                <Space>
-                  <SendOutlined />
-                  <Text className="font-semibold">Փոստային ինդեքս</Text>
-                </Space>
-              }
-              name="postIndex"
-              rules={[
-                { required: true, message: 'Գրե՛ք ձեր փոստային ինդեքսը։' },
-                { pattern: /^[0-9]{4,6}$/, message: 'Մուտքագրեք վավեր փոստային ինդեքս։' },
-              ]}
+                label={
+                    <Space>
+                        <SendOutlined />
+                        <Text className="font-semibold">Postal Code</Text>
+                    </Space>
+                }
+                name="postIndex"
+                rules={[
+                    { required: true, message: 'Please enter your postal code.' },
+                    { pattern: /^[0-9]{4,6}$/, message: 'Enter a valid postal code.' },
+                ]}
             >
-              <Input placeholder="Օրինակ՝ 0010" className="border border-gray-300 rounded-lg py-3 px-4" />
+                <Input placeholder="For example, 0010" className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
-            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='ՁԵՐ ԲԻԶՆԵՍԻ' text2='ՀԱՍՑԵՆ' /></h3>
+            <h3 className="text-lg font-semibold text-gray-700 text-center"><Title text1='YOUR BUSINESS' text2='ADDRESS' /></h3>
 
             <Form.Item
-            label={<Text className="font-semibold">Մարզ</Text>}
-            name="businessRegion"
-            rules={[{ required: true, message: 'Գրե՛ք մարզը։' }]}
+                label={<Text className="font-semibold">Region</Text>}
+                name="businessRegion"
+                rules={[{ required: true, message: 'Please enter the region.' }]}
             >
-            <Input placeholder="Գրե՛ք մարզը։" className="border border-gray-300 rounded-lg py-3 px-4" />
-            </Form.Item>
-
-            <Form.Item
-            label={<Text className="font-semibold">Քաղաք</Text>}
-            name="businessCity"
-            rules={[{ required: true, message: 'Գրե՛ք քաղաքը։' }]}
-            >
-            <Input placeholder="Գրե՛ք քաղաքը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+                <Input placeholder="Enter the region." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Փողոց</Text>}
-            name="businessStreet"
-            rules={[{ required: true, message: 'Գրե՛ք փողոցը։' }]}
+                label={<Text className="font-semibold">City</Text>}
+                name="businessCity"
+                rules={[{ required: true, message: 'Please enter the city.' }]}
             >
-            <Input placeholder="Գրե՛ք փողոցը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+                <Input placeholder="Enter the city." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Փոստային ինդեքս</Text>}
-            name="businessPostIndex"
-            rules={[
-                { required: true, message: 'Գրե՛ք փոստային ինդեքսը։' },
-                { pattern: /^[0-9]{4,6}$/, message: 'Մուտքագրեք վավեր փոստային ինդեքս։' },
-            ]}
+                label={<Text className="font-semibold">Street</Text>}
+                name="businessStreet"
+                rules={[{ required: true, message: 'Please enter the street.' }]}
             >
-            <Input placeholder="Գրե՛ք փոստային ինդեքսը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+                <Input placeholder="Enter the street." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
 
             <Form.Item
-            label={<Text className="font-semibold">Աշխատանքային հեռախոսահամար</Text>}
-            name="businessPhone"
-            rules={[{ required: true, message: 'Գրե՛ք հեռախոսահամարը։' }]}
+                label={<Text className="font-semibold">Postal Code</Text>}
+                name="businessPostIndex"
+                rules={[
+                    { required: true, message: 'Please enter the postal code.' },
+                    { pattern: /^[0-9]{4,6}$/, message: 'Enter a valid postal code.' },
+                ]}
             >
-            <Input type="tel" placeholder="Գրե՛ք հեռախոսահամարը։" className="border border-gray-300 rounded-lg py-3 px-4" />
+                <Input placeholder="Enter the postal code." className="border border-gray-300 rounded-lg py-3 px-4" />
             </Form.Item>
-    
+
+            <Form.Item
+                label={<Text className="font-semibold">Business Phone Number</Text>}
+                name="businessPhone"
+                rules={[{ required: true, message: 'Please enter the phone number.' }]}
+            >
+                <Input type="tel" placeholder="Enter the phone number." className="border border-gray-300 rounded-lg py-3 px-4" />
+            </Form.Item>
+
             {/* Action Buttons */}
             <div className="flex justify-between items-center space-x-4">
-              <Button
-                type="primary"
-                htmlType="submit"
-                loading={buttonLoading}
-                icon={buttonLoading ? <Spin /> : <EnvironmentOutlined />}
-                size="large"
-                className="w-full sm:w-auto px-6 py-3 rounded-lg text-white bg-blue-500 hover:bg-blue-600"
-              >
-                {buttonLoading ? 'ԽՆԴՐՈՒՄ ԵՆՔ ՍՊԱՍԵԼ...' : 'ՀԱՍՏԱՏԵԼ'}
-              </Button>
+                <Button
+                    type="primary"
+                    htmlType="submit"
+                    loading={buttonLoading}
+                    icon={buttonLoading ? <Spin /> : <EnvironmentOutlined />}
+                    size="large"
+                    className="w-full sm:w-auto px-6 py-3 rounded-lg text-white bg-blue-500 hover:bg-blue-600"
+                >
+                    {buttonLoading ? 'PLEASE WAIT...' : 'CONFIRM'}
+                </Button>
             </div>
-          </Form>
-      );
-    };
-    
+        </Form>
+    );
+};
+
 export default SellerAddressEdit;

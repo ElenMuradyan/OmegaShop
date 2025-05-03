@@ -12,12 +12,12 @@ export const handleAddToCart = async ({productInfo, choosenOptions, setErrorMess
     );
 
     if (!allOptionsSelected) {
-      setErrorMessage("Խնդրում ենք ընտրել բոլոր հատկությունները (Please select all options)");
+      setErrorMessage("Please select all options");
       return;
     }
 
     if (!(orderedProductInfo.stock > 0 && productInfo?.stock && orderedProductInfo.stock <= productInfo?.stock) || !orderedProductInfo.stock) {
-      setErrorMessage("Խնդրում ենք մուտքագրել ճիշտ քանակ (Please enter a valid stock amount)");
+      setErrorMessage("Please enter a valid stock amount");
       return;
     }
     if(userData){
@@ -50,11 +50,11 @@ export const handleAddToCart = async ({productInfo, choosenOptions, setErrorMess
         setChoosenOptions({});
         setOrderedProductInfo({stock: 0, options: {}});
         notification.success({
-            message: 'Հաջողությամբ ավելացվեց զամբյուղին։'
+            message: 'Successfully added to cart.'
         })
       }catch(error: any){
         notification.error({
-            message: 'Զամբյուղին ավելացնելիս սղալ առաջացավ։',
+            message: 'An error occurred while adding to the cart.',
             description: error.message
         })
       }finally{

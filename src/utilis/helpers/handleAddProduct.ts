@@ -37,14 +37,14 @@ export const handleAddProduct = async ({values, userData, imageUrls, navigate}: 
             })
     
             notification.success({
-                message: "Ապրանքն ավելացվեց։",
+                message: "Product has been added.",
             });
-    
+            
             navigate(ROUTE_NAMES.MYPRODUCTS);    
-        } catch (error: any) {
-            notification.error({
-                message: "Ապրանքը չավելացվեց։",
-                description: error.message,
-        });
-    }}
-};
+            } catch (error: any) {
+                notification.error({
+                    message: "Product could not be added.",
+                    description: error.message,
+                });
+}}
+}

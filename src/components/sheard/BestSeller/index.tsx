@@ -16,7 +16,7 @@ const BestSeller = () => {
   return (
     <div className="my-10">
       <div className="text-center text-3xl py-8">
-        <Title text1={'ԼԱՎԱԳՈՒՅՆ'} text2={'ՎԱՃԱՌՈՂՆԵՐ'} />
+        <Title text1={'BEST'} text2={'SELLERS'} />
       </div>
       <div className="flex flex-col gap-3">
         {

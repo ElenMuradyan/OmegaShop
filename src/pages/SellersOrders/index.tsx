@@ -33,7 +33,7 @@ const SellersOrders = () => {
           <SellerOrderList order={item} key={item.id} /> 
         ))
       ) : (
-        <p>ԱՊՐԱՆՔՆԵՐ ՉԵՆ ԳՏՆՎԵԼ</p>
+        <p>NO PRODUCTS</p>
       )}
     </div>
   );

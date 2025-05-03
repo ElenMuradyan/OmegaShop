@@ -50,7 +50,7 @@ const Navbar = () => {
 
 {/* Small Screenes */}
 
-        <div className={`fixed top-0 right-0 bottom-0 overflow-hidden bg-white transition-all duration-300 ease-in-out shadow-lg ${menuOpen ? 'w-full' : 'w-0'} flex flex-col`}>
+        <div className={`fixed top-0 right-0 bottom-0 overflow-hidden bg-white transition-all duration-300 ease-in-out shadow-lg z-[1000] ${menuOpen ? 'w-full' : 'w-0'} flex flex-col`}>
             <div onClick={() => setMenuOpen(false)} className='flex items-center gap-2 px-4 py-3 text-gray-600 cursor-pointer hover:bg-gray-100'>
                 <RightOutlined className='text-xl'/>
             </div>

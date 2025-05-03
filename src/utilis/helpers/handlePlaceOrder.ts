@@ -76,12 +76,11 @@ export const handlePlaceOrder = async ({values, userData, setLoading, cart, disp
                 orders: orders,  
                 }
             )}));
-       navigate(ROUTE_NAMES.ORDERS);
-      console.log("Պատվերները հաջողությամբ տեղադրված են!");
-    }catch(error: any){
-      console.error("Պատվերի մշակումը ձախողվեց:", error.message);
-    }finally{
-      setLoading(false);
-    }  
-    }
-};
+            navigate(ROUTE_NAMES.ORDERS);
+            console.log("Orders have been successfully placed!");
+            } catch (error: any) {
+              console.error("Order processing failed:", error.message);
+            } finally {
+              setLoading(false);
+            }
+}};

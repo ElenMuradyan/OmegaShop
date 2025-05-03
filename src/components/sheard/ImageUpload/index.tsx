@@ -9,11 +9,11 @@ export interface ImageUploadProps {
   handleDelete?: (url: string) => void;
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({onFinish, handleDelete}) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({ onFinish, handleDelete }) => {
     const uploadButton = (
         <button style={{ border: 0, background: 'none' }} type="button">
           <PlusOutlined />
-          <div style={{ marginTop: 8 }}>ՆԵՐԲԵՌՆԵԼ</div>
+          <div style={{ marginTop: 8 }}>UPLOAD</div>
         </button>
       );
 
@@ -29,13 +29,13 @@ const ImageUpload: React.FC<ImageUploadProps> = ({onFinish, handleDelete}) => {
             if (error) {
               console.error("Upload error:", error);
               notification.error({
-                message: "Չհաջողվեց ներբեռնել։",
+                message: "Failed to upload.",
                 description: error.message
               });
               onError?.(error);
             } else {
                 notification.success({
-                    message: "Հաջողությամբ ներբեռնվեց։",
+                    message: "Upload successful.",
                   })
                   const { data: publicUrlData} = supabase.storage
                   .from("product-images")
@@ -47,7 +47,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({onFinish, handleDelete}) => {
             }
           } catch (error: any) {
             notification.error({
-                message: "Ինչ-որ բան սխալ գնաց։։",
+                message: "Something went wrong.",
                 description: error.message
               })
           }
@@ -58,8 +58,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({onFinish, handleDelete}) => {
           const filePath = file.response.path;
           if (!filePath) {
             notification.error({
-              message: "Չհաջողվեց հեռացնել։",
-              description: "Նկարի հղումը սխալ է։",
+              message: "Failed to remove.",
+              description: "The image link is incorrect.",
             });
             return false;
           }
@@ -69,7 +69,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({onFinish, handleDelete}) => {
           if (error) throw error;
       
           notification.success({
-            message: "Հաջողությամբ հեռացվեց։",
+            message: "Successfully removed.",
           });
 
           const { data } = supabase.storage
@@ -83,7 +83,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({onFinish, handleDelete}) => {
           return true;
         } catch (error: any) {
           notification.error({
-            message: "Ինչ-որ բան սխալ գնաց։",
+            message: "Something went wrong.",
             description: error.message,
           });
           return false;

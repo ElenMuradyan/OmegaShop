@@ -15,7 +15,6 @@ const PlaceOrder = () => {
   const [ form ] = Form.useForm();
   const navigate = useNavigate();
 
-
   useEffect(() => {
     form.setFieldsValue(userData?.address);
   }, []);

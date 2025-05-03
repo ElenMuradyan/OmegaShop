@@ -13,7 +13,7 @@ const LatestCollection = () => {
   return (
     <div className="my-10">
       <div className="text-center py-8 text-3xl">
-        <Title text1={'ՎԵՐՋԻՆ'} text2={'ԱՊՐԱՆՔՆԵՐ'}></Title>
+        <Title text1={'LATEST'} text2={'PRODUCTS'}></Title>
         <SearchBar filteredProducts={products} setFilteredProducts={setFilteredProducts}/>
       </div>
       <ProductList products={filteredProducts}/>
@@ -21,4 +21,4 @@ const LatestCollection = () => {
   )
 }
 
-export default LatestCollection
+export default LatestCollection;
